@@ -19,6 +19,24 @@ class Config(object):
                     {'name': 'CLs 95% based upper limit on poi', 'relpath': 'statanalysis/fitresults/limit_data.json'},
                     {'name': 'CLs 95% at nominal poi', 'relpath': 'statanalysis/fitresults/limit_data_nomsignal.json'}
                 ]
+            },
+            'examples/checkmate': {
+                'metadata': {
+                    'short_description': 'CheckMate Tutorial Example (Herwig + CM1)',
+                    'author': 'Lukas Heinrich',
+                    'input requirements': '',
+                },
+                'example_inputs': {
+                    'default': ''
+                },
+                'spec': {
+                  "toplevel": "github:lukasheinrich/yadage-workflows:phenochain/checkmate_workflow",
+                  "workflow": "checkmate_lxplus.yml"
+                },
+                'results': [
+                    {'name': 'CLs 95% at nominal poi', 'relpath': 'downstream/format_results/limits.json'}
+                ]
+
             }
         }
 
