@@ -1,4 +1,6 @@
-# recast-atlas
+# RECAST for ATLAS
+
+ATLAS tools to facilitate integration of ATLAS anlayses into RECAST
 
 ```
 ssh http://lxplus-cloud.cern.ch
