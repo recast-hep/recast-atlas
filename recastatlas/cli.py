@@ -3,6 +3,7 @@ import logging
 
 from .subcommands.run import run
 from .subcommands.catalogue import catalogue
+from .subcommands.auth import auth
 
 LOGFORMAT = '%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s'
 
@@ -13,6 +14,7 @@ def recastatlas(loglevel):
 
 recastatlas.add_command(run,'run')
 recastatlas.add_command(catalogue,'catalogue')
+recastatlas.add_command(auth,'auth')
 
 
 # recastatlas.add_command(software.software,'software')
