@@ -31,7 +31,7 @@ def write(basedir):
         os.makedirs(basedir)
     krbfile = os.path.join(basedir,'getkrb.sh')
     with open(krbfile,'w') as f:
-        f.write('echo '{}'|kinit {}@CERN.CH'.format(
+        f.write("echo '{}'|kinit {}@CERN.CH".format(
             os.environ[envvar[1]],os.environ[envvar[0]]
             )
         )
