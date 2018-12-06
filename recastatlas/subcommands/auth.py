@@ -19,8 +19,8 @@ def setup():
     username = click.prompt('Enter your username to authenticate as {}'.format(expt), hide_input = False, err = True)
     password = click.prompt('Enter your password for {} (VO: {})'.format(username,expt), hide_input = True, err = True)
 
-    click.secho('export {}={}'.format(envvar[0],username))
-    click.secho('export {}={}'.format(envvar[1],password))
+    click.secho("export {}='{}'".format(envvar[0],username))
+    click.secho("export {}='{}'".format(envvar[1],password))
     click.secho('You password is stored in the environment variable {}. Unset to clear your password. Or exit the shell.'.format(' and '.join(envvar)), err = True)
 
 @auth.command()
