@@ -17,20 +17,5 @@ recastatlas.add_command(catalogue,'catalogue')
 recastatlas.add_command(auth,'auth')
 
 
-# recastatlas.add_command(software.software,'software')
-
-# @recastatlas.group()
-# def testdata():
-#     pass
-#
-# @recastatlas.group()
-# def fragment():
-#     pass
-#
-#
-# @recastatlas.group()
-# def template():
-#     pass
-
 if __name__ == '__main__':
     recastatlas()

@@ -2,7 +2,11 @@ import click
 import sys
 import os
 
-envvar = ['RECAST_AUTH_USERNAME', 'RECAST_AUTH_PASSWORD']
+envvar = [
+'RECAST_AUTH_USERNAME',
+'RECAST_AUTH_PASSWORD',
+'YADAGE_SCHEMA_LOAD_TOKEN'
+]
 
 @click.group()
 def auth():
@@ -18,10 +22,13 @@ def setup():
 
     username = click.prompt('Enter your username to authenticate as {}'.format(expt), hide_input = False, err = True)
     password = click.prompt('Enter your password for {} (VO: {})'.format(username,expt), hide_input = True, err = True)
+    token    = click.prompt('Your GitLab token (optional, to access private workflows)'.format(username,expt), hide_input = True, err = True, default = '<none>')
+
 
     click.secho("export {}='{}'".format(envvar[0],username))
     click.secho("export {}='{}'".format(envvar[1],password))
-    click.secho('You password is stored in the environment variable {}. Unset to clear your password. Or exit the shell.'.format(' and '.join(envvar)), err = True)
+    click.secho("export {}='{}'".format(envvar[2],token))
+    click.secho('You password is stored in the environment variable {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.'.format(' and '.join(envvar)), err = True)
 
 @auth.command()
 @click.option('--basedir', default = None)
@@ -39,7 +46,7 @@ def write(basedir):
     authlocvar = 'PACKTIVITY_AUTH_LOCATION'
     click.secho('export {}={}'.format(authlocvar,os.path.abspath(basedir)))
 
-        
+
 
 @auth.command()
 def destroy():
@@ -48,3 +55,4 @@ def destroy():
         raise click.Abort()
     click.secho('unset {}'.format(envvar[0]))
     click.secho('unset {}'.format(envvar[1]))
+    click.secho('unset {}'.format(envvar[2]))
