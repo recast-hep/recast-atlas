@@ -20,14 +20,9 @@ def run(name,inputdata):
     backend = 'local'
 
     dataarg = tempfile.mkdtemp(prefix = 'recast-',dir = os.curdir)
-    initdata = {
-        "dxaod_file": "http://physics.nyu.edu/~lh1132/capdemo/mc15_13TeV.123456.cap_recast_demo_signal_one.root",
-        "did": 404958,
-        "xsec_in_pb": 0.00122
-    }
     spec = {
         'dataarg': dataarg,
-        'initdata': initdata,
+        'initdata': inputdata,
         'workflow': data['spec']['workflow'],
         'toplevel': data['spec']['toplevel'],
         'visualize': True,

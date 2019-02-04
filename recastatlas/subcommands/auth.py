@@ -8,6 +8,9 @@ envvar = [
 'YADAGE_SCHEMA_LOAD_TOKEN'
 ]
 
+AUTH_LOC_VAR = 'PACKTIVITY_AUTH_LOCATION'
+
+
 @click.group()
 def auth():
     pass
@@ -43,8 +46,7 @@ def write(basedir):
             )
         )
     os.chmod(krbfile, 0o755)
-    authlocvar = 'PACKTIVITY_AUTH_LOCATION'
-    click.secho('export {}={}'.format(authlocvar,os.path.abspath(basedir)))
+    click.secho('export {}={}'.format(AUTH_LOC_VAR,os.path.abspath(basedir)))
 
 
 
@@ -56,3 +58,8 @@ def destroy():
     click.secho('unset {}'.format(envvar[0]))
     click.secho('unset {}'.format(envvar[1]))
     click.secho('unset {}'.format(envvar[2]))
+
+@auth.command()
+@click.argument('location')
+def use(location):
+    click.secho('export {}={}'.format(AUTH_LOC_VAR,os.path.abspath(location)))

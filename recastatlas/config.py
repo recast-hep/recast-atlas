@@ -9,7 +9,11 @@ class Config(object):
                     'input requirements': '',
                 },
                 'example_inputs': {
-                    'default': ''
+                    'default': {
+                        "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root",
+                        "did": 404958,
+                        "xsec_in_pb": 0.00122
+                    }
                 },
                 'spec': {
                   "toplevel": "github:reanahub/reana-demo-atlas-recast",

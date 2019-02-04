@@ -8,7 +8,7 @@ from .subcommands.auth import auth
 LOGFORMAT = '%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s'
 
 @click.group()
-@click.option('-l','--loglevel', default = 'WARNING')
+@click.option('-l','--loglevel', default = 'INFO')
 def recastatlas(loglevel):
     logging.basicConfig(level=getattr(logging, loglevel), format=LOGFORMAT)
 
