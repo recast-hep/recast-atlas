@@ -2,6 +2,13 @@ class Config(object):
     @property
     def catalogue(self):
         return {
+            'atlas/atlas-conf': {
+                'metadata': {
+                    'short_description': 'ATLAS MBJ',
+                },
+                'example_inputs': {
+                }
+            },
             'examples/rome': {
                 'metadata': {
                     'short_description': 'Example from ATLAS Exotics Rome Workshop 2018',
@@ -10,9 +17,18 @@ class Config(object):
                 },
                 'example_inputs': {
                     'default': {
+                        'data': {
                         "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root",
                         "did": 404958,
                         "xsec_in_pb": 0.00122
+                        }
+                    },
+                    'newsignal': {
+                        "data": {
+                            "did": 404951,
+                            "xsec_in_pb": 0.001735,
+                            "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.789012.cap_recast_demo_signal_two.root"
+                        }
                     }
                 },
                 'spec': {
@@ -31,7 +47,9 @@ class Config(object):
                     'input requirements': '',
                 },
                 'example_inputs': {
-                    'default': ''
+                    'default': {
+                        'data': {}
+                    }
                 },
                 'spec': {
                   "toplevel": "github:lukasheinrich/yadage-workflows:phenochain/checkmate_workflow",
@@ -49,7 +67,9 @@ class Config(object):
                     'input requirements': '',
                 },
                 'example_inputs': {
-                    'default': ''
+                    'default': {
+                        'data': {}
+                    }
                 },
                 'spec': {
                   "toplevel": "github:lukasheinrich/yadage-workflows:phenochain/checkmate_workflow",
