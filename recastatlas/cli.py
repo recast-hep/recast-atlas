@@ -4,6 +4,7 @@ import logging
 from .subcommands.run import run
 from .subcommands.catalogue import catalogue
 from .subcommands.auth import auth
+from .subcommands.backends import backends  
 
 LOGFORMAT = '%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s'
 
@@ -12,9 +13,11 @@ LOGFORMAT = '%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s'
 def recastatlas(loglevel):
     logging.basicConfig(level=getattr(logging, loglevel), format=LOGFORMAT)
 
+
 recastatlas.add_command(run,'run')
 recastatlas.add_command(catalogue,'catalogue')
 recastatlas.add_command(auth,'auth')
+recastatlas.add_command(backends,'backends')
 
 
 if __name__ == '__main__':
