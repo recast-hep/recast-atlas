@@ -1,4 +1,5 @@
 import click
+import yaml
 from ..config import config
 
 @click.group()
@@ -7,10 +8,10 @@ def catalogue():
 
 @catalogue.command()
 def ls():
-    fmt = '{0:20}{1:20}'
-    click.secho(fmt.format('NAME','DESCRIPTION'))
+    fmt = '{0:20}{1:60}{2:20}'
+    click.secho(fmt.format('NAME','DESCRIPTION','EXAMPLES'))
     for k,v in config.catalogue.items():
-        click.secho(fmt.format(k,v['metadata']['short_description']))
+        click.secho(fmt.format(k,v['metadata']['short_description'],','.join(list(v['example_inputs'].keys()))))
 
 @catalogue.command()
 @click.argument('name')
@@ -28,3 +29,10 @@ author       : {author}
     short = data['metadata']['short_description']
     )
     click.secho(toprint)
+
+@catalogue.command()
+@click.argument('name')
+@click.argument('example')
+def example(name,example):
+    data = config.catalogue[name]
+    click.secho(yaml.dump(data['example_inputs'][example], default_flow_style = False))

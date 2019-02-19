@@ -3,6 +3,10 @@ import click
 import tempfile
 import logging
 import yaml
+
+
+
+
 from ..config import config
 from ..backends import run_sync
 from ..resultsextraction import extract_results
@@ -10,9 +14,17 @@ log = logging.getLogger(__name__)
 @click.command()
 @click.argument('name')
 @click.argument('inputdata', default = '')
-def run(name,inputdata):
+@click.option('--example', default = 'default')
+def run(name,inputdata,example):
     data      = config.catalogue[name]
-    inputdata = inputdata or data['example_inputs']['default']
+    if inputdata:
+        inputdata = yaml.load(open(inputdata))['data']
+    else:
+        try:
+            inputs  = data['example_inputs'][example]
+        except:
+            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data['example_inputs'].keys())))
+        inputdata = inputs['data']
 
     log.info('executing RECAST configuration %s on input %s',name, inputdata)
 
