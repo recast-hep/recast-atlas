@@ -1,8 +1,18 @@
 class Config(object):
     @property
+    def backends(self):
+        return {
+            'local': {
+                'metadata': {
+                    'short_description': 'runs RECAST workflows locally'
+                },
+                'fromstring': 'multiproc:auto'
+            }
+        }
+    @property
     def catalogue(self):
         return {
-            'atlas/atlas-conf': {
+            'atlas/atlas-conf-2018-041': {
                 'metadata': {
                     'short_description': 'ATLAS MBJ',
                 },

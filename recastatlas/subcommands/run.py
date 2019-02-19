@@ -11,6 +11,7 @@ from ..config import config
 from ..backends import run_sync
 from ..resultsextraction import extract_results
 log = logging.getLogger(__name__)
+
 @click.command()
 @click.argument('name')
 @click.argument('inputdata', default = '')
