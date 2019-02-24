@@ -4,9 +4,14 @@ class Config(object):
         return {
             'local': {
                 'metadata': {
-                    'short_description': 'runs RECAST workflows locally'
+                    'short_description': 'runs locally'
                 },
                 'fromstring': 'multiproc:auto'
+            },
+            'kubernetes': {
+                'metadata': {
+                    'short_description': 'runs on a Kubernetes cluster'
+                }
             }
         }
     @property
@@ -17,6 +22,24 @@ class Config(object):
                     'short_description': 'ATLAS MBJ',
                 },
                 'example_inputs': {
+                    'default': {
+                        'initdata': {
+                            'databkgcache': 'cache.root',
+                            'weightfiles': ['mc16a_weights.json', 'mc16d_weights.json'],
+                            'did': 375893,
+                            'inputdata_xrootd': 'root://eosuser.cern.ch//eos/project/r/recast/atlas/ATLAS-CONF-2018-041/testdata/signal_evsel_inputs',
+                            'mc16a_pattern': 'r9364',
+                            'mc16d_pattern': 'r10201'
+                        },
+                        'dataopts': {
+                            'inputarchive': 'https://gitlab.cern.ch/api/v4/projects/recast-atlas%2Fsusy%2FATLAS-CONF-2018-041/repository/archive.zip?sha=master',
+                            'archivematch': '*/examples/inputdata/'
+                        }
+                    }
+                },
+                'spec': {
+                    'toplevel': 'gitlab-cern:recast-atlas/susy/ATLAS-CONF-2018-041:specs',
+                    'workflow': 'workflow.yml',
                 }
             },
             'examples/rome': {
@@ -27,14 +50,14 @@ class Config(object):
                 },
                 'example_inputs': {
                     'default': {
-                        'data': {
+                        'initdata': {
                         "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root",
                         "did": 404958,
                         "xsec_in_pb": 0.00122
                         }
                     },
                     'newsignal': {
-                        "data": {
+                        "initdata": {
                             "did": 404951,
                             "xsec_in_pb": 0.001735,
                             "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.789012.cap_recast_demo_signal_two.root"
@@ -58,7 +81,7 @@ class Config(object):
                 },
                 'example_inputs': {
                     'default': {
-                        'data': {}
+                        'initdata': {}
                     }
                 },
                 'spec': {
@@ -78,7 +101,7 @@ class Config(object):
                 },
                 'example_inputs': {
                     'default': {
-                        'data': {}
+                        'initdata': {}
                     }
                 },
                 'spec': {
