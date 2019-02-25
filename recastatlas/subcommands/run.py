@@ -46,7 +46,7 @@ def run(name,inputdata,example):
 
     log.info('RECAST run finished.')
 
-    result = extract_results(data['results'], spec, backend = backend)
+    result = extract_results(data['results'], spec['dataarg'], backend = backend)
     formatted_result = yaml.safe_dump(result, default_flow_style=False)
     click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
 
@@ -70,3 +70,13 @@ def submit(name,inputdata,example):
     backend = 'kubernetes'
     rc = run_async(name, spec, backend = backend)
     click.secho("{} submitted".format(str(name)))
+
+@click.command()
+@click.argument('name')
+@click.argument('instance')
+def retrieve(name,instance):
+    backend = 'kubernetes'
+    data      = config.catalogue[name]
+    result = extract_results(data['results'], instance, backend = backend)
+    formatted_result = yaml.safe_dump(result, default_flow_style=False)
+    click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
