@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
   name = 'recast-atlas',
-  version = '0.0.5',
+  version = '0.0.6',
   description = 'RECAST for ATLAS at the LHC',
   url = '',
   author = 'Lukas Heinrich',
