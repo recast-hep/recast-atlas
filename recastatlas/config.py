@@ -1,3 +1,6 @@
+import os
+import yaml
+
 class Config(object):
     @property
     def backends(self):
@@ -16,7 +19,7 @@ class Config(object):
         }
     @property
     def catalogue(self):
-        return {
+        cfg =  {
             'atlas/atlas-conf-2018-041': {
                 'metadata': {
                     'short_description': 'ATLAS MBJ',
@@ -114,5 +117,9 @@ class Config(object):
 
             }
         }
+        if 'RECAST_ATLAS_CATALOGUE' in os.environ:
+            newcfg = yaml.load(open(os.environ.get('RECAST_ATLAS_CATALOGUE')))
+            cfg.update(**newcfg)
+        return cfg
 
 config = Config()
