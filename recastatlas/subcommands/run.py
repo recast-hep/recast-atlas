@@ -74,9 +74,36 @@ def submit(name,inputdata,example):
 @click.command()
 @click.argument('name')
 @click.argument('instance')
-def retrieve(name,instance):
+@click.option('--show-url/--no-url', default = False)
+@click.option('--tunnel/--no-tunnel', default = False)
+def retrieve(name,instance, show_url, tunnel):
     backend = 'kubernetes'
+    if show_url:
+        from kubernetes import client as k8client
+        from kubernetes import config as k8config
+        k8config.load_kube_config()
+        port = 30000
+
+        tunnel_host = 'lxplus.cern.ch'
+
+        host = '{}'.format(
+            k8client.CoreV1Api().list_node().to_dict()['items'][0]['metadata']['name']
+        )
+
+        if tunnel:
+            ssh_cmd = 'ssh -fNL {}:{}:{} {}'.format(port,host,port, tunnel_host)
+            click.secho(ssh_cmd)
+            host = '127.0.0.1'
+        else:
+            host = host + 'cern.ch'
+        click.secho('http://{host}:{port}/{name}'.format(
+            host = host,
+            port = port,
+            name = instance
+        ))
+        return
     data      = config.catalogue[name]
     result = extract_results(data['results'], instance, backend = backend)
     formatted_result = yaml.safe_dump(result, default_flow_style=False)
     click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
+
