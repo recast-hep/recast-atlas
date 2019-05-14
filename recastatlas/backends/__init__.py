@@ -1,5 +1,6 @@
 import click
 import logging
+import subprocess
 
 log = logging.getLogger(__name__)
 
@@ -42,4 +43,5 @@ def check_backend(backend):
     if backend == 'kubernetes':
         return False
     if backend == 'local':
-        return False
+        rc = subprocess.check_call(['docker','info'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        return rc == 0
