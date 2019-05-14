@@ -22,7 +22,7 @@ def make_spec(name,data,inputs):
     }
     return spec
 
-@click.command()
+@click.command(help = 'Run a RECAST Workflow synchronously')
 @click.argument('name')
 @click.argument('inputdata', default = '')
 @click.option('--example', default = 'default')
@@ -50,7 +50,7 @@ def run(name,inputdata,example):
     formatted_result = yaml.safe_dump(result, default_flow_style=False)
     click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
 
-@click.command()
+@click.command(help = 'Submit a RECAST Workflow asynchronously')
 @click.argument('name')
 @click.argument('inputdata', default = '')
 @click.option('--example', default = 'default')
@@ -71,7 +71,7 @@ def submit(name,inputdata,example):
     rc = run_async(name, spec, backend = backend)
     click.secho("{} submitted".format(str(name)))
 
-@click.command()
+@click.command(help = 'Retrieve RECAST Results from asynchronous submissions')
 @click.argument('name')
 @click.argument('instance')
 @click.option('--show-url/--no-url', default = False)

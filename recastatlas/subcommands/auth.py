@@ -11,7 +11,7 @@ envvar = [
 AUTH_LOC_VAR = 'PACKTIVITY_AUTH_LOCATION'
 
 
-@click.group()
+@click.group(help = 'Authentication Commands (to gain access to internal data)')
 def auth():
     pass
 

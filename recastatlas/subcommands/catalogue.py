@@ -2,7 +2,7 @@ import click
 import yaml
 from ..config import config
 
-@click.group()
+@click.group(help = 'The RECAST Analysis Catalogue')
 def catalogue():
     pass
 
