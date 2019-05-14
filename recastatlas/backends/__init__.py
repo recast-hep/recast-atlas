@@ -5,7 +5,6 @@ log = logging.getLogger(__name__)
 
 from ..config import config
 
-
 def run_sync(name, spec, backend):
     assert backend == 'local'
 
@@ -38,3 +37,9 @@ def run_async(name, spec, backend):
     _,rc,_ = k8sclient.ApiClient().call_api('/apis/yadage.github.io/v1/namespaces/default/workflows','POST', body = workflow) 
     return rc
 
+
+def check_backend(backend):
+    if backend == 'kubernetes':
+        return False
+    if backend == 'local':
+        return False
