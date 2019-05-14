@@ -95,7 +95,7 @@ def retrieve(name,instance, show_url, tunnel):
             click.secho(ssh_cmd)
             host = '127.0.0.1'
         else:
-            host = host + 'cern.ch'
+            host = host + '.cern.ch'
         click.secho('http://{host}:{port}/{name}'.format(
             host = host,
             port = port,
