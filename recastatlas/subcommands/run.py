@@ -102,7 +102,7 @@ def retrieve(name,instance, show_url, tunnel):
             name = instance
         ))
         return
-    data      = config.catalogue[name]
+    data   = config.catalogue[name]
     result = extract_results(data['results'], instance, backend = backend)
     formatted_result = yaml.safe_dump(result, default_flow_style=False)
     click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
