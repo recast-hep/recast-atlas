@@ -2,11 +2,13 @@ import click
 import sys
 import os
 
-envvar = [
-'RECAST_AUTH_USERNAME',
-'RECAST_AUTH_PASSWORD',
-'YADAGE_SCHEMA_LOAD_TOKEN',
-]
+envvar = {
+ 'auth_user': 'RECAST_AUTH_USERNAME',
+ 'auth_pass': 'RECAST_AUTH_PASSWORD',
+ 'spec_load': 'YADAGE_SCHEMA_LOAD_TOKEN',
+ 'registry_user': 'RECAST_REGISTRY_USERNAME',
+ 'registry_pass': 'RECAST_REGISTRY_PASSWORD',
+}
 
 AUTH_LOC_VAR = 'PACKTIVITY_AUTH_LOCATION'
 
@@ -28,10 +30,14 @@ def setup():
     token    = click.prompt('Your GitLab token (optional, to access private workflows)'.format(username,expt), hide_input = True, err = True, default = '<none>')
 
 
-    click.secho("export {}='{}'".format(envvar[0],username))
-    click.secho("export {}='{}'".format(envvar[1],password))
-    click.secho("export {}='{}'".format(envvar[2],token))
-    click.secho('You password is stored in the environment variable {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.'.format(' and '.join(envvar)), err = True)
+
+
+    click.secho("export {}='{}'".format(envvar['auth_user'],username))
+    click.secho("export {}='{}'".format(envvar['auth_pass'],password))
+    click.secho("export {}='{}'".format(envvar['spec_load'],token))
+    click.secho("export {}='{}'".format(envvar['registry_user'],username))
+    click.secho("export {}='{}'".format(envvar['registry_pass'],token))
+    click.secho('You password is stored in the environment variables {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.'.format(','.join(envvar.values())), err = True)
 
 @auth.command()
 @click.option('--basedir', default = None)
@@ -42,7 +48,7 @@ def write(basedir):
     krbfile = os.path.join(basedir,'getkrb.sh')
     with open(krbfile,'w') as f:
         f.write("echo '{}'|kinit {}@CERN.CH".format(
-            os.environ[envvar[1]],os.environ[envvar[0]]
+            os.environ[envvar['auth_user']],os.environ[envvar['auth_pass']]
             )
         )
     os.chmod(krbfile, 0o755)
@@ -55,9 +61,8 @@ def destroy():
     if sys.stdout.isatty():
         click.secho('Use eval $(recast auth destroy) to unset the variables', fg = 'red')
         raise click.Abort()
-    click.secho('unset {}'.format(envvar[0]))
-    click.secho('unset {}'.format(envvar[1]))
-    click.secho('unset {}'.format(envvar[2]))
+    for v in envvar.values():
+        click.secho('unset {}'.format(v))
 
 @auth.command()
 @click.argument('location')

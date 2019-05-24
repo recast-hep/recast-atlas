@@ -1,7 +1,6 @@
 import click
 import logging
 import subprocess
-
 log = logging.getLogger(__name__)
 
 from ..config import config
@@ -13,7 +12,7 @@ def run_sync(name, spec, backend):
     from yadage.utils import setupbackend_fromstring
     from yadage.steering_api import run_workflow
     spec['backend']  = setupbackend_fromstring(backend_config,spec.pop('backendopts',{}))
-
+    
     try:
         run_workflow(**spec)
     except:
