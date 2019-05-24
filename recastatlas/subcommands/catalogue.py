@@ -10,7 +10,7 @@ def catalogue():
 def ls():
     fmt = '{0:35}{1:60}{2:20}'
     click.secho(fmt.format('NAME','DESCRIPTION','EXAMPLES'))
-    for k,v in config.catalogue.items():
+    for k,v in sorted(config.catalogue.items(), key = lambda x: x[0]):
         click.secho(fmt.format(k,v['metadata']['short_description'],','.join(list(v['example_inputs'].keys()))))
 
 @catalogue.command()
