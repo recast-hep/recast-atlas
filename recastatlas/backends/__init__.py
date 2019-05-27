@@ -40,15 +40,23 @@ def run_async(name, spec, backend):
 
 def check_backend(backend):
     if backend == 'kubernetes':
-        from kubernetes import client as k8sclient
-        from kubernetes import config as k8sconfig
-        k8sconfig.load_kube_config()
         try:
+            from kubernetes import client as k8sclient
+            from kubernetes import config as k8sconfig
+            k8sconfig.load_kube_config()
             _,rc,_ = k8sclient.ApiClient().call_api('/apis/yadage.github.io/v1/namespaces/default/workflows','GET')
+            return rc == 200
         except k8sclient.rest.ApiException:
-            return False
-        return rc == 200
-
+            pass
+        return False
     if backend == 'local':
-        rc = subprocess.check_call(['docker','info'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        return rc == 0
+        try:
+            import yadage
+            rc = subprocess.check_call(['docker','info'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+            return rc == 0
+        except:
+            pass
+        return False
+
+def install_backend(backend):
+    pass

@@ -1,6 +1,7 @@
 import os
 import yaml
 import pkg_resources
+import glob
 
 class Config(object):
     @property
@@ -20,10 +21,20 @@ class Config(object):
         }
     @property
     def catalogue(self):
-        cfg = yaml.safe_load(open(pkg_resources.resource_filename('recastatlas','data/config.yml')))
-        if 'RECAST_ATLAS_CATALOGUE' in os.environ:
-            newcfg = yaml.safe_load(open(os.environ.get('RECAST_ATLAS_CATALOGUE')))
-            cfg.update(**newcfg)
+        paths = [pkg_resources.resource_filename('recastatlas','data/catalogue')]
+        configpath = os.environ.get('RECAST_ATLAS_CATALOGUE')
+        
+        if configpath:
+            for p in configpath.split(':'):
+                paths.append(p)
+        
+
+        cfg = {}
+        files = [x for p in paths for x in glob.glob('{}/*.yml'.format(p))]
+        for f in files:
+            d = yaml.safe_load(open(f))
+            name = d.pop('name')
+            cfg[name] =  d
         return cfg
 
 config = Config()
