@@ -54,8 +54,10 @@ def run(name,inputdata,example):
 @click.argument('name')
 @click.argument('inputdata', default = '')
 @click.option('--example', default = 'default')
-def submit(name,inputdata,example):
-    data      = config.catalogue[name]
+@click.option('--infofile', default = None)
+def submit(name,inputdata,example, infofile):
+    analysis_id = name
+    data      = config.catalogue[analysis_id]
     if inputdata:
         inputs = yaml.load(open(inputdata))
     else:
@@ -64,19 +66,37 @@ def submit(name,inputdata,example):
         except:
             raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data['example_inputs'].keys())))
 
-    name = "recast-{}".format(str(uuid.uuid1()).split('-')[0])
-    spec = make_spec(name,data,inputs)
+    instance_id = "recast-{}".format(str(uuid.uuid1()).split('-')[0])
+    spec = make_spec(instance_id,data,inputs)
 
     backend = 'kubernetes'
-    rc = run_async(name, spec, backend = backend)
-    click.secho("{} submitted".format(str(name)))
+    rc = run_async(instance_id, spec, backend = backend)
+    click.secho("{} submitted".format(str(instance_id)))
+    if infofile:
+        with open(infofile,'w') as info:
+            json.dump({
+                'analysis_id': analysis_id,
+                'instance_id': instance_id
+            },info)
 
 @click.command(help = 'Retrieve RECAST Results from asynchronous submissions')
-@click.argument('name')
-@click.argument('instance')
+@click.option('--name', default = None)
+@click.option('--instance', default = None)
+@click.option('--infofile', default = None)
 @click.option('--show-url/--no-url', default = False)
 @click.option('--tunnel/--no-tunnel', default = False)
-def retrieve(name,instance, show_url, tunnel):
+def retrieve(infofile, name,instance, show_url, tunnel):
+    if infofile:
+        d = json.load(open(infofile))
+        name = d['analysis_id']
+        instance = d['instance_id']
+    else:
+        try: 
+            assert name
+            assert instance
+        except AssertionError:
+            click.secho('need to use either --info-file or --name and --instance')
+
     backend = 'kubernetes'
     if show_url:
         from kubernetes import client as k8client

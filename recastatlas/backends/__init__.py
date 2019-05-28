@@ -22,7 +22,7 @@ def run_sync(name, spec, backend):
         )
         exc.exit_code = 1
         raise exc
-    
+
 def run_async(name, spec, backend):
     assert backend == 'kubernetes'
     workflow = {
