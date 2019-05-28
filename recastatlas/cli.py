@@ -1,7 +1,7 @@
 import click
 import logging
 
-from .subcommands.run import run, submit, retrieve
+from .subcommands.run import run, submit, retrieve, status
 from .subcommands.catalogue import catalogue
 from .subcommands.auth import auth
 from .subcommands.backends import backends  
@@ -17,6 +17,7 @@ def recastatlas(loglevel):
 recastatlas.add_command(run,'run')
 recastatlas.add_command(submit,'submit')
 recastatlas.add_command(retrieve,'retrieve')
+recastatlas.add_command(status,'status')
 recastatlas.add_command(catalogue,'catalogue')
 recastatlas.add_command(auth,'auth')
 recastatlas.add_command(backends,'backends')

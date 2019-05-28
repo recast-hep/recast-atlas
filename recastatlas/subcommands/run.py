@@ -7,7 +7,7 @@ import uuid
 import json
 
 from ..config import config
-from ..backends import run_sync, run_async
+from ..backends import run_sync, run_async, check_async
 from ..resultsextraction import extract_results
 log = logging.getLogger(__name__)    
 
@@ -79,14 +79,8 @@ def submit(name,inputdata,example, infofile):
                 'instance_id': instance_id
             },info)
 
-@click.command(help = 'Retrieve RECAST Results from asynchronous submissions')
-@click.option('--name', default = None)
-@click.option('--instance', default = None)
-@click.option('--infofile', default = None)
-@click.option('--show-url/--no-url', default = False)
-@click.option('--tunnel/--no-tunnel', default = False)
-@click.option('--format/--raw', default = True)
-def retrieve(infofile, name,instance, show_url, tunnel, format):
+
+def get_name_instance(name, instance, infofile):
     if infofile:
         d = json.load(open(infofile))
         name = d['analysis_id']
@@ -96,9 +90,29 @@ def retrieve(infofile, name,instance, show_url, tunnel, format):
             assert name
             assert instance
         except AssertionError:
-            click.secho('need to use either --info-file or --name and --instance', fg = 'red')
+            click.secho('need to use either --infofile or --name and --instance', fg = 'red')
             raise click.Abort()
+    return name, instance
 
+@click.command(help = 'Get the Status of a asynchronous submission')
+@click.option('--name', default = None)
+@click.option('--instance', default = None)
+@click.option('--infofile', default = None)
+def status(infofile, name,instance):
+    name, instance = get_name_instance(name, instance, infofile)
+    backend = 'kubernetes'
+    status = check_async(instance, backend = backend)
+    click.secho('{}\t{}'.format(instance, status['status']))
+
+@click.command(help = 'Retrieve RECAST Results from asynchronous submissions')
+@click.option('--name', default = None)
+@click.option('--instance', default = None)
+@click.option('--infofile', default = None)
+@click.option('--show-url/--no-url', default = False)
+@click.option('--tunnel/--no-tunnel', default = False)
+@click.option('--format/--raw', default = True)
+def retrieve(infofile, name,instance, show_url, tunnel, format):
+    name, instance = get_name_instance(name, instance, infofile)
     backend = 'kubernetes'
     if show_url:
         from kubernetes import client as k8client
