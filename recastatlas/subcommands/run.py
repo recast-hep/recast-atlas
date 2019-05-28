@@ -85,7 +85,8 @@ def submit(name,inputdata,example, infofile):
 @click.option('--infofile', default = None)
 @click.option('--show-url/--no-url', default = False)
 @click.option('--tunnel/--no-tunnel', default = False)
-def retrieve(infofile, name,instance, show_url, tunnel):
+@click.option('--format/--raw', default = True)
+def retrieve(infofile, name,instance, show_url, tunnel, format):
     if infofile:
         d = json.load(open(infofile))
         name = d['analysis_id']
@@ -95,7 +96,8 @@ def retrieve(infofile, name,instance, show_url, tunnel):
             assert name
             assert instance
         except AssertionError:
-            click.secho('need to use either --info-file or --name and --instance')
+            click.secho('need to use either --info-file or --name and --instance', fg = 'red')
+            raise click.Abort()
 
     backend = 'kubernetes'
     if show_url:
@@ -124,6 +126,9 @@ def retrieve(infofile, name,instance, show_url, tunnel):
         return
     data   = config.catalogue[name]
     result = extract_results(data['results'], instance, backend = backend)
-    formatted_result = yaml.safe_dump(result, default_flow_style=False)
-    click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
+    if not format:
+        click.echo(json.dumps(result))
+    else:
+        formatted_result = yaml.safe_dump(result, default_flow_style=False)
+        click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
 
