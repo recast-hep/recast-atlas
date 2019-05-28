@@ -1,0 +1,19 @@
+name: examples/checkmate2
+
+metadata:
+  author: Lukas Heinrich
+  input requirements: ''
+  short_description: CheckMate Tutorial Example (Herwig + CM2)
+
+spec:
+  toplevel: github:lukasheinrich/yadage-workflows:phenochain/checkmate_workflow
+  workflow: checkmate2_lxplus.yml
+
+example_inputs:
+  default:
+    initdata: {}
+
+results:
+- name: CLs 95% at nominal poi
+  relpath: downstream/checkmate/checkmaterun/recast/result.txt
+  load_yaml: true
