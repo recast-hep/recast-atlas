@@ -12,8 +12,18 @@ setup(
   include_package_data = True,
   install_requires = [
     'click',
-    'pyyaml'
+    'pyyaml',
+    'yadage-schemas==0.10.6',
   ],
+  extras_require =  {
+    'local': [
+      'yadage==0.19.9',
+      'packtivity==0.14.13'
+    ],
+    'kubernetes': [
+      'kubernetes==9.0.0'
+    ]
+  },
   entry_points = {
       'console_scripts': [
           'recast=recastatlas.cli:recastatlas',
