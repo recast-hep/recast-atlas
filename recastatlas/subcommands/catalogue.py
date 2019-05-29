@@ -10,8 +10,10 @@ def catalogue():
 def ls():
     fmt = '{0:35}{1:60}{2:20}'
     click.secho(fmt.format('NAME','DESCRIPTION','EXAMPLES'))
+    
+    default = {'short_description': 'no description given'}
     for k,v in sorted(config.catalogue.items(), key = lambda x: x[0]):
-        click.secho(fmt.format(k,v['metadata']['short_description'],','.join(list(v['example_inputs'].keys()))))
+        click.secho(fmt.format(k,v.get('metadata',default)['short_description'],','.join(list(v.get('example_inputs',{}).keys()))))
 
 @catalogue.command()
 @click.argument('name')
@@ -35,4 +37,7 @@ author       : {author}
 @click.argument('example')
 def example(name,example):
     data = config.catalogue[name]
+    if not example in data.get('example_inputs',{}):
+        click.secho('example not found.')
+        return
     click.secho(yaml.dump(data['example_inputs'][example], default_flow_style = False))

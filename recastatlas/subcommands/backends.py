@@ -17,5 +17,6 @@ def ls(check):
                 status = 'OK' if check_backend(k) else 'NOT OK'
         else:
                 status = ''
-        click.secho(fmt.format(k,v['metadata']['short_description'],status))
+        default = {'short_description': 'no description given'}
+        click.secho(fmt.format(k,v.get('metadata',default)['short_description'],status))
         

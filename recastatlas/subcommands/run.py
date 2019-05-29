@@ -35,7 +35,7 @@ def run(name,inputdata,example,backend):
         try:
             inputs  = data['example_inputs'][example]
         except:
-            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data['example_inputs'].keys())))
+            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data.get('example_inputs',{}).keys())))
 
 
     name = "recast-{}".format(str(uuid.uuid1()).split('-')[0])
@@ -64,7 +64,7 @@ def submit(name,inputdata,example, infofile):
         try:
             inputs  = data['example_inputs'][example]
         except:
-            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data['example_inputs'].keys())))
+            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data.get('example_inputs',{}).keys())))
 
     instance_id = "recast-{}".format(str(uuid.uuid1()).split('-')[0])
     spec = make_spec(instance_id,data,inputs)
