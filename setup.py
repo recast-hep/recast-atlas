@@ -21,8 +21,9 @@ setup(
       'pyflakes'
     },
     'local': [
+      'pydotplus==2.0.2',
       'adage==0.9.0',
-      'yadage==0.19.9',
+      'yadage[viz]==0.19.9',
       'packtivity==0.14.13'
     ],
     'kubernetes': [

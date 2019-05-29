@@ -2,11 +2,15 @@ import click
 import yaml
 import os
 import shutil
+from distutils.dir_util import copy_tree
 import string
 import pkg_resources
+import getpass
 
 from ..config import config
 from ..testing import validate_entry
+
+default_meta = {'author': 'unknown', 'short_description': 'no description'}
 
 @click.group(help = 'The RECAST Analysis Catalogue')
 def catalogue():
@@ -28,9 +32,9 @@ def check(name):
 @click.argument('path')
 def create(name,path):
     template_path = pkg_resources.resource_filename('recastatlas','data/templates/helloworld')
-    shutil.copytree(template_path, path)
+    copy_tree(template_path, path)
     recast_file = os.path.join(path,'recast.yml')
-    data = string.Template(open(recast_file).read()).safe_substitute(name = name)
+    data = string.Template(open(recast_file).read()).safe_substitute(name = name, author = getpass.getuser())
     with open(recast_file,'w') as f:
         f.write(data)
     click.secho('New skeleton created at {path}\nRun $(recast catalogue add {path}) to add to the catlogue'.format(path = path))
@@ -54,14 +58,15 @@ def ls():
     fmt = '{0:35}{1:60}{2:20}'
     click.secho(fmt.format('NAME','DESCRIPTION','EXAMPLES'))
     
-    default = {'short_description': 'no description given'}
     for k,v in sorted(config.catalogue.items(), key = lambda x: x[0]):
-        click.secho(fmt.format(k,v.get('metadata',default)['short_description'],','.join(list(v.get('example_inputs',{}).keys()))))
+        click.secho(fmt.format(k,v.get('metadata',default_meta)['short_description'],','.join(list(v.get('example_inputs',{}).keys()))))
 
 @catalogue.command()
 @click.argument('name')
 def describe(name):
     data = config.catalogue[name]
+
+    metadata = data.get('metadata',default_meta)
     toprint = '''\
 
 {name:20}
@@ -69,9 +74,9 @@ def describe(name):
 description  : {short:20}
 author       : {author}
 '''.format(
-    author = data['metadata']['author'],
+    author = metadata['author'],
     name = name,
-    short = data['metadata']['short_description']
+    short = metadata['short_description']
     )
     click.secho(toprint)
 
