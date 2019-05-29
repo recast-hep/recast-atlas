@@ -9,14 +9,14 @@ python:
 go:
 - "1.12"
 
+language: python
+install:
+- pip install -e .[develop]
+script:
+- pyflakes recastatlas
+
 jobs:
   include:
-    - stage: testing
-      language: python
-      install:
-      - pip install -e .[develop]
-      script:
-      - pyflakes recastatlas
     - stage: examplerun
       language: python
       install:
