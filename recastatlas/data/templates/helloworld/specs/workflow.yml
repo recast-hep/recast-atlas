@@ -6,14 +6,4 @@ stages:
     parameters:
       name: {step: init, output: name}
       outputfile: '{workdir}/hello_world.txt'
-    step:
-      process:
-        process_type: 'string-interpolated-cmd'
-        cmd: 'echo Hello my Name is {name} | tee {outputfile}'
-      publisher:
-        publisher_type: 'frompar-pub'
-        outputmap:
-          outputfile: outputfile
-      environment:
-        environment_type: 'docker-encapsulated'
-        image: busybox
+    step: {$ref: 'steps.yml#hello_world'}
