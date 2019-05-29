@@ -9,9 +9,22 @@ class Config(object):
         return {
             'local': {
                 'metadata': {
-                    'short_description': 'runs locally'
+                    'short_description': 'runs locally with natively installed tools'
                 },
                 'fromstring': 'multiproc:auto'
+            },
+            'docker': {
+                'metadata': {
+                    'short_description': 'runs with containerized tools'
+                },
+                'image': 'yadage/yadage:v0.19.9',
+                'reg': {
+                    'user': os.environ.get('RECAST_REGISTRY_USERNAME'),
+                    'pass': os.environ.get('RECAST_REGISTRY_PASSWORD'),
+                    'host': os.environ.get('RECAST_REGISTRY_HOST')
+                },
+                'private_token': os.environ.get('YADAGE_SCHEMA_LOAD_TOKEN'),
+                'auth_location': os.environ.get('PACKTIVITY_AUTH_LOCATION')
             },
             'kubernetes': {
                 'metadata': {
@@ -33,8 +46,14 @@ class Config(object):
         files = [x for p in paths for x in glob.glob('{}/*.yml'.format(p))]
         for f in files:
             d = yaml.safe_load(open(f))
+            if not validate_catalogue_entry(d):
+                continue
             name = d.pop('name')
             cfg[name] =  d
         return cfg
 
 config = Config()
+
+
+def validate_catalogue_entry(entry):
+    return True

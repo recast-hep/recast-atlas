@@ -26,10 +26,11 @@ def make_spec(name,data,inputs):
 @click.argument('name')
 @click.argument('inputdata', default = '')
 @click.option('--example', default = 'default')
-def run(name,inputdata,example):
+@click.option('--backend', type = click.Choice(['local','docker']), default = 'local')
+def run(name,inputdata,example,backend):
     data      = config.catalogue[name]
     if inputdata:
-        inputs = yaml.load(open(inputdata))
+        inputs = yaml.safe_load(open(inputdata))
     else:
         try:
             inputs  = data['example_inputs'][example]
@@ -41,7 +42,6 @@ def run(name,inputdata,example):
     spec = make_spec(name,data,inputs)
 
 
-    backend = 'local'
     run_sync(name, spec, backend = backend)
 
     log.info('RECAST run finished.')
@@ -59,7 +59,7 @@ def submit(name,inputdata,example, infofile):
     analysis_id = name
     data      = config.catalogue[analysis_id]
     if inputdata:
-        inputs = yaml.load(open(inputdata))
+        inputs = yaml.safe_load(open(inputdata))
     else:
         try:
             inputs  = data['example_inputs'][example]

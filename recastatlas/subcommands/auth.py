@@ -8,6 +8,7 @@ envvar = {
  'spec_load': 'YADAGE_SCHEMA_LOAD_TOKEN',
  'registry_user': 'RECAST_REGISTRY_USERNAME',
  'registry_pass': 'RECAST_REGISTRY_PASSWORD',
+ 'registry_host': 'RECAST_REGISTRY_HOST',
 }
 
 AUTH_LOC_VAR = 'PACKTIVITY_AUTH_LOCATION'
@@ -28,13 +29,14 @@ def setup():
     username = click.prompt('Enter your username to authenticate as {}'.format(expt), hide_input = False, err = True)
     password = click.prompt('Enter your password for {} (VO: {})'.format(username,expt), hide_input = True, err = True)
     token    = click.prompt('Your GitLab token (optional, to access private workflows)'.format(username,expt), hide_input = True, err = True, default = '<none>')
-
+    registry = 'gitlab-registry.cern.ch'
 
 
 
     click.secho("export {}='{}'".format(envvar['auth_user'],username))
     click.secho("export {}='{}'".format(envvar['auth_pass'],password))
     click.secho("export {}='{}'".format(envvar['spec_load'],token))
+    click.secho("export {}='{}'".format(envvar['registry_host'],registry))
     click.secho("export {}='{}'".format(envvar['registry_user'],username))
     click.secho("export {}='{}'".format(envvar['registry_pass'],token))
     click.secho('You password is stored in the environment variables {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.'.format(','.join(envvar.values())), err = True)
@@ -48,7 +50,7 @@ def write(basedir):
     krbfile = os.path.join(basedir,'getkrb.sh')
     with open(krbfile,'w') as f:
         f.write("echo '{}'|kinit {}@CERN.CH".format(
-            os.environ[envvar['auth_user']],os.environ[envvar['auth_pass']]
+            os.environ[envvar['auth_pass']],os.environ[envvar['auth_user']]
             )
         )
     os.chmod(krbfile, 0o755)

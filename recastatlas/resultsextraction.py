@@ -3,7 +3,9 @@ import yaml
 
 def get_file(filename, backend, load_yaml = False):
     if backend == 'local':
-        return yaml.load(open(filename))
+        return yaml.safe_load(open(filename))
+    if backend == 'docker':
+        return yaml.safe_load(open(filename))
     elif backend == 'kubernetes':
         from kubernetes import config as k8sconfig 
         from kubernetes import client as k8sclient  
@@ -12,7 +14,7 @@ def get_file(filename, backend, load_yaml = False):
         contents = r.read().decode('ascii')
 
         if load_yaml:
-            return yaml.load(contents)
+            return yaml.safe_load(contents)
         return contents
 
 def extract_results(resultspec, dataarg, backend):
