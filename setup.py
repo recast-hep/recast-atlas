@@ -16,6 +16,10 @@ setup(
     'yadage-schemas==0.10.6',
   ],
   extras_require =  {
+    'develop': {
+      'pytest',
+      'pyflakes'
+    }
     'local': [
       'adage==0.9.0',
       'yadage==0.19.9',
