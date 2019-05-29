@@ -1,17 +1,19 @@
 import click
 import sys
 import os
+import shutil
 
 envvar = {
  'auth_user': 'RECAST_AUTH_USERNAME',
  'auth_pass': 'RECAST_AUTH_PASSWORD',
  'spec_load': 'YADAGE_SCHEMA_LOAD_TOKEN',
+ 'init_load': 'YADAGE_INIT_TOKEN',
  'registry_user': 'RECAST_REGISTRY_USERNAME',
  'registry_pass': 'RECAST_REGISTRY_PASSWORD',
  'registry_host': 'RECAST_REGISTRY_HOST',
+ 'auth_location': 'PACKTIVITY_AUTH_LOCATION'
 }
 
-AUTH_LOC_VAR = 'PACKTIVITY_AUTH_LOCATION'
 
 
 @click.group(help = 'Authentication Commands (to gain access to internal data)')
@@ -36,6 +38,7 @@ def setup():
     click.secho("export {}='{}'".format(envvar['auth_user'],username))
     click.secho("export {}='{}'".format(envvar['auth_pass'],password))
     click.secho("export {}='{}'".format(envvar['spec_load'],token))
+    click.secho("export {}='{}'".format(envvar['init_load'],token))
     click.secho("export {}='{}'".format(envvar['registry_host'],registry))
     click.secho("export {}='{}'".format(envvar['registry_user'],username))
     click.secho("export {}='{}'".format(envvar['registry_pass'],token))
@@ -54,7 +57,7 @@ def write(basedir):
             )
         )
     os.chmod(krbfile, 0o755)
-    click.secho('export {}={}'.format(AUTH_LOC_VAR,os.path.abspath(basedir)))
+    click.secho('export {}={}'.format(envvar['auth_location'],os.path.abspath(basedir)))
 
 
 
@@ -65,8 +68,14 @@ def destroy():
         raise click.Abort()
     for v in envvar.values():
         click.secho('unset {}'.format(v))
+    auth_loc = os.environ.get(envvar['auth_location'])
+    if os.path.exists(auth_loc) and os.path.isdir(auth_loc):
+        if os.path.exists(os.path.join(auth_loc,'getkrb.sh')):
+            shutil.rmtree(auth_loc)
+    
+
 
 @auth.command()
 @click.argument('location')
 def use(location):
-    click.secho('export {}={}'.format(AUTH_LOC_VAR,os.path.abspath(location)))
+    click.secho('export {}={}'.format(envvar['auth_location'],os.path.abspath(location)))

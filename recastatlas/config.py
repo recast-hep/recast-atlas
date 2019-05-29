@@ -23,7 +23,8 @@ class Config(object):
                     'pass': os.environ.get('RECAST_REGISTRY_PASSWORD'),
                     'host': os.environ.get('RECAST_REGISTRY_HOST')
                 },
-                'private_token': os.environ.get('YADAGE_SCHEMA_LOAD_TOKEN'),
+                'schema_load_token': os.environ.get('YADAGE_SCHEMA_LOAD_TOKEN'),
+                'init_token': os.environ.get('YADAGE_SCHEMA_LOAD_TOKEN'),
                 'auth_location': os.environ.get('PACKTIVITY_AUTH_LOCATION')
             },
             'kubernetes': {

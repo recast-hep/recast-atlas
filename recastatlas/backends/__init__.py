@@ -38,7 +38,7 @@ def run_sync(name, spec, backend):
             '-w',cwd,
             '-v','/var/run/docker.sock:/var/run/docker.sock',
             '-e','PACKTIVITY_AUTH_LOCATION={}'.format(config.backends[backend]['auth_location']),
-            '-e','YADAGE_SCHEMA_LOAD_TOKEN={}'.format(config.backends[backend]['private_token']),
+            '-e','YADAGE_SCHEMA_LOAD_TOKEN={}'.format(config.backends[backend]['schema_load_token']),
             '-e','YADAGE_INIT_TOKEN={}'.format(config.backends[backend]['private_token']),
             image
         ]
