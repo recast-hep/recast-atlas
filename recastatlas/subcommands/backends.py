@@ -1,5 +1,4 @@
 import click
-import yaml
 from ..config import config
 from ..backends import check_backend
 

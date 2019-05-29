@@ -17,6 +17,12 @@ jobs:
   include:
     - stage: kubernetes
       install:
+      - pip install -U --process-dependency-links -e .
+      script:
+      - recast catalogue ls
+      - recast run examples/rome --backend docker
+    - stage: kubernetes
+      install:
       - sudo apt-get install golang-1.10-go
       - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
       - echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
@@ -29,3 +35,4 @@ jobs:
       - pip install -U --process-dependency-links -e .
       script:
       - kind create cluster
+      - recast catalogue ls

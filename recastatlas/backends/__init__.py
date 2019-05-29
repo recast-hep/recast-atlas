@@ -124,6 +124,7 @@ def check_backend(backend):
     if backend == 'local':
         try:
             import yadage
+            assert yadage
             rc = subprocess.check_call(['docker','info'], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
             return rc == 0
         except:

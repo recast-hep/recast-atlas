@@ -17,6 +17,7 @@ setup(
   ],
   extras_require =  {
     'local': [
+      'adage==0.9.0',
       'yadage==0.19.9',
       'packtivity==0.14.13'
     ],

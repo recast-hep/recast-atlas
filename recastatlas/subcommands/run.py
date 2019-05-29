@@ -1,6 +1,4 @@
-import os
 import click
-import tempfile
 import logging
 import yaml
 import uuid
@@ -74,7 +72,8 @@ def submit(name,inputdata,example, infofile):
     spec = make_spec(instance_id,data,inputs)
 
     backend = 'kubernetes'
-    rc = run_async(instance_id, spec, backend = backend)
+    run_async(instance_id, spec, backend = backend)
+    
     click.secho("{} submitted".format(str(instance_id)))
     if infofile:
         with open(infofile,'w') as info:
