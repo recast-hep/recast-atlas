@@ -22,19 +22,53 @@ def auth():
 
 
 @auth.command()
-def setup():
+@click.option('-a','--answer', multiple = True)
+def setup(answer):
     expt = 'ATLAS'
     if sys.stdout.isatty():
         click.secho('Sorry, we will not print your password to stdout. Use `eval $(recast auth setup)` to store your credentials in env variables', fg = 'red')
         raise click.Abort()
 
-    username = click.prompt('Enter your username to authenticate as {}'.format(expt), hide_input = False, err = True)
-    password = click.prompt('Enter your password for {} (VO: {})'.format(username,expt), hide_input = True, err = True)
-    token    = click.prompt('Your GitLab token (optional, to access private workflows)'.format(username,expt), hide_input = True, err = True, default = '<none>')
-    registry = 'gitlab-registry.cern.ch'
+    questions = [
+        ('username', {
+            'str': 'Enter your username to authenticate as {}'.format(expt),
+            'default': 'none'
+        }),
+        ('password', {
+            'str': 'Enter your password (VO: {})'.format(expt),
+            'hide': True,
+            'default': 'none'
+        }),
+        ('token', {
+            'str': 'Your GitLab token (optional, to access private workflows and images)',
+            'hide': True,
+            'default': 'none'
+        }),
+        ('registry', {
+            'str': 'Your Docker image Registry (optional)',
+            'default': 'gitlab-registry.cern.ch'
+        })
+    ]
 
-
-
+    answers = {}
+    for i,(k,q) in enumerate(questions):
+        if len(answer) > i:
+            a = answer[i]
+            if a == 'default':
+                a = q['default']
+        else:
+            a =  click.prompt(
+                q['str'],
+                hide_input = q.get('hide',False),
+                err = q.get('err', True),
+                default = q.get('default','none'
+            ))
+        answers[k] = a
+    username = answers['username']
+    password = answers['password']
+    token    = answers['token']
+    registry = answers['registry']
+    
     click.secho("export {}='{}'".format(envvar['auth_user'],username))
     click.secho("export {}='{}'".format(envvar['auth_pass'],password))
     click.secho("export {}='{}'".format(envvar['spec_load'],token))

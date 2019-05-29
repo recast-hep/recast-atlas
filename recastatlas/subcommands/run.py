@@ -46,6 +46,10 @@ def run(name,inputdata,example,backend):
 
     log.info('RECAST run finished.')
 
+    if not 'results' in data:
+        log.info('No result file specified in config. Check out workdir manually')
+        return
+
     result = extract_results(data['results'], spec['dataarg'], backend = backend)
     formatted_result = yaml.safe_dump(result, default_flow_style=False)
     click.secho('RECAST result:\n--------------\n{}'.format(formatted_result))
@@ -139,6 +143,9 @@ def retrieve(infofile, name,instance, show_url, tunnel, format):
         ))
         return
     data   = config.catalogue[name]
+    if not 'results' in data:
+        log.info('No result file specified in config. Check out workdir manually')
+        return
     result = extract_results(data['results'], instance, backend = backend)
     if not format:
         click.echo(json.dumps(result))

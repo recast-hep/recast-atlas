@@ -36,12 +36,17 @@ def run_sync(name, spec, backend):
             '-i',
             '-v','{}:{}'.format(cwd,cwd),
             '-w',cwd,
-            '-v','/var/run/docker.sock:/var/run/docker.sock',
-            '-e','PACKTIVITY_AUTH_LOCATION={}'.format(config.backends[backend]['auth_location']),
-            '-e','YADAGE_SCHEMA_LOAD_TOKEN={}'.format(config.backends[backend]['schema_load_token']),
-            '-e','YADAGE_INIT_TOKEN={}'.format(config.backends[backend]['private_token']),
-            image
+            '-v','/var/run/docker.sock:/var/run/docker.sock'
         ]
+        if 'auth_location' in config.backends[backend]:
+            command += ['-e','PACKTIVITY_AUTH_LOCATION={}'.format(config.backends[backend]['auth_location'])]
+        if 'schema_load_token' in config.backends[backend]:
+            command += ['-e','YADAGE_SCHEMA_LOAD_TOKEN={}'.format(config.backends[backend]['schema_load_token'])]
+        if 'private_token' in config.backends[backend]:
+            command += ['-e','YADAGE_INIT_TOKEN={}'.format(config.backends[backend]['private_token'])]
+
+        command += [image]
+
         dockerconfig = {}
         if config.backends[backend]['reg']['host']:
             dockerconfig = {

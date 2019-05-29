@@ -1,10 +1,19 @@
 import click
 import yaml
+import os
 from ..config import config
 
 @click.group(help = 'The RECAST Analysis Catalogue')
 def catalogue():
     pass
+
+@catalogue.command()
+@click.argument('path')
+def add(path):
+    if os.path.exists(path) and os.path.isdir(path):
+        click.secho('export RECAST_ATLAS_CATALOGUE=$RECAST_ATLAS_CATALOGUE:{}'.format(path))
+    else:
+        raise click.Abort('path {} does not exist or is not a directory'.format(path))
 
 @catalogue.command()
 def ls():
