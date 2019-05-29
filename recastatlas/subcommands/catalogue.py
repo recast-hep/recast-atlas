@@ -1,17 +1,51 @@
 import click
 import yaml
 import os
+import shutil
+import string
+import pkg_resources
+
 from ..config import config
+from ..testing import validate_entry
 
 @click.group(help = 'The RECAST Analysis Catalogue')
 def catalogue():
     pass
 
 @catalogue.command()
+@click.argument('name')
+def check(name):
+    data = config.catalogue[name]
+    assert data
+    valid = validate_entry(data)
+    if not valid:
+        click.secho('Sadly something is wrong :(')
+    else:
+        click.secho('Nice job! Everything looks good.', fg = 'green')
+
+@catalogue.command()
+@click.argument('name')
+@click.argument('path')
+def create(name,path):
+    template_path = pkg_resources.resource_filename('recastatlas','data/templates/helloworld')
+    shutil.copytree(template_path, path)
+    recast_file = os.path.join(path,'recast.yml')
+    data = string.Template(open(recast_file).read()).safe_substitute(name = name)
+    with open(recast_file,'w') as f:
+        f.write(data)
+    click.secho('New skeleton created at {path}\nRun $(recast catalogue add {path}) to add to the catlogue'.format(path = path))
+
+
+@catalogue.command()
 @click.argument('path')
 def add(path):
     if os.path.exists(path) and os.path.isdir(path):
-        click.secho('export RECAST_ATLAS_CATALOGUE=$RECAST_ATLAS_CATALOGUE:{}'.format(path))
+        paths = []
+        existing = os.environ.get('RECAST_ATLAS_CATALOGUE')
+        if existing:
+            paths.append(existing)
+        paths.append(path)
+        click.secho('export RECAST_ATLAS_CATALOGUE=' + ':'.join(paths))
     else:
         raise click.Abort('path {} does not exist or is not a directory'.format(path))
 

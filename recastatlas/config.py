@@ -50,6 +50,8 @@ class Config(object):
             if not validate_catalogue_entry(d):
                 continue
             name = d.pop('name')
+            if not 'toplevel' in d['spec']:
+                d['spec']['toplevel'] = os.path.realpath(os.path.join(os.path.dirname(f),'specs'))
             cfg[name] =  d
         return cfg
 
