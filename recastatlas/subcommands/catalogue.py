@@ -1,7 +1,6 @@
 import click
 import yaml
 import os
-import shutil
 from distutils.dir_util import copy_tree
 import string
 import pkg_resources
