@@ -18,6 +18,7 @@ jobs:
       script:
       - pyflakes recastatlas
     - stage: examplerun
+      language: python
       install:
       - pip install -U --process-dependency-links -e .
       script:
