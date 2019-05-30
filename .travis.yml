@@ -43,20 +43,20 @@ jobs:
       - docker build -t recast/recastatlas:$TRAVIS_BRANCH
       script:
       - echo hello
-    # - stage: deploy
-    #   install:
-    #     - echo none
-    #   script:
-    #     - echo none
-    #   deploy:
-    #     on:
-    #       tags: true
-    #       branch: master    
-    #     provider: pypi
-    #     username:
-    #       secure: "MU+TNQ5FeEWWUYHf9/7ARAS4iUQUSIuGG/qROOamc5/xXZxJjSBMN++hN4oJjdNXKOn99X3Q8Zkh+qralMm+O9lAyod264z2sP+OHn/lVE1dziMt8TdlQPr9VSPHH+oZVKZCGRgVdS38xbgrYjN1NGtrld0JBuqoRvGUVHlxkwm9YD2cDLr5cGn2mD6KFTsVWuHTH4FkdWBqOT672Px9pn4EAWiotW9aWX0/8zf+rVb2fpfUDeqIjmTuTJKAKalFUoxQhyr5st9cceqcd83E35uQDhnsdLDnusgHohRxIbF3qFlfr+vUmtJ20/ac2GDy3yk3K8GtFp/YuEfWwyEp2lXAlmPtSN6lekH5ekalPkAFwdfjJVnzNsMgla2JDJqy/FhBy0yXgwZBDnk8CEDoS0cJxgNPPJ1sGwtSOZWP+8e2qTFDXrfb5ESBCgYxFf6m9eL0O7u4SK1UkvelHbf4z7EHuqAvJMz5Ep1Z9RQQUqtn/UpRrCR9ehBoW0RiDUYc7bDbudPIbPuek/TZO4wMRX1y+2xfVld+/M5kgmBvZFi2LJOp7Y3xZMB9oujoyiBt5Qcen7DlfutmYfAzgFvIOQfO1U5A2GMwFwp8+yKH/T/1/94zcy4E4mEI+plBOpWFtazMh1RJJVcx8sESJ3Q/enyCHApzCLaliubj3/MvXss="
-    #     password:
-    #       secure: "jmL78lvzZKkDvGZ5n6acIpNJ4+BbGHKxwaEstswlf3ThFmZIk08NQb5jaaOqB/+U7yeIU7JzEXZwPA3TMnvZZAG7vg0qc+xN5bsGrjmgM2IoVa1jWriAOObMkU9gXecssof+eBrYuGG+///mi3gEQy1TqBJwp1DPFbPWDwN3RVm79A/HUIphpIpRc1hsr/X+u/7DHRRwX3gMnyrmMf2R+43+zKClEZDW5FYkcdSlE5+1xVYR9bFO7bI7mJGUZWvo6HVs7IgHMrFxs8xjt5X4GZKElZm2k0F0kq5g9wSkDXdu5a8pKKAQ7gxjOsOJiCj/V/sEEQmTydjf7r6n2xO+Q3plh7SqV8BNAkZPxAREB6t8YGlZgwZbMbldPHoy4Xnj+yravvBV5ITd62nULxAe3Iaq/CqiXrRt9mqyJb28Xx2qZCTJpD7nhfk5boorw0nDeV9tG8f9N4V/UBQm9K/fjfsCUqYzv/GCdIZZyK2DayZMvDUx8UwKzcuFPOd4orGlXOYXP5gNhnTqRSOxKxKG6XIsoF/7A7A48Z81vhDkj+T4GqGaOgPX2cQll2old83tOdlfM0A3zrQ1c4c6SKLDxSKolvgkGkGnD9RW5Klv4rhyo5fiYsbDoINIPil1jBbXcaBbmqZC91ejVebVm+45yR7wqpVBa1nLU2Winyx5/d8="
+    - stage: deploy
+      install:
+        - echo none
+      script:
+        - echo none
+      deploy:
+        on:
+          tags: true
+          branch: master    
+        provider: pypi
+        username:
+          secure: "MU+TNQ5FeEWWUYHf9/7ARAS4iUQUSIuGG/qROOamc5/xXZxJjSBMN++hN4oJjdNXKOn99X3Q8Zkh+qralMm+O9lAyod264z2sP+OHn/lVE1dziMt8TdlQPr9VSPHH+oZVKZCGRgVdS38xbgrYjN1NGtrld0JBuqoRvGUVHlxkwm9YD2cDLr5cGn2mD6KFTsVWuHTH4FkdWBqOT672Px9pn4EAWiotW9aWX0/8zf+rVb2fpfUDeqIjmTuTJKAKalFUoxQhyr5st9cceqcd83E35uQDhnsdLDnusgHohRxIbF3qFlfr+vUmtJ20/ac2GDy3yk3K8GtFp/YuEfWwyEp2lXAlmPtSN6lekH5ekalPkAFwdfjJVnzNsMgla2JDJqy/FhBy0yXgwZBDnk8CEDoS0cJxgNPPJ1sGwtSOZWP+8e2qTFDXrfb5ESBCgYxFf6m9eL0O7u4SK1UkvelHbf4z7EHuqAvJMz5Ep1Z9RQQUqtn/UpRrCR9ehBoW0RiDUYc7bDbudPIbPuek/TZO4wMRX1y+2xfVld+/M5kgmBvZFi2LJOp7Y3xZMB9oujoyiBt5Qcen7DlfutmYfAzgFvIOQfO1U5A2GMwFwp8+yKH/T/1/94zcy4E4mEI+plBOpWFtazMh1RJJVcx8sESJ3Q/enyCHApzCLaliubj3/MvXss="
+        password:
+          secure: "jmL78lvzZKkDvGZ5n6acIpNJ4+BbGHKxwaEstswlf3ThFmZIk08NQb5jaaOqB/+U7yeIU7JzEXZwPA3TMnvZZAG7vg0qc+xN5bsGrjmgM2IoVa1jWriAOObMkU9gXecssof+eBrYuGG+///mi3gEQy1TqBJwp1DPFbPWDwN3RVm79A/HUIphpIpRc1hsr/X+u/7DHRRwX3gMnyrmMf2R+43+zKClEZDW5FYkcdSlE5+1xVYR9bFO7bI7mJGUZWvo6HVs7IgHMrFxs8xjt5X4GZKElZm2k0F0kq5g9wSkDXdu5a8pKKAQ7gxjOsOJiCj/V/sEEQmTydjf7r6n2xO+Q3plh7SqV8BNAkZPxAREB6t8YGlZgwZbMbldPHoy4Xnj+yravvBV5ITd62nULxAe3Iaq/CqiXrRt9mqyJb28Xx2qZCTJpD7nhfk5boorw0nDeV9tG8f9N4V/UBQm9K/fjfsCUqYzv/GCdIZZyK2DayZMvDUx8UwKzcuFPOd4orGlXOYXP5gNhnTqRSOxKxKG6XIsoF/7A7A48Z81vhDkj+T4GqGaOgPX2cQll2old83tOdlfM0A3zrQ1c4c6SKLDxSKolvgkGkGnD9RW5Klv4rhyo5fiYsbDoINIPil1jBbXcaBbmqZC91ejVebVm+45yR7wqpVBa1nLU2Winyx5/d8="
     # - stage: deploy
     #     install:
     #       - echo none
