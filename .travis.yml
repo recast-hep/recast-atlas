@@ -38,11 +38,6 @@ jobs:
       language: go
       script:
       - echo hello world
-    - stage: docker
-      install:
-      - docker build -t recast/recastatlas:$TRAVIS_BRANCH
-      script:
-      - echo hello
     - stage: deploy
       install:
         - echo none
@@ -71,9 +66,9 @@ jobs:
           secure: "jmL78lvzZKkDvGZ5n6acIpNJ4+BbGHKxwaEstswlf3ThFmZIk08NQb5jaaOqB/+U7yeIU7JzEXZwPA3TMnvZZAG7vg0qc+xN5bsGrjmgM2IoVa1jWriAOObMkU9gXecssof+eBrYuGG+///mi3gEQy1TqBJwp1DPFbPWDwN3RVm79A/HUIphpIpRc1hsr/X+u/7DHRRwX3gMnyrmMf2R+43+zKClEZDW5FYkcdSlE5+1xVYR9bFO7bI7mJGUZWvo6HVs7IgHMrFxs8xjt5X4GZKElZm2k0F0kq5g9wSkDXdu5a8pKKAQ7gxjOsOJiCj/V/sEEQmTydjf7r6n2xO+Q3plh7SqV8BNAkZPxAREB6t8YGlZgwZbMbldPHoy4Xnj+yravvBV5ITd62nULxAe3Iaq/CqiXrRt9mqyJb28Xx2qZCTJpD7nhfk5boorw0nDeV9tG8f9N4V/UBQm9K/fjfsCUqYzv/GCdIZZyK2DayZMvDUx8UwKzcuFPOd4orGlXOYXP5gNhnTqRSOxKxKG6XIsoF/7A7A48Z81vhDkj+T4GqGaOgPX2cQll2old83tOdlfM0A3zrQ1c4c6SKLDxSKolvgkGkGnD9RW5Klv4rhyo5fiYsbDoINIPil1jBbXcaBbmqZC91ejVebVm+45yR7wqpVBa1nLU2Winyx5/d8="
     - stage: deploy
       install:
-        - echo none
+      - docker build -t recast/recastatlas:$TRAVIS_BRANCH
       script:
-        - echo none
+      - echo none
       deploy:
         # on:
         #   tags: true
