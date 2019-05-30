@@ -45,7 +45,6 @@ setup(
       'adage==0.9.0',
       'yadage[viz]==0.19.9',
       'packtivity==0.14.19'
-      '
     ],
     'kubernetes': [
       'kubernetes==9.0.0'
