@@ -65,6 +65,9 @@ jobs:
       deploy:
         on:
           all_branches: true
+        env:
+          # Signal that setup.py should use use_scm_version with local_scheme
+          TESTPYPI_UPLOAD: true
         provider: pypi
         server: https://test.pypi.org/legacy/
         distributions: "sdist"
