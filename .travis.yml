@@ -80,7 +80,8 @@ jobs:
       script:
       - echo none
       deploy:
-        # on:
+        on:
+          all_branches: true
         #   tags: true
         #   branch: master            
         provider: script
