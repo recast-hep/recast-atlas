@@ -66,7 +66,7 @@ jobs:
         - echo none
       deploy:
         on:
-          tags: false
+          all_branches: true
         provider: pypi
         server: https://test.pypi.org/legacy/
         username:
