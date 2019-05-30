@@ -55,7 +55,7 @@ def run(name,inputdata,example,backend, tag,format_result):
         click.echo(json.dumps(result))
     else:
         formatted_result = yaml.safe_dump(result, default_flow_style=False)
-        click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance,formatted_result))
+        click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance_id,formatted_result))
 
 @click.command(help = 'Submit a RECAST Workflow asynchronously')
 @click.argument('name')
