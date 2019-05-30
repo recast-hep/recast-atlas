@@ -77,7 +77,7 @@ jobs:
     - stage: deploy
       name: "Docker"
       install:
-      - docker build -t recast/recastatlas:$TRAVIS_BRANCH
+      - docker build -t recast/recastatlas:$TRAVIS_BRANCH $PWD
       script:
       - echo none
       deploy:
