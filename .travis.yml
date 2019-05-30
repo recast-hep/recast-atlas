@@ -22,6 +22,7 @@ jobs:
       install:
       - pip install -e .[local]
       script:
+      - sudo apt-get install -y imagemagick
       - recast catalogue ls
       - recast run examples/rome
     - stage: examplerun
