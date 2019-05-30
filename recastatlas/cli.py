@@ -5,6 +5,7 @@ from .subcommands.run import run, submit, retrieve, status
 from .subcommands.catalogue import catalogue
 from .subcommands.auth import auth
 from .subcommands.backends import backends  
+from .subcommands.ci import ci  
 
 LOGFORMAT = '%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s'
 
@@ -21,7 +22,7 @@ recastatlas.add_command(status,'status')
 recastatlas.add_command(catalogue,'catalogue')
 recastatlas.add_command(auth,'auth')
 recastatlas.add_command(backends,'backends')
-
+recastatlas.add_command(ci,'ci')
 
 if __name__ == '__main__':
     recastatlas()

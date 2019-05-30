@@ -12,5 +12,7 @@ RUN curl https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-c
     rm -rf docker
 COPY . /code
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
+ENV PACKTIVITY_CVMFS_LOCATION /cvmfsmounts/cvmfs
+ENV PACKTIVITY_CVMFS_PROPAGATION rslave
 WORKDIR /work
 
