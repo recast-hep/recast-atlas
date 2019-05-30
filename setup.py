@@ -39,7 +39,7 @@ setup(
     'develop': {
       'pytest',
       'pyflakes',
-      'black'
+      # 'black'
     },
     'local': [
       'pydotplus==2.0.2',
