@@ -1,0 +1,23 @@
+name: atlas/atlas-conf-2018-041
+
+metadata:
+  short_description: ATLAS MBJ
+
+spec:
+  toplevel: gitlab-cern:recast-atlas/susy/ATLAS-CONF-2018-041:specs
+  workflow: workflow.yml
+
+example_inputs:
+  default:
+    dataopts:
+      archivematch: '*/examples/inputdata/'
+      inputarchive: https://gitlab.cern.ch/api/v4/projects/recast-atlas%2Fsusy%2FATLAS-CONF-2018-041/repository/archive.zip?sha=master
+    initdata:
+      databkgcache: cache.root
+      did: 375893
+      inputdata_xrootd: root://eosuser.cern.ch//eos/project/r/recast/atlas/ATLAS-CONF-2018-041/testdata/signal_evsel_inputs
+      mc16a_pattern: r9364
+      mc16d_pattern: r10201
+      weightfiles:
+      - mc16a_weights.json
+      - mc16d_weights.json

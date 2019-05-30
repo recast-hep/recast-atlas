@@ -1,9 +1,11 @@
 import click
 
+
 @click.group()
-@click.argument('spec')
+@click.argument("spec")
 def software():
     pass
+
 
 @software.command()
 def add():

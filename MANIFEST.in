@@ -1,1 +1,1 @@
-recursive-include recastatlas/data *.yml
+recursive-include recastatlas/data *
