@@ -26,7 +26,8 @@ def make_spec(name,data,inputs):
 @click.option('--example', default = 'default')
 @click.option('--backend', type = click.Choice(['local','docker']), default = 'local')
 @click.option('--tag', default = None)
-def run(name,inputdata,example,backend, tag):
+@click.option('--format-result/--raw', default = True)
+def run(name,inputdata,example,backend, tag,format_result):
     data      = config.catalogue[name]
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
@@ -50,8 +51,11 @@ def run(name,inputdata,example,backend, tag):
         return
 
     result = extract_results(data['results'], spec['dataarg'], backend = backend)
-    formatted_result = yaml.safe_dump(result, default_flow_style=False)
-    click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance_id,formatted_result))
+    if not format_result:
+        click.echo(json.dumps(result))
+    else:
+        formatted_result = yaml.safe_dump(result, default_flow_style=False)
+        click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance,formatted_result))
 
 @click.command(help = 'Submit a RECAST Workflow asynchronously')
 @click.argument('name')
@@ -115,8 +119,8 @@ def status(infofile, name,instance):
 @click.option('--infofile', default = None)
 @click.option('--show-url/--no-url', default = False)
 @click.option('--tunnel/--no-tunnel', default = False)
-@click.option('--format/--raw', default = True)
-def retrieve(infofile, name,instance, show_url, tunnel, format):
+@click.option('--format-result/--raw', default = True)
+def retrieve(infofile, name,instance, show_url, tunnel, format_result):
     name, instance = get_name_instance(name, instance, infofile)
     backend = 'kubernetes'
     if show_url:
@@ -148,7 +152,7 @@ def retrieve(infofile, name,instance, show_url, tunnel, format):
         log.info('No result file specified in config. Check out workdir for {} manually'.format(name))
         return
     result = extract_results(data['results'], instance, backend = backend)
-    if not format:
+    if not format_result:
         click.echo(json.dumps(result))
     else:
         formatted_result = yaml.safe_dump(result, default_flow_style=False)

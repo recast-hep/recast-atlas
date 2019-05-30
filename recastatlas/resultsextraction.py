@@ -3,8 +3,8 @@ import yaml
 
 def get_file(filename, backend, load_yaml = False):
     if backend == 'local':
+        contents = open(filename).read()
         if load_yaml:
-            contents = open(filename).read()
             return yaml.safe_load(contents)
         return contents
     if backend == 'docker':
