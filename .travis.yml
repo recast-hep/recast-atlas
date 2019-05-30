@@ -67,7 +67,6 @@ jobs:
       deploy:
         on:
           tags: false
-          branch: master    
         provider: pypi
         server: https://test.pypi.org/legacy/
         username:
