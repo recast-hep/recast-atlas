@@ -38,7 +38,8 @@ setup(
   extras_require =  {
     'develop': {
       'pytest',
-      'pyflakes'
+      'pyflakes',
+      'black'
     },
     'local': [
       'pydotplus==2.0.2',

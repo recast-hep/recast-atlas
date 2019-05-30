@@ -7,154 +7,179 @@ import json
 from ..config import config
 from ..backends import run_sync, run_async, check_async
 from ..resultsextraction import extract_results
-log = logging.getLogger(__name__)    
 
-def make_spec(name,data,inputs):
+log = logging.getLogger(__name__)
+
+
+def make_spec(name, data, inputs):
     spec = {
-        'dataarg': name,
-        'dataopts': inputs.get('dataopts',{}),
-        'initdata': inputs['initdata'],
-        'workflow': data['spec']['workflow'],
-        'toplevel': data['spec']['toplevel'],
-        'visualize': True
+        "dataarg": name,
+        "dataopts": inputs.get("dataopts", {}),
+        "initdata": inputs["initdata"],
+        "workflow": data["spec"]["workflow"],
+        "toplevel": data["spec"]["toplevel"],
+        "visualize": True,
     }
     return spec
 
-@click.command(help = 'Run a RECAST Workflow synchronously')
-@click.argument('name')
-@click.argument('inputdata', default = '')
-@click.option('--example', default = 'default')
-@click.option('--backend', type = click.Choice(['local','docker']), default = 'local')
-@click.option('--tag', default = None)
-@click.option('--format-result/--raw', default = True)
-def run(name,inputdata,example,backend, tag,format_result):
-    data      = config.catalogue[name]
+
+@click.command(help="Run a RECAST Workflow synchronously")
+@click.argument("name")
+@click.argument("inputdata", default="")
+@click.option("--example", default="default")
+@click.option("--backend", type=click.Choice(["local", "docker"]), default="local")
+@click.option("--tag", default=None)
+@click.option("--format-result/--raw", default=True)
+def run(name, inputdata, example, backend, tag, format_result):
+    data = config.catalogue[name]
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
     else:
         try:
-            inputs  = data['example_inputs'][example]
+            inputs = data["example_inputs"][example]
         except:
-            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data.get('example_inputs',{}).keys())))
+            raise click.ClickException(
+                "Example '{}' not found. Choose from {}".format(
+                    example, list(data.get("example_inputs", {}).keys())
+                )
+            )
 
+    instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
+    spec = make_spec(instance_id, data, inputs)
 
-    instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split('-')[0])
-    spec = make_spec(instance_id,data,inputs)
+    run_sync(name, spec, backend=backend)
 
+    log.info("RECAST run finished.")
 
-    run_sync(name, spec, backend = backend)
-
-    log.info('RECAST run finished.')
-
-    if not 'results' in data:
-        log.info('No result file specified in config. Check out workdir for {} manually'.format(instance_id))
+    if not "results" in data:
+        log.info(
+            "No result file specified in config. Check out workdir for {} manually".format(
+                instance_id
+            )
+        )
         return
 
-    result = extract_results(data['results'], spec['dataarg'], backend = backend)
+    result = extract_results(data["results"], spec["dataarg"], backend=backend)
     if not format_result:
         click.echo(json.dumps(result))
     else:
         formatted_result = yaml.safe_dump(result, default_flow_style=False)
-        click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance_id,formatted_result))
+        click.secho(
+            "\nRECAST result {} {}:\n--------------\n{}".format(
+                name, instance_id, formatted_result
+            )
+        )
 
-@click.command(help = 'Submit a RECAST Workflow asynchronously')
-@click.argument('name')
-@click.argument('inputdata', default = '')
-@click.option('--example', default = 'default')
-@click.option('--infofile', default = None)
-@click.option('--tag', default = None)
-def submit(name,inputdata,example, infofile, tag):
+
+@click.command(help="Submit a RECAST Workflow asynchronously")
+@click.argument("name")
+@click.argument("inputdata", default="")
+@click.option("--example", default="default")
+@click.option("--infofile", default=None)
+@click.option("--tag", default=None)
+def submit(name, inputdata, example, infofile, tag):
     analysis_id = name
-    data      = config.catalogue[analysis_id]
+    data = config.catalogue[analysis_id]
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
     else:
         try:
-            inputs  = data['example_inputs'][example]
+            inputs = data["example_inputs"][example]
         except:
-            raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data.get('example_inputs',{}).keys())))
+            raise click.ClickException(
+                "Example '{}' not found. Choose from {}".format(
+                    example, list(data.get("example_inputs", {}).keys())
+                )
+            )
 
-    instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split('-')[0])
-    spec = make_spec(instance_id,data,inputs)
+    instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
+    spec = make_spec(instance_id, data, inputs)
 
-    backend = 'kubernetes'
-    run_async(instance_id, spec, backend = backend)
-    
+    backend = "kubernetes"
+    run_async(instance_id, spec, backend=backend)
+
     click.secho("{} submitted".format(str(instance_id)))
     if infofile:
-        with open(infofile,'w') as info:
-            json.dump({
-                'analysis_id': analysis_id,
-                'instance_id': instance_id
-            },info)
+        with open(infofile, "w") as info:
+            json.dump({"analysis_id": analysis_id, "instance_id": instance_id}, info)
 
 
 def get_name_instance(name, instance, infofile):
     if infofile:
         d = json.load(open(infofile))
-        name = d['analysis_id']
-        instance = d['instance_id']
+        name = d["analysis_id"]
+        instance = d["instance_id"]
     else:
-        try: 
+        try:
             assert name
             assert instance
         except AssertionError:
-            click.secho('need to use either --infofile or --name and --instance', fg = 'red')
+            click.secho(
+                "need to use either --infofile or --name and --instance", fg="red"
+            )
             raise click.Abort()
     return name, instance
 
-@click.command(help = 'Get the Status of a asynchronous submission')
-@click.option('--name', default = None)
-@click.option('--instance', default = None)
-@click.option('--infofile', default = None)
-def status(infofile, name,instance):
-    name, instance = get_name_instance(name, instance, infofile)
-    backend = 'kubernetes'
-    status = check_async(instance, backend = backend)
-    click.secho('{}\t{}'.format(instance, status['status']))
 
-@click.command(help = 'Retrieve RECAST Results from asynchronous submissions')
-@click.option('--name', default = None)
-@click.option('--instance', default = None)
-@click.option('--infofile', default = None)
-@click.option('--show-url/--no-url', default = False)
-@click.option('--tunnel/--no-tunnel', default = False)
-@click.option('--format-result/--raw', default = True)
-def retrieve(infofile, name,instance, show_url, tunnel, format_result):
+@click.command(help="Get the Status of a asynchronous submission")
+@click.option("--name", default=None)
+@click.option("--instance", default=None)
+@click.option("--infofile", default=None)
+def status(infofile, name, instance):
     name, instance = get_name_instance(name, instance, infofile)
-    backend = 'kubernetes'
+    backend = "kubernetes"
+    status = check_async(instance, backend=backend)
+    click.secho("{}\t{}".format(instance, status["status"]))
+
+
+@click.command(help="Retrieve RECAST Results from asynchronous submissions")
+@click.option("--name", default=None)
+@click.option("--instance", default=None)
+@click.option("--infofile", default=None)
+@click.option("--show-url/--no-url", default=False)
+@click.option("--tunnel/--no-tunnel", default=False)
+@click.option("--format-result/--raw", default=True)
+def retrieve(infofile, name, instance, show_url, tunnel, format_result):
+    name, instance = get_name_instance(name, instance, infofile)
+    backend = "kubernetes"
     if show_url:
         from kubernetes import client as k8client
         from kubernetes import config as k8config
+
         k8config.load_kube_config()
         port = 30000
 
-        tunnel_host = 'lxplus.cern.ch'
+        tunnel_host = "lxplus.cern.ch"
 
-        host = '{}'.format(
-            k8client.CoreV1Api().list_node().to_dict()['items'][0]['metadata']['name']
+        host = "{}".format(
+            k8client.CoreV1Api().list_node().to_dict()["items"][0]["metadata"]["name"]
         )
 
         if tunnel:
-            ssh_cmd = 'ssh -fNL {}:{}:{} {}'.format(port,host,port, tunnel_host)
+            ssh_cmd = "ssh -fNL {}:{}:{} {}".format(port, host, port, tunnel_host)
             click.secho(ssh_cmd)
-            host = '127.0.0.1'
+            host = "127.0.0.1"
         else:
-            host = host + '.cern.ch'
-        click.secho('http://{host}:{port}/{name}'.format(
-            host = host,
-            port = port,
-            name = instance
-        ))
+            host = host + ".cern.ch"
+        click.secho(
+            "http://{host}:{port}/{name}".format(host=host, port=port, name=instance)
+        )
         return
-    data   = config.catalogue[name]
-    if not 'results' in data:
-        log.info('No result file specified in config. Check out workdir for {} manually'.format(name))
+    data = config.catalogue[name]
+    if not "results" in data:
+        log.info(
+            "No result file specified in config. Check out workdir for {} manually".format(
+                name
+            )
+        )
         return
-    result = extract_results(data['results'], instance, backend = backend)
+    result = extract_results(data["results"], instance, backend=backend)
     if not format_result:
         click.echo(json.dumps(result))
     else:
         formatted_result = yaml.safe_dump(result, default_flow_style=False)
-        click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance,formatted_result))
-
+        click.secho(
+            "\nRECAST result {} {}:\n--------------\n{}".format(
+                name, instance, formatted_result
+            )
+        )
