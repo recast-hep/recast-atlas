@@ -25,7 +25,8 @@ def make_spec(name,data,inputs):
 @click.argument('inputdata', default = '')
 @click.option('--example', default = 'default')
 @click.option('--backend', type = click.Choice(['local','docker']), default = 'local')
-def run(name,inputdata,example,backend):
+@click.option('--tag', default = None)
+def run(name,inputdata,example,backend, tag):
     data      = config.catalogue[name]
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
@@ -36,8 +37,8 @@ def run(name,inputdata,example,backend):
             raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data.get('example_inputs',{}).keys())))
 
 
-    instance = "recast-{}".format(str(uuid.uuid1()).split('-')[0])
-    spec = make_spec(instance,data,inputs)
+    instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split('-')[0])
+    spec = make_spec(instance_id,data,inputs)
 
 
     run_sync(name, spec, backend = backend)
@@ -45,19 +46,20 @@ def run(name,inputdata,example,backend):
     log.info('RECAST run finished.')
 
     if not 'results' in data:
-        log.info('No result file specified in config. Check out workdir for {} manually'.format(instance))
+        log.info('No result file specified in config. Check out workdir for {} manually'.format(instance_id))
         return
 
     result = extract_results(data['results'], spec['dataarg'], backend = backend)
     formatted_result = yaml.safe_dump(result, default_flow_style=False)
-    click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance,formatted_result))
+    click.secho('\nRECAST result {} {}:\n--------------\n{}'.format(name,instance_id,formatted_result))
 
 @click.command(help = 'Submit a RECAST Workflow asynchronously')
 @click.argument('name')
 @click.argument('inputdata', default = '')
 @click.option('--example', default = 'default')
 @click.option('--infofile', default = None)
-def submit(name,inputdata,example, infofile):
+@click.option('--tag', default = None)
+def submit(name,inputdata,example, infofile, tag):
     analysis_id = name
     data      = config.catalogue[analysis_id]
     if inputdata:
@@ -68,7 +70,7 @@ def submit(name,inputdata,example, infofile):
         except:
             raise click.ClickException("Example '{}' not found. Choose from {}".format(example, list(data.get('example_inputs',{}).keys())))
 
-    instance_id = "recast-{}".format(str(uuid.uuid1()).split('-')[0])
+    instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split('-')[0])
     spec = make_spec(instance_id,data,inputs)
 
     backend = 'kubernetes'
