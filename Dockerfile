@@ -1,6 +1,6 @@
 FROM alpine
 RUN  apk add py-pip automake autoconf libtool \
-             python-dev musl-dev libffi-dev \
+             python-dev musl-dev libffi-dev tree \
              python-dev musl-dev libffi-dev gcc \
              autoconf curl gcc ipset ipset-dev iptables iptables-dev libnfnetlink libnfnetlink-dev libnl3 libnl3-dev make musl-dev openssl openssl-dev \
              jq util-linux font-bitstream-type1 build-base graphviz-dev imagemagick graphviz

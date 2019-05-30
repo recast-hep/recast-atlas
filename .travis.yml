@@ -63,8 +63,8 @@ jobs:
         script:
           - echo none
         deploy:
-          on:
-            tags: true
-            branch: master            
+          # on:
+          #   tags: true
+          #   branch: master            
           provider: script
           script: ./deploy/deploy.sh
