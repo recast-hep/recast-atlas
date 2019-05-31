@@ -79,8 +79,8 @@ def run_sync(name, spec, backend):
                             "{}:{}".format(
                                 config.backends[backend]["reg"]["user"],
                                 config.backends[backend]["reg"]["pass"],
-                            )
-                        )
+                            ).encode('ascii')
+                        ).decode('ascii')
                     }
                 }
             }
