@@ -1,5 +1,9 @@
 import yadageschemas
+import logging
+import subprocess
+from .backends import run_sync_packtivity
 
+log = logging.getLogger(__name__)
 
 def validate_entry(data):
     toplevel = data["spec"]["toplevel"]
@@ -21,4 +25,13 @@ def validate_entry(data):
         return True
     except:
         pass
+    return False
+
+def run_test(name, testspec,backend):
+    log.info('running test {}'.format(name))
+    try:
+        run_sync_packtivity(name, testspec, backend = backend)
+        return True
+    except subprocess.CalledProcessError:
+        log.warning('test failed')        
     return False
