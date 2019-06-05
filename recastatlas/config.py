@@ -16,7 +16,7 @@ class Config(object):
             },
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
-                "image": os.environ.get("RECAST_IMAGE", "recast/recastatlas:v0.0.13"),
+                "image": os.environ.get("RECAST_IMAGE", "recast/recastatlas:v0.0.14"),
                 "reg": {
                     "user": os.environ.get("RECAST_REGISTRY_USERNAME"),
                     "pass": os.environ.get("RECAST_REGISTRY_PASSWORD"),
