@@ -29,11 +29,17 @@ def setup_docker():
         "/var/run/docker.sock:/var/run/docker.sock",
     ]
 
-    if 'cvmfs_location' in  config.backends[backend]:
+    if 'cvmfs' in  config.backends[backend]:
         command += [
             "-e",
             "PACKTIVITY_CVMFS_LOCATION={}".format(
-                config.backends[backend]["cvmfs_location"]
+                config.backends[backend]["cvmfs"]["location"]
+            ),
+        ]
+        command += [
+            "-e",
+            "PACKTIVITY_CVMFS_PROPAGATION={}".format(
+                config.backends[backend]["cvmfs"]["propagation"]
             ),
         ]
         
