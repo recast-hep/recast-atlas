@@ -32,6 +32,8 @@ jobs:
       install:
       - pip install -e .
       script:
+      - docker build -t recast/recastatlas .
+      - export RECAST_IMAGE=recast/recastatlas
       - recast catalogue ls
       - recast run examples/rome --backend docker
     - stage: examplerun
