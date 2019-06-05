@@ -10,6 +10,7 @@ from ..resultsextraction import extract_results
 
 log = logging.getLogger(__name__)
 
+
 def make_spec(name, data, inputs):
     spec = {
         "dataarg": name,
@@ -20,6 +21,7 @@ def make_spec(name, data, inputs):
         "visualize": True,
     }
     return spec
+
 
 @click.command(help="Run a RECAST Workflow synchronously")
 @click.argument("name")

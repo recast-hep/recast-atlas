@@ -16,7 +16,7 @@ class Config(object):
             },
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
-                "image": "yadage/yadage:v0.19.9",
+                "image": os.environ.get("RECAST_IMAGE", "yadage/yadage:v0.19.9"),
                 "reg": {
                     "user": os.environ.get("RECAST_REGISTRY_USERNAME"),
                     "pass": os.environ.get("RECAST_REGISTRY_PASSWORD"),

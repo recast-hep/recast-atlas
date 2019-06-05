@@ -11,8 +11,9 @@ from ..config import config
 
 log = logging.getLogger(__name__)
 
+
 def setup_docker():
-    backend = 'docker'
+    backend = "docker"
     cwd = os.getcwd()
     image = config.backends[backend]["image"]
     command = [
@@ -44,9 +45,7 @@ def setup_docker():
     if "private_token" in config.backends[backend]:
         command += [
             "-e",
-            "YADAGE_INIT_TOKEN={}".format(
-                config.backends[backend]["private_token"]
-            ),
+            "YADAGE_INIT_TOKEN={}".format(config.backends[backend]["private_token"]),
         ]
 
     command += [image]
@@ -60,23 +59,53 @@ def setup_docker():
                         "{}:{}".format(
                             config.backends[backend]["reg"]["user"],
                             config.backends[backend]["reg"]["pass"],
-                        ).encode('ascii')
-                    ).decode('ascii')
+                        ).encode("ascii")
+                    ).decode("ascii")
                 }
             }
         }
     return command, dockerconfig
 
-def run_sync_packtivity(name,spec,backend):
+
+def get_shell_packtivity(name, spec, backend):
     workname = name
-    if backend == 'local':
+    shellcmd = "packtivity-util shell {spec} -t {toplevel}  -w {workname} {readdirs}".format(
+        spec=spec["spec"],
+        toplevel=spec["toplevel"],
+        workname=workname,
+        readdirs=" ".join(
+            ["-r {}".format(os.path.realpath(d)) for d in spec.get("data", [])]
+        ),
+    )
+    if backend == "local":
+        return subprocess.check_output(shellcmd).decode("ascii")
+    if backend == "docker":
+        command, dockerconfig = setup_docker()
+        script = """\
+mkdir -p ~/.docker
+echo '{dockerconfig}' > ~/.docker/config.json 
+{command}
+        """.format(
+            dockerconfig=json.dumps(dockerconfig), command=shellcmd
+        )
+        command += ["sh", "-c", textwrap.dedent(script)]
+        return subprocess.check_output(command).decode("ascii")
+
+
+def run_sync_packtivity(name, spec, backend):
+    workname = name
+    if backend == "local":
         import packtivity
         from packtivity.statecontexts import LocalFSState
-        packspec = packtivity.load_packtivity(spec['spec'], toplevel = spec['toplevel'])
+
+        packspec = packtivity.load_packtivity(spec["spec"], toplevel=spec["toplevel"])
         p = packtivity.pack_object(packspec)
-        s = LocalFSState(readwrite = [workname], readonly = [os.path.realpath(d) for d in spec.get('data',[])])
+        s = LocalFSState(
+            readwrite=[workname],
+            readonly=[os.path.realpath(d) for d in spec.get("data", [])],
+        )
         s.ensure()
-        p(parameters=spec['parameters'], state = s)
+        p(parameters=spec["parameters"], state=s)
     if backend == "docker":
         command, dockerconfig = setup_docker()
         script = """\
@@ -87,11 +116,14 @@ EOF
 echo '{dockerconfig}' > ~/.docker/config.json 
 packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} -b foregroundasync {readdirs}
         """.format(
-            spec=spec['spec'], dockerconfig=json.dumps(dockerconfig),
-            workname = workname,
-            toplevel = spec['toplevel'],
-            pars = yaml.safe_dump(spec['parameters'], default_flow_style = False),
-            readdirs = ' '.join(['-r {}'.format(os.path.realpath(d)) for d in spec.get('data',[])])
+            spec=spec["spec"],
+            dockerconfig=json.dumps(dockerconfig),
+            workname=workname,
+            toplevel=spec["toplevel"],
+            pars=yaml.safe_dump(spec["parameters"], default_flow_style=False),
+            readdirs=" ".join(
+                ["-r {}".format(os.path.realpath(d)) for d in spec.get("data", [])]
+            ),
         )
         command += ["sh", "-c", textwrap.dedent(script)]
         subprocess.check_call(command)
@@ -118,7 +150,7 @@ def run_sync(name, spec, backend):
             exc.exit_code = 1
             raise exc
     elif backend == "docker":
-        command,dockerconfig = setup_docker()
+        command, dockerconfig = setup_docker()
 
         script = """\
         mkdir -p ~/.docker
@@ -152,6 +184,7 @@ def run_async(name, spec, backend):
             body=workflow,
         )
         return rc
+
 
 def check_async(name, backend):
     assert backend == "kubernetes"
