@@ -1,7 +1,10 @@
 import click
 import sys
 import os
+import re
 import shutil
+import yaml
+from ..backends import run_sync_packtivity, get_shell_packtivity
 
 envvar = {
     "auth_user": "RECAST_AUTH_USERNAME",
@@ -134,6 +137,81 @@ def destroy():
         if os.path.exists(os.path.join(auth_loc, "getkrb.sh")):
             shutil.rmtree(auth_loc)
 
+
+@auth.command()
+@click.option('--image',default = 'atlas/analysisbase')
+@click.argument("location",default = 'root://eosuser.cern.ch//eos/project/r/recast/atlas/testauth/testfile.txt')
+def check_access_xrootd(image,location):
+    
+    image = image.split(':',1)
+    if len(image)>1:
+        image,tag = image
+    else:
+        image = image[0]
+        tag = 'latest'
+    
+    if 'PACKTIVITY_AUTH_LOCATION' not in os.environ:
+        click.echo('Need to run `recast auth setup` and `recast auth write` or `recast auth use` first')
+        raise click.Abort()
+
+    server = re.search('root://.*.cern.ch/',location).group(0)
+    path = location.replace(server,'')
+
+    spec = '''
+process:
+    process_type: 'interpolated-script-cmd'
+    script: |
+        source /home/atlas/release_setup.sh
+        /recast_auth/getkrb.sh
+        klist
+        xrdfs {server} stat {path}
+publisher:
+    publisher_type: 'interpolated-pub'
+    publish: {{}}
+environment:
+    environment_type: 'docker-encapsulated'
+    image: {image}
+    imagetag: {tag}
+    resources:
+    - GRIDProxy
+    '''.format(
+        image = image,
+        tag = tag,
+        server = server,
+        path = path
+    )
+
+    open('testauth.yml','w').write(spec)
+
+
+    testingdir = 'recast-auth-testing'
+    click.secho('Running test job for accessing file {}'.format(location))
+    click.secho('Note: if the image {}:{} is not yet available locally, it will be pulled'.format(image,tag))
+    click.secho('-'*20)
+    if os.path.exists(testingdir):
+        shutil.rmtree(testingdir)
+
+    run_sync_packtivity(testingdir, {
+            "spec": 'testauth.yml',
+            'toplevel': '$PWD',
+            'parameters': {}
+        },
+        backend='docker'
+    )
+
+    with open('{}/_packtivity/packtivity.run.log'.format(testingdir)) as f:
+        logfile = f.read()
+    
+    kerberos_ok = 'krbtgt/CERN.CH@CERN.CH' in logfile
+    if kerberos_ok:
+        principal = re.search('Default principal: (.*@CERN.CH)',logfile).group(1)
+    access_ok = 'IsReadable' in logfile
+
+    click.secho('-'*20)
+    click.secho('Kerberos: {} {}'.format('ok' if kerberos_ok else 'not ok',principal))
+    click.secho('Access: {}'.format('ok' if access_ok else 'not ok'))
+    
+    
 
 @auth.command()
 @click.argument("location")
