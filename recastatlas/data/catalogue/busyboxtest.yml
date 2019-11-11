@@ -3,7 +3,7 @@ name: testing/busyboxtest
 metadata:
   author: Lukas Heinrich
   input requirements: ''
-  short_description: Example from ATLAS Exotics Rome Workshop 2018
+  short_description: Simple, lightweight Functionality Test
 
 spec:
   toplevel: 'github:yadage/yadage-workflows:testing/busybox-flow'
