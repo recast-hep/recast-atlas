@@ -192,7 +192,7 @@ environment:
         
 
 @auth.command()
-@click.option('--image',default = 'atlas/analysisbase')
+@click.option('--image',default = 'lukasheinrich/xrootdclient:latest')
 @click.argument("location",default = 'root://eosuser.cern.ch//eos/project/r/recast/atlas/testauth/testfile.txt')
 def check_access_xrootd(image,location):
     
@@ -214,7 +214,6 @@ def check_access_xrootd(image,location):
 process:
     process_type: 'interpolated-script-cmd'
     script: |
-        source /home/atlas/release_setup.sh
         /recast_auth/getkrb.sh
         klist
         xrdfs {server} stat {path}
