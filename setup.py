@@ -23,7 +23,7 @@ def _is_test_pypi():
 
 setup(
   name = 'recast-atlas',
-  version = '0.0.16',
+  version = '0.0.17',
   description = 'RECAST for ATLAS at the LHC',
   url = '',
   author = 'Lukas Heinrich',

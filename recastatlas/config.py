@@ -16,7 +16,7 @@ class Config(object):
             },
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
-                "image": os.environ.get("RECAST_IMAGE", "recast/recastatlas:v0.0.16"),
+                "image": os.environ.get("RECAST_IMAGE", "recast/recastatlas:v0.0.17"),
                 "cvmfs": {
                     "location": "/cvmfs",
                     "propagation": "rprivate"
