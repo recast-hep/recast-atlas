@@ -3,8 +3,7 @@ import sys
 import os
 import re
 import shutil
-import yaml
-from ..backends import run_sync_packtivity, get_shell_packtivity
+from ..backends import run_sync_packtivity
 
 envvar = {
     "auth_user": "RECAST_AUTH_USERNAME",
