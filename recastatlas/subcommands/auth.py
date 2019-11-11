@@ -136,6 +136,60 @@ def destroy():
         if os.path.exists(os.path.join(auth_loc, "getkrb.sh")):
             shutil.rmtree(auth_loc)
 
+@auth.command()
+@click.argument('image',default = 'atlas/analysisbase')
+def check_access_image(image):
+    
+    image = image.split(':',1)
+    if len(image)>1:
+        image,tag = image
+    else:
+        image = image[0]
+        tag = 'latest'
+    
+    spec = '''
+process:
+    process_type: 'interpolated-script-cmd'
+    script: 'echo hello world'
+publisher:
+    publisher_type: 'interpolated-pub'
+    publish: {{}}
+environment:
+    environment_type: 'docker-encapsulated'
+    image: {image}
+    imagetag: {tag}
+    '''.format(
+        image = image,
+        tag = tag,
+    )
+
+    testspec = 'testimage.yml'
+    open(testspec,'w').write(spec)
+
+
+    testingdir = 'recast-auth-testing-image'
+    click.secho('Running test job for accessing image {}:{}'.format(image,tag))
+    click.secho('Note: if the image {}:{} is not yet available locally, it will be pulled'.format(image,tag))
+    click.secho('-'*20)
+    if os.path.exists(testingdir):
+        shutil.rmtree(testingdir)
+
+    run_sync_packtivity(testingdir, {
+            "spec": testspec,
+            'toplevel': '$PWD',
+            'parameters': {}
+        },
+        backend='docker'
+    )
+
+    with open('{}/_packtivity/packtivity.run.log'.format(testingdir)) as f:
+        logfile = f.read()
+
+    log_ok = 'hello world' in logfile
+    click.secho('-'*20)
+    click.secho('Access: {}'.format('ok' if log_ok else 'not ok'))
+
+        
 
 @auth.command()
 @click.option('--image',default = 'atlas/analysisbase')
@@ -180,7 +234,8 @@ environment:
         path = path
     )
 
-    open('testauth.yml','w').write(spec)
+    testspec = 'testauth.yml'
+    open(testspec,'w').write(spec)
 
 
     testingdir = 'recast-auth-testing'
@@ -191,7 +246,7 @@ environment:
         shutil.rmtree(testingdir)
 
     run_sync_packtivity(testingdir, {
-            "spec": 'testauth.yml',
+            "spec": testspec,
             'toplevel': '$PWD',
             'parameters': {}
         },
