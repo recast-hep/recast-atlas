@@ -9,8 +9,8 @@ def software():
 
 
 @software.command()
-@click.argument('name', help='docker image name e.g. <group>/<name>')
-@click.argument('path', default='.', help='path to build context')
+@click.argument('name')
+@click.argument('path', default='.')
 @click.option('--backend', type=click.Choice(['docker', 'kubernetes']))
 @click.option('--addr', default='kube-pod://buildkitd')
 def build(path, name, backend, addr):
