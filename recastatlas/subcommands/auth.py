@@ -136,21 +136,22 @@ def destroy():
         if os.path.exists(os.path.join(auth_loc, "getkrb.sh")):
             shutil.rmtree(auth_loc)
 
-@auth.command()
-@click.argument('image',default = 'gitlab-registry.cern.ch/lheinric/atlasonlytestimages')
-def check_access_image(image):
-    
-    if  envvar['registry_user'] not in os.environ:
-        raise RuntimeError('run `eval $(recast auth setup)` first')
 
-    image = image.split(':',1)
-    if len(image)>1:
-        image,tag = image
+@auth.command()
+@click.argument("image", default="gitlab-registry.cern.ch/lheinric/atlasonlytestimages")
+def check_access_image(image):
+
+    if envvar["registry_user"] not in os.environ:
+        raise RuntimeError("run `eval $(recast auth setup)` first")
+
+    image = image.split(":", 1)
+    if len(image) > 1:
+        image, tag = image
     else:
         image = image[0]
-        tag = 'latest'
-    
-    spec = '''
+        tag = "latest"
+
+    spec = """
 process:
     process_type: 'interpolated-script-cmd'
     script: 'echo hello world'
@@ -161,59 +162,63 @@ environment:
     environment_type: 'docker-encapsulated'
     image: {image}
     imagetag: {tag}
-    '''.format(
-        image = image,
-        tag = tag,
+    """.format(
+        image=image, tag=tag
     )
 
-    testspec = 'testimage.yml'
-    open(testspec,'w').write(spec)
+    testspec = "testimage.yml"
+    open(testspec, "w").write(spec)
 
-
-    testingdir = 'recast-auth-testing-image'
-    click.secho('Running test job for accessing image {}:{}'.format(image,tag))
-    click.secho('Note: if the image {}:{} is not yet available locally, it will be pulled'.format(image,tag))
-    click.secho('-'*20)
+    testingdir = "recast-auth-testing-image"
+    click.secho("Running test job for accessing image {}:{}".format(image, tag))
+    click.secho(
+        "Note: if the image {}:{} is not yet available locally, it will be pulled".format(
+            image, tag
+        )
+    )
+    click.secho("-" * 20)
     if os.path.exists(testingdir):
         shutil.rmtree(testingdir)
 
-    run_sync_packtivity(testingdir, {
-            "spec": testspec,
-            'toplevel': '$PWD',
-            'parameters': {}
-        },
-        backend='docker'
+    run_sync_packtivity(
+        testingdir,
+        {"spec": testspec, "toplevel": "$PWD", "parameters": {}},
+        backend="docker",
     )
 
-    with open('{}/_packtivity/packtivity.run.log'.format(testingdir)) as f:
+    with open("{}/_packtivity/packtivity.run.log".format(testingdir)) as f:
         logfile = f.read()
 
-    log_ok = 'hello world' in logfile
-    click.secho('-'*20)
-    click.secho('Access: {}'.format('ok' if log_ok else 'not ok'))
+    log_ok = "hello world" in logfile
+    click.secho("-" * 20)
+    click.secho("Access: {}".format("ok" if log_ok else "not ok"))
 
-        
 
 @auth.command()
-@click.option('--image',default = 'lukasheinrich/xrootdclient:latest')
-@click.argument("location",default = 'root://eosuser.cern.ch//eos/project/r/recast/atlas/testauth/testfile.txt')
-def check_access_xrootd(image,location):
-    
-    image = image.split(':',1)
-    if len(image)>1:
-        image,tag = image
+@click.option("--image", default="lukasheinrich/xrootdclient:latest")
+@click.argument(
+    "location",
+    default="root://eosuser.cern.ch//eos/project/r/recast/atlas/testauth/testfile.txt",
+)
+def check_access_xrootd(image, location):
+
+    image = image.split(":", 1)
+    if len(image) > 1:
+        image, tag = image
     else:
         image = image[0]
-        tag = 'latest'
-    
-    if 'PACKTIVITY_AUTH_LOCATION' not in os.environ:
-        click.echo('Need to run `recast auth setup` and `recast auth write` or `recast auth use` first')
+        tag = "latest"
+
+    if "PACKTIVITY_AUTH_LOCATION" not in os.environ:
+        click.echo(
+            "Need to run `recast auth setup` and `recast auth write` or `recast auth use` first"
+        )
         raise click.Abort()
 
-    server = re.search('root://.*.cern.ch/',location).group(0)
-    path = location.replace(server,'')
+    server = re.search("root://.*.cern.ch/", location).group(0)
+    path = location.replace(server, "")
 
-    spec = '''
+    spec = """
 process:
     process_type: 'interpolated-script-cmd'
     script: |
@@ -229,45 +234,42 @@ environment:
     imagetag: {tag}
     resources:
     - GRIDProxy
-    '''.format(
-        image = image,
-        tag = tag,
-        server = server,
-        path = path
+    """.format(
+        image=image, tag=tag, server=server, path=path
     )
 
-    testspec = 'testauth.yml'
-    open(testspec,'w').write(spec)
+    testspec = "testauth.yml"
+    open(testspec, "w").write(spec)
 
-
-    testingdir = 'recast-auth-testing'
-    click.secho('Running test job for accessing file {}'.format(location))
-    click.secho('Note: if the image {}:{} is not yet available locally, it will be pulled'.format(image,tag))
-    click.secho('-'*20)
+    testingdir = "recast-auth-testing"
+    click.secho("Running test job for accessing file {}".format(location))
+    click.secho(
+        "Note: if the image {}:{} is not yet available locally, it will be pulled".format(
+            image, tag
+        )
+    )
+    click.secho("-" * 20)
     if os.path.exists(testingdir):
         shutil.rmtree(testingdir)
 
-    run_sync_packtivity(testingdir, {
-            "spec": testspec,
-            'toplevel': '$PWD',
-            'parameters': {}
-        },
-        backend='docker'
+    run_sync_packtivity(
+        testingdir,
+        {"spec": testspec, "toplevel": "$PWD", "parameters": {}},
+        backend="docker",
     )
 
-    with open('{}/_packtivity/packtivity.run.log'.format(testingdir)) as f:
+    with open("{}/_packtivity/packtivity.run.log".format(testingdir)) as f:
         logfile = f.read()
-    
-    kerberos_ok = 'krbtgt/CERN.CH@CERN.CH' in logfile
-    if kerberos_ok:
-        principal = re.search('Default principal: (.*@CERN.CH)',logfile).group(1)
-    access_ok = 'IsReadable' in logfile
 
-    click.secho('-'*20)
-    click.secho('Kerberos: {} {}'.format('ok' if kerberos_ok else 'not ok',principal))
-    click.secho('Access: {}'.format('ok' if access_ok else 'not ok'))
-    
-    
+    kerberos_ok = "krbtgt/CERN.CH@CERN.CH" in logfile
+    if kerberos_ok:
+        principal = re.search("Default principal: (.*@CERN.CH)", logfile).group(1)
+    access_ok = "IsReadable" in logfile
+
+    click.secho("-" * 20)
+    click.secho("Kerberos: {} {}".format("ok" if kerberos_ok else "not ok", principal))
+    click.secho("Access: {}".format("ok" if access_ok else "not ok"))
+
 
 @auth.command()
 @click.argument("location")
