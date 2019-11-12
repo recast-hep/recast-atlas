@@ -1,0 +1,30 @@
+name: examples/rome
+
+metadata:
+  author: Lukas Heinrich
+  input requirements: ''
+  short_description: Example from ATLAS Exotics Rome Workshop 2018
+
+spec:
+  toplevel: github:reanahub/reana-demo-atlas-recast
+  workflow: workflow/workflow.yml
+
+example_inputs:
+  default:
+    initdata:
+      did: 404958
+      dxaod_file: https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root
+      xsec_in_pb: 0.00122
+  newsignal:
+    initdata:
+      did: 404951
+      dxaod_file: https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.789012.cap_recast_demo_signal_two.root
+      xsec_in_pb: 0.001735
+
+results:
+- name: CLs 95% based upper limit on poi
+  relpath: statanalysis/fitresults/limit_data.json
+  load_yaml: true
+- name: CLs 95% at nominal poi
+  relpath: statanalysis/fitresults/limit_data_nomsignal.json
+  load_yaml: true

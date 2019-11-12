@@ -1,0 +1,16 @@
+name: testing/busyboxtest
+
+metadata:
+  author: Lukas Heinrich
+  input requirements: ''
+  short_description: Simple, lightweight Functionality Test
+
+spec:
+  toplevel: 'github:yadage/yadage-workflows:testing/busybox-flow'
+  workflow: rootflow.yml
+
+example_inputs:
+  default:
+    initdata: {}
+
+results: []

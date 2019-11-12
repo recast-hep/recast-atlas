@@ -1,0 +1,20 @@
+
+name: $name
+
+metadata:
+  author: $author
+  short_description: 'An example recast configuration of ATLAS'
+
+spec:
+  workflow: workflow.yml
+
+example_inputs:
+  default:
+    initdata:
+      name: hello
+
+results:
+- name: 'My Result'
+  relpath: hello_world/hello_world.txt
+  load_yaml: true
+  
