@@ -15,16 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Docker Push
+    - name: Docker Build
       env:
         DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
         DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
       run: |
-        docker build -t recast/recastatlas:testbuild -f docker/Dockerfile $PWD
+        docker build -t recast/recastatlas:${GITHUB_REF} -f docker/Dockerfile $PWD
     - name: Docker Push
       env:
         DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
         DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
       run: |
         docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-        docker push recast/recastatlas:testbuild        
+        docker push recast/recastatlas:${GITHUB_REF}        
