@@ -25,7 +25,7 @@ jobs:
         echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
     - name: Docker Build
       run: |
-        docker build -t recast/recastatlas:testbuild $PWD
+        docker build -t recast/recastatlas:testbuild -f docker/Dockerfile $PWD
     - name: Docker Push
       run: |
         docker push recast/recastatlas:testbuild
