@@ -6,6 +6,7 @@ import os
 import base64
 import yaml
 import textwrap
+import shlex
 
 from ..config import config
 
@@ -102,7 +103,7 @@ def get_shell_packtivity(name, spec, backend):
         ),
     )
     if backend == "local":
-        return subprocess.check_output(shellcmd).decode("ascii")
+        return subprocess.check_output(shlex.split(shellcmd)).decode("ascii")
     if backend == "docker":
         command, dockerconfig = setup_docker()
         script = """\
