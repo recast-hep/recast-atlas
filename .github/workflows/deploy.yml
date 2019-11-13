@@ -15,18 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Print a greeting
+    - name: Docker Push
       env:
-        MY_VAR: Hi there! My name is
-        FIRST_NAME: Mona
-        MIDDLE_NAME: The
-        LAST_NAME: Octocat
+        DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+        DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
       run: |
-        echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+        docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+        
     # - name: Docker Build
     #   run: |
     #     docker build -t recast/recastatlas:testbuild -f docker/Dockerfile $PWD
-    - name: Docker Push
-      run: |
-        docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-        # docker push recast/recastatlas:testbuild
