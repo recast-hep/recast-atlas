@@ -4,7 +4,7 @@ import os
 from ..config import config
 
 
-@click.group()
+@click.group(help = 'Build Container Images for RECAST')
 def software():
     pass
 
