@@ -14,6 +14,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
     - name: Print a greeting
       env:
         MY_VAR: Hi there! My name is
@@ -22,3 +23,9 @@ jobs:
         LAST_NAME: Octocat
       run: |
         echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+    - name: Docker Build
+      run: |
+        docker build -t recast/recastatlas:testbuild $PWD
+    - name: Docker Push
+      run: |
+        docker push recast/recastatlas:testbuild
