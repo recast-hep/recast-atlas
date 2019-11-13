@@ -8,12 +8,17 @@ on:
     #   - v1             # Push events to v1 tag
     #   - v1.*           # Push events to v1.0, v1.1, and v1.9 tags
 
+
 jobs:
   deploy:
-    runs-on: ubuntu-master
+    name: Deploy
+    runs-on: ubuntu-latest
     steps:
-    - name: Docker Build
+    - name: Print a greeting
+      env:
+        MY_VAR: Hi there! My name is
+        FIRST_NAME: Mona
+        MIDDLE_NAME: The
+        LAST_NAME: Octocat
       run: |
-        docker build -t recast/recastatlas:testdeploy -f docker/Dockerfile
-      
-    
+        echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
