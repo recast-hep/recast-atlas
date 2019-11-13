@@ -1,0 +1,38 @@
+name: CI/CD
+
+on:
+  create:
+    tags:        
+      - .*
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Create Python Dist
+      run: |
+        python setup.py sdist
+      
+    - name: Upload to PyPI
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASS }}
+      run: |
+        python -m pip install twine
+        python -m twine upload dist/*
+
+    - name: Docker Build
+      env:
+        DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+        DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
+      run: |
+        docker build -t recast/recastatlas:${GITHUB_REF:11} -f docker/Dockerfile $PWD
+    - name: Docker Push
+      env:
+        DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+        DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
+      run: |
+        docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+        docker push recast/recastatlas:${GITHUB_REF:11}        

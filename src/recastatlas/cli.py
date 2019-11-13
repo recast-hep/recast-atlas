@@ -7,6 +7,7 @@ from .subcommands.auth import auth
 from .subcommands.backends import backends
 from .subcommands.testing import testing
 from .subcommands.ci import ci
+from .subcommands.software import software
 
 LOGFORMAT = "%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s"
 
@@ -26,6 +27,7 @@ recastatlas.add_command(auth, "auth")
 recastatlas.add_command(backends, "backends")
 recastatlas.add_command(ci, "ci")
 recastatlas.add_command(testing, "tests")
+recastatlas.add_command(software, "software")
 
 if __name__ == "__main__":
     recastatlas()

@@ -27,7 +27,7 @@ def make_spec(name, data, inputs):
 @click.argument("name")
 @click.argument("inputdata", default="")
 @click.option("--example", default="default")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default="local")
+@click.option("--backend", type=click.Choice(["local", "docker"]), default="docker")
 @click.option("--tag", default=None)
 @click.option("--format-result/--raw", default=True)
 def run(name, inputdata, example, backend, tag, format_result):

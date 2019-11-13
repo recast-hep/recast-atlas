@@ -9,11 +9,10 @@ on:
 
 jobs:
   test:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest]
         python-version: [3.6, 3.7, 3.8]
 
     steps:
@@ -34,8 +33,20 @@ jobs:
     - name: Lint with Black
       if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
       run: |
-        black --check --diff --verbose .
-    - name: Check MANIFEST
-      if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
+        black src
+    # - name: Check MANIFEST
+    #   if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
+    #   run: |
+    #     check-manifest
+    - name: Run
+      if: matrix.os == 'ubuntu-latest'
       run: |
-        check-manifest
+        docker info
+        recast --help
+        recast run testing/busyboxtest
+
+    - name: Docker Build
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        docker build -t recast/recastatlas -f docker/Dockerfile $PWD
+
