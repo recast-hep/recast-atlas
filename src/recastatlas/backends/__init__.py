@@ -6,6 +6,7 @@ import os
 import base64
 import yaml
 import textwrap
+import shlex
 
 from ..config import config
 
@@ -16,6 +17,16 @@ def setup_docker():
     backend = "docker"
     cwd = os.getcwd()
     image = config.backends[backend]["image"]
+
+    special_envs = [
+        'PACKTIVITY_CVMFS_LOCATION',
+        'PACKTIVITY_CVMFS_PROPAGATION',
+        'PACKTIVITY_AUTH_LOCATION',
+        'YADAGE_SCHEMA_LOAD_TOKEN',
+        'YADAGE_INIT_TOKEN',
+    ]
+    assert special_envs
+
     command = [
         "docker",
         "run",
@@ -93,7 +104,7 @@ def get_shell_packtivity(name, spec, backend):
         ),
     )
     if backend == "local":
-        return subprocess.check_output(shellcmd).decode("ascii")
+        return subprocess.check_output(shlex.split(shellcmd)).decode("ascii")
     if backend == "docker":
         command, dockerconfig = setup_docker()
         script = """\
