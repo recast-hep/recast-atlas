@@ -38,10 +38,15 @@ jobs:
     #   if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
     #   run: |
     #     check-manifest
-    - name: Run Docker
+    - name: Run
       if: matrix.os == 'ubuntu-latest'
       run: |
         docker info
         recast --help
         recast run testing/busyboxtest
 
+    - name: Docker Build
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        docker build -t recast/recastatlas:$TRAVIS_BRANCH $PWD
+      

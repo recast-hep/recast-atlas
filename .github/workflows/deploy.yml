@@ -1,0 +1,16 @@
+name: CI/CD
+
+on:
+  branches:
+  - improvements
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-master
+    steps:
+    - name: Docker Build
+      run: |
+        docker build -t recast/recastatlas:testdeploy -f docker/Dockerfile
+      
+    
