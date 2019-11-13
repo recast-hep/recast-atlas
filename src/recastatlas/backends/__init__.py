@@ -25,6 +25,7 @@ def setup_docker():
         'YADAGE_SCHEMA_LOAD_TOKEN',
         'YADAGE_INIT_TOKEN',
     ]
+    assert special_envs
 
     command = [
         "docker",
