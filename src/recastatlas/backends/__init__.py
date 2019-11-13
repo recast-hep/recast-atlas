@@ -16,6 +16,15 @@ def setup_docker():
     backend = "docker"
     cwd = os.getcwd()
     image = config.backends[backend]["image"]
+
+    special_envs = [
+        'PACKTIVITY_CVMFS_LOCATION',
+        'PACKTIVITY_CVMFS_PROPAGATION',
+        'PACKTIVITY_AUTH_LOCATION',
+        'YADAGE_SCHEMA_LOAD_TOKEN',
+        'YADAGE_INIT_TOKEN',
+    ]
+
     command = [
         "docker",
         "run",

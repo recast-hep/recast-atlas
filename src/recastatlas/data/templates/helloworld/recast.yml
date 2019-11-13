@@ -1,20 +1,28 @@
 
+# Give your analysis a shorthand name in the form <group>/<identifier>
+# e.g. atlas/atlas-conf-2018-041
 name: $name
 
+# Add some information about who has put together this RECASTable analysis.
 metadata:
   author: $author
   short_description: 'An example recast configuration of ATLAS'
 
+# A reference where to find the workflow definition
 spec:
   workflow: workflow.yml
 
+# This is where you store example workflow parameters
+# just to give users a sense of what inputs are needed
 example_inputs:
   default:
     initdata:
       name: hello
 
-results:
-- name: 'My Result'
-  relpath: hello_world/hello_world.txt
-  load_yaml: true
+results:  []
+
+# add items of the form
+# - name: 'My Result'
+#   relpath: hello_world/hello_world.txt
+#   load_yaml: true
   

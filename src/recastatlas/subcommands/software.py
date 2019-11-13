@@ -14,7 +14,8 @@ def software():
 @click.argument('path', default='.')
 @click.option('--backend', type=click.Choice(['docker', 'kubernetes']), default = config.default_build_backend)
 @click.option('--addr', default=config.backends['kubernetes']['buildkit_addr'])
-def build(path, name, backend, addr):
+@click.option('--push/--no-push', default=False)
+def build(path, name, backend, addr,push):
     image = 'gitlab-registry.cern.ch/recast-atlas/images/{}'.format(name)
     path = os.path.abspath(path)
     if backend == 'kubernetes':
@@ -31,9 +32,10 @@ def build(path, name, backend, addr):
                 '--local',
                 'dockerfile={}'.format(path),
                 '--output',
-                'type=image,name={},push=true'.format(image),
+                'type=image,name={},push={}'.format(image,'true' if push else 'false'),
             ]
         )
     elif backend == 'docker':
         subprocess.check_call(['docker', 'build', '-t', image, path])
-        subprocess.check_call(['docker', 'push', image])
+        if push:
+            subprocess.check_call(['docker', 'push', image])

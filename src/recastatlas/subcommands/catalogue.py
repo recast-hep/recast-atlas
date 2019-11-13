@@ -3,6 +3,7 @@ import yaml
 import os
 from distutils.dir_util import copy_tree
 import string
+import logging
 
 import pkg_resources
 import getpass
@@ -10,6 +11,8 @@ import getpass
 from ..config import config
 from ..testing import validate_entry
 
+
+log = logging.getLogger(__name__)
 default_meta = {"author": "unknown", "short_description": "no description"}
 
 
@@ -54,6 +57,7 @@ def create(name, path):
 @catalogue.command()
 @click.argument("path")
 def add(path):
+    path = os.path.realpath(path)
     if os.path.exists(path) and os.path.isdir(path):
         paths = []
         existing = os.environ.get("RECAST_ATLAS_CATALOGUE")
@@ -62,7 +66,8 @@ def add(path):
         paths.append(path)
         click.secho("export RECAST_ATLAS_CATALOGUE=" + ":".join(paths))
     else:
-        raise click.Abort("path {} does not exist or is not a directory".format(path))
+        log.warning("path %s does not exist or is not a directory",path)
+        raise click.Abort()
 
 
 @catalogue.command()
