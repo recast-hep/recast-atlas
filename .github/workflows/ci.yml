@@ -48,5 +48,5 @@ jobs:
     - name: Docker Build
       if: matrix.os == 'ubuntu-latest'
       run: |
-        docker build -t recast/recastatlas $PWD
+        docker build -t recast/recastatlas -f docker/Dockerfile $PWD
 
