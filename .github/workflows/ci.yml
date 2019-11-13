@@ -34,19 +34,16 @@ jobs:
       if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
       run: |
         black src
-    # - name: Check MANIFEST
-    #   if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
-    #   run: |
-    #     check-manifest
+    - name: Docker Build
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        docker build -t recast/recastatlas:ci -f docker/Dockerfile $PWD
     - name: Run
       if: matrix.os == 'ubuntu-latest'
+      env:
+        RECAST_IMAGE: recast/recastatlas:ci
       run: |
         docker info
         recast --help
         recast run testing/busyboxtest
-
-    - name: Docker Build
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        docker build -t recast/recastatlas -f docker/Dockerfile $PWD
 
