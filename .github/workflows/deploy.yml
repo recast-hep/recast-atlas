@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Create Python Dist
       run: |
-        python setup.py sdist bdist_wheel
+        python setup.py sdist
       
     - name: Upload to Test PyPI
       env:
