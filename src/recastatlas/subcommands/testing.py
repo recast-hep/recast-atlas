@@ -31,7 +31,7 @@ def ls(name):
 @testing.command(help="Run a test")
 @click.argument("name")
 @click.argument("testname")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default="docker")
+@click.option("--backend", type=click.Choice(["local", "docker"]), default = config.default_run_backend)
 @click.option("--tag", default=None)
 def run(name, testname, backend, tag):
     data = config.catalogue[name]
@@ -53,7 +53,7 @@ def run(name, testname, backend, tag):
 @testing.command(help="Run a test")
 @click.argument("name")
 @click.argument("testname")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default="docker")
+@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
 @click.option("--tag", default=None)
 def shell(name, testname, backend, tag):
     data = config.catalogue[name]

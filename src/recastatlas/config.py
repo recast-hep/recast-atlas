@@ -6,6 +6,13 @@ import glob
 
 class Config(object):
     @property
+    def default_run_backend(self):
+        return os.environ.get('RECAST_DEFAULT_RUN_BACKEND','docker')
+
+    def default_build_backend(self):
+        return os.environ.get('RECAST_DEFAULT_BUILD_BACKEND','docker')
+
+    @property
     def backends(self):
         return {
             "local": {
@@ -28,7 +35,8 @@ class Config(object):
                 "auth_location": os.environ.get("PACKTIVITY_AUTH_LOCATION"),
             },
             "kubernetes": {
-                "metadata": {"short_description": "runs on a Kubernetes cluster"}
+                "metadata": {"short_description": "runs on a Kubernetes cluster"},
+                "buildkit_addr": os.environ.get("RECAST_KUBERNETES_BUILDKIT_ADDR",'kube-pod://buildkitd'),
             },
         }
 

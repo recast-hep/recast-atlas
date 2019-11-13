@@ -1,6 +1,7 @@
 import click
 import subprocess
 import os
+from ..config import config
 
 
 @click.group()
@@ -11,8 +12,8 @@ def software():
 @software.command()
 @click.argument('name')
 @click.argument('path', default='.')
-@click.option('--backend', type=click.Choice(['docker', 'kubernetes']))
-@click.option('--addr', default='kube-pod://buildkitd')
+@click.option('--backend', type=click.Choice(['docker', 'kubernetes']), default = config.default_build_backend)
+@click.option('--addr', default=config.backends['kubernetes']['buildkit_addr'])
 def build(path, name, backend, addr):
     image = 'gitlab-registry.cern.ch/recast-atlas/images/{}'.format(name)
     path = os.path.abspath(path)
