@@ -65,16 +65,25 @@ def paths():
 def add(path):
     path = os.path.realpath(path)
     if os.path.exists(path) and os.path.isdir(path):
-        paths = []
-        existing = os.environ.get("RECAST_ATLAS_CATALOGUE")
-        if existing:
-            paths.append(existing)
+        paths = config.catalogue_paths(include_default = False)
         paths.append(path)
+        paths = sorted(list(set(paths)))
         click.secho("export RECAST_ATLAS_CATALOGUE=" + ":".join(paths))
     else:
         log.warning("path %s does not exist or is not a directory",path)
         raise click.Abort()
 
+@catalogue.command()
+@click.argument("path")
+def rm(path):
+    path = os.path.realpath(path)
+    paths = config.catalogue_paths(include_default = False)
+    filtered_paths = [p for p in paths if p != path]
+    filtered_paths = sorted(list(set(filtered_paths)))
+    if not filtered_paths:
+        click.secho('unset RECAST_ATLAS_CATALOGUE')
+    else:
+        click.secho("export RECAST_ATLAS_CATALOGUE=" + ":".join(filtered_paths))
 
 @catalogue.command()
 def ls():
