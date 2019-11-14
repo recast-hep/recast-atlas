@@ -248,6 +248,8 @@ def check_backend(backend):
                 "/apis/yadage.github.io/v1/namespaces/default/workflows", "GET"
             )
             return rc == 200
+        except ImportError:
+            pass
         except k8sclient.rest.ApiException:
             pass
         return False

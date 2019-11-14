@@ -40,8 +40,8 @@ class Config(object):
             },
         }
 
-    def catalogue_paths(self):
-        paths = [pkg_resources.resource_filename("recastatlas", "data/catalogue")]
+    def catalogue_paths(self,include_default = True):
+        paths = [pkg_resources.resource_filename("recastatlas", "data/catalogue")] if include_default else []
         configpath = os.environ.get("RECAST_ATLAS_CATALOGUE")
 
         if configpath:
