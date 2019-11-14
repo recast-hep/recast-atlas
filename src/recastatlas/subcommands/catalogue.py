@@ -53,6 +53,12 @@ def create(name, path):
         )
     )
 
+@catalogue.command()
+def paths():
+    paths = config.catalogue_paths()
+    out = '\n'.join(['* '+x for x in paths])
+    click.secho('Paths considered by RECAST:\n--------------------------')
+    click.secho(out)
 
 @catalogue.command()
 @click.argument("path")

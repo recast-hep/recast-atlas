@@ -40,14 +40,18 @@ class Config(object):
             },
         }
 
-    @property
-    def catalogue(self):
+    def catalogue_paths(self):
         paths = [pkg_resources.resource_filename("recastatlas", "data/catalogue")]
         configpath = os.environ.get("RECAST_ATLAS_CATALOGUE")
 
         if configpath:
             for p in configpath.split(":"):
                 paths.append(p)
+        return paths
+
+    @property
+    def catalogue(self):
+        paths = self.catalogue_paths()
 
         cfg = {}
         files = [x for p in paths for x in glob.glob("{}/*.yml".format(p))]
@@ -68,4 +72,7 @@ config = Config()
 
 
 def validate_catalogue_entry(entry):
+    for x in ['name','metadata','spec']:
+        if not x in entry:
+            return False
     return True
