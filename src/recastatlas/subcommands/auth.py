@@ -91,7 +91,7 @@ def setup(answer):
     click.secho("export {}='{}'".format(envvar["init_load"], token))
     click.secho("export {}='{}'".format(envvar["registry_host"], registry))
     click.secho("export {}='{}'".format(envvar["registry_user"], username))
-    click.secho("export {}='{}'".format(envvar["registry_pass"], token))
+    click.secho("export {}='{}'".format(envvar["registry_pass"], password))
     click.secho(
         "docker login -u ${} -p ${} ${}".format(
             envvar["registry_user"], envvar["registry_pass"], envvar["registry_host"]
