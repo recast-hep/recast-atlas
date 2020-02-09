@@ -9,5 +9,5 @@ def ci():
 @ci.command()
 def cvmfs_helper():
     click.echo(
-        "docker run -d --name cvmfs --pid=host --user 0 --privileged --restart always -v /cvmfsmounts:/cvmfsmounts:rshared gitlab-registry.cern.ch/vcs/cvmfs-automounter:master"
+        "docker run -d --name cvmfs --pid=host --user 0 --privileged --restart always -v /shared-mounts:/cvmfsmounts:rshared gitlab-registry.cern.ch/vcs/cvmfs-automounter:master"
     )

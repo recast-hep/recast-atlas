@@ -140,7 +140,7 @@ cat << 'EOF' > /tmp/pars.yml
 {pars}
 EOF
 echo '{dockerconfig}' > ~/.docker/config.json 
-packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} -b foregroundasync {readdirs}
+packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
         """.format(
             spec=spec["spec"],
             dockerconfig=json.dumps(dockerconfig),
