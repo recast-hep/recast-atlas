@@ -4,6 +4,7 @@ import os
 import re
 import shutil
 from ..backends import run_sync_packtivity
+from ..config import config
 
 envvar = {
     "auth_user": "RECAST_AUTH_USERNAME",
@@ -139,7 +140,8 @@ def destroy():
 
 @auth.command()
 @click.argument("image", default="gitlab-registry.cern.ch/lheinric/atlasonlytestimages")
-def check_access_image(image):
+@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
+def check_access_image(image,backend):
 
     if envvar["registry_user"] not in os.environ:
         raise RuntimeError("run `eval $(recast auth setup)` first")
@@ -182,11 +184,11 @@ environment:
 
     run_sync_packtivity(
         testingdir,
-        {"spec": testspec, "toplevel": "$PWD", "parameters": {}},
-        backend="docker",
+        {"spec": testspec, "toplevel": os.getcwd(), "parameters": {}},
+        backend=backend,
     )
 
-    with open("{}/_packtivity/packtivity.run.log".format(testingdir)) as f:
+    with open("{}/_packtivity/packtivity_syncbackend.run.log".format(testingdir)) as f:
         logfile = f.read()
 
     log_ok = "hello world" in logfile
@@ -200,7 +202,8 @@ environment:
     "location",
     default="root://eosuser.cern.ch//eos/project/r/recast/atlas/testauth/testfile.txt",
 )
-def check_access_xrootd(image, location):
+@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
+def check_access_xrootd(image, location,backend):
 
     image = image.split(":", 1)
     if len(image) > 1:
@@ -254,11 +257,11 @@ environment:
 
     run_sync_packtivity(
         testingdir,
-        {"spec": testspec, "toplevel": "$PWD", "parameters": {}},
-        backend="docker",
+        {"spec": testspec, "toplevel": os.getcwd(), "parameters": {}},
+        backend=backend,
     )
 
-    with open("{}/_packtivity/packtivity.run.log".format(testingdir)) as f:
+    with open("{}/_packtivity/packtivity_syncbackend.run.log".format(testingdir)) as f:
         logfile = f.read()
 
     kerberos_ok = "krbtgt/CERN.CH@CERN.CH" in logfile

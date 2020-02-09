@@ -31,9 +31,10 @@ setup(
     },
     'local': [
       'pydotplus==2.0.2',
-      'adage==0.9.0',
-      'yadage[viz]==0.19.9',
-      'packtivity==0.14.20'
+      'adage==0.10.1',
+      'yadage-schemas==0.10.6',
+      'packtivity==0.14.21',
+      'yadage[viz]==0.20.1',
     ],
     'kubernetes': [
       'kubernetes==9.0.0'

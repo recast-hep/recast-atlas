@@ -1,4 +1,4 @@
-FROM alpine
+FROM docker:19.03.0
 RUN  apk add py-pip automake autoconf libtool \
              python-dev musl-dev libffi-dev tree \
              python-dev musl-dev libffi-dev gcc \
@@ -7,11 +7,8 @@ RUN  apk add py-pip automake autoconf libtool \
 WORKDIR /code
 COPY . /code
 RUN pip install -e .[local,kubernetes]
-RUN curl https://download.docker.com/linux/static/stable/x86_64/docker-18.03.1-ce.tgz|tar -xzvf - && \
-    cp docker/docker /usr/local/bin && \
-    rm -rf docker
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
-ENV PACKTIVITY_CVMFS_LOCATION /cvmfsmounts/cvmfs
+ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
 ENV PACKTIVITY_CVMFS_PROPAGATION rslave
 WORKDIR /work
 
