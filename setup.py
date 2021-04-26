@@ -33,7 +33,7 @@ setup(
       'pydotplus==2.0.2',
       'adage==0.10.1',
       'yadage-schemas==0.10.6',
-      'packtivity==0.14.21',
+      'packtivity==0.14.23',
       'yadage[viz]==0.20.1',
     ],
     'kubernetes': [

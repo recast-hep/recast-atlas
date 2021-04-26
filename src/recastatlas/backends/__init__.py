@@ -12,6 +12,19 @@ from ..config import config
 
 log = logging.getLogger(__name__)
 
+BACKENDS = {}
+try:
+    from .reana import ReanaBackend
+    BACKENDS['reana'] = ReanaBackend()
+except ImportError:
+    pass
+
+try:
+    from .kubernetes import KubernetesBackend
+    BACKENDS['kubernetes'] = KubernetesBackend()
+except ImportError:
+    pass
+
 
 def setup_docker():
     backend = "docker"
@@ -192,50 +205,10 @@ def run_sync(name, spec, backend):
 
 
 def run_async(name, spec, backend):
-    assert backend == "kubernetes"
-    if backend == "kubernetes":
-        workflow = {
-            "apiVersion": "yadage.github.io/v1",
-            "kind": "Workflow",
-            "metadata": {"name": name},
-            "spec": spec,
-        }
-        from kubernetes import client as k8sclient
-        from kubernetes import config as k8sconfig
-
-        k8sconfig.load_kube_config()
-        _, rc, _ = k8sclient.ApiClient().call_api(
-            "/apis/yadage.github.io/v1/namespaces/default/workflows",
-            "POST",
-            body=workflow,
-        )
-        return rc
-
+    return BACKENDS[backend].submit(name, spec)
 
 def check_async(name, backend):
-    assert backend == "kubernetes"
-    from kubernetes import client as k8sclient
-    from kubernetes import config as k8sconfig
-
-    k8sconfig.load_kube_config()
-    a, rc, d = k8sclient.ApiClient().call_api(
-        "/apis/yadage.github.io/v1/namespaces/default/workflows/{}".format(name),
-        "GET",
-        _preload_content=False,
-    )
-    try:
-        status = json.loads(a.read())["status"]["workflow"]
-    except:
-        return {"status": "UNKNOWN"}
-
-    if status.get("succeeded") == 1:
-        return {"status": "SUCCEEDED"}
-    if status.get("active") == 1:
-        return {"status": "INPROGRESS"}
-    if status.get("failed") == 1:
-        return {"status": "FAILED"}
-    return {"status": "UNKNOWN"}
-
+    return BACKENDS[backend].check_workflow(name)
 
 def check_backend(backend):
     if backend == "kubernetes":

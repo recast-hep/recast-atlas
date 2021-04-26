@@ -1,12 +1,13 @@
-FROM docker:19.03.0
+FROM docker:20.10.5
 RUN  apk add py-pip automake autoconf libtool \
-             python-dev musl-dev libffi-dev tree \
-             python-dev musl-dev libffi-dev gcc \
+             python3 python3-dev musl-dev libffi-dev tree \
+             python3-dev musl-dev libffi-dev gcc \
              autoconf curl gcc ipset ipset-dev iptables iptables-dev libnfnetlink libnfnetlink-dev libnl3 libnl3-dev make musl-dev openssl openssl-dev \
-             jq util-linux font-bitstream-type1 build-base graphviz-dev imagemagick graphviz
+             jq util-linux font-bitstream-type1 build-base graphviz-dev imagemagick graphviz gcc musl-dev python3-dev libffi-dev openssl-dev cargo
+
 WORKDIR /code
 COPY . /code
-RUN pip install -e .[local,kubernetes]
+RUN pip3 install -e .[local,kubernetes]
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
 ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
 ENV PACKTIVITY_CVMFS_PROPAGATION rslave
