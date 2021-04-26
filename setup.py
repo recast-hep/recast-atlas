@@ -10,7 +10,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as readme_md
 
 setup(
   name = 'recast-atlas',
-  version = '0.1.0',
+  version = '0.1.1',
   description = 'RECAST for ATLAS at the LHC',
   url = '',
   author = 'Lukas Heinrich',
