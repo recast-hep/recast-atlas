@@ -70,14 +70,14 @@ def run(name, inputdata, example, backend, tag, format_result):
             )
         )
 
-
 @click.command(help="Submit a RECAST Workflow asynchronously")
 @click.argument("name")
 @click.argument("inputdata", default="")
 @click.option("--example", default="default")
 @click.option("--infofile", default=None)
 @click.option("--tag", default=None)
-def submit(name, inputdata, example, infofile, tag):
+@click.option("--backend", type = click.Choice(['kubernetes','reana']))
+def submit(name, inputdata, example, infofile, tag, backend):
     analysis_id = name
     data = config.catalogue[analysis_id]
     if inputdata:
@@ -95,42 +95,21 @@ def submit(name, inputdata, example, infofile, tag):
     instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
     spec = make_spec(instance_id, data, inputs)
 
-    backend = "kubernetes"
-    run_async(instance_id, spec, backend=backend)
+    submission = run_async(instance_id, spec, backend=backend)
 
     click.secho("{} submitted".format(str(instance_id)))
     if infofile:
         with open(infofile, "w") as info:
-            json.dump({"analysis_id": analysis_id, "instance_id": instance_id}, info)
-
-
-def get_name_instance(name, instance, infofile):
-    if infofile:
-        d = json.load(open(infofile))
-        name = d["analysis_id"]
-        instance = d["instance_id"]
-    else:
-        try:
-            assert name
-            assert instance
-        except AssertionError:
-            click.secho(
-                "need to use either --infofile or --name and --instance", fg="red"
-            )
-            raise click.Abort()
-    return name, instance
-
+            json.dump({"analysis_id": analysis_id, "instance_id": instance_id, 'submission': submission}, info)
 
 @click.command(help="Get the Status of a asynchronous submission")
-@click.option("--name", default=None)
-@click.option("--instance", default=None)
 @click.option("--infofile", default=None)
-def status(infofile, name, instance):
-    name, instance = get_name_instance(name, instance, infofile)
-    backend = "kubernetes"
-    status = check_async(instance, backend=backend)
+@click.option("--backend", type = click.Choice(['kubernetes','reana']))
+def status(infofile, backend):
+    submission = json.load(open(infofile))
+    instance = submission['instance_id']
+    status = check_async(submission, backend=backend)
     click.secho("{}\t{}".format(instance, status["status"]))
-
 
 @click.command(help="Retrieve RECAST Results from asynchronous submissions")
 @click.option("--name", default=None)
