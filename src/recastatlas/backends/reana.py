@@ -23,7 +23,7 @@ def working_directory(path):
         
 class ReanaBackend:
     def __init__(self):
-        self.auth_token = os.getenv("REANA_ACCESS_TOKEN") or getpass("Enter your REANA token: ")
+        self.auth_token = os.getenv("REANA_ACCESS_TOKEN")
 
 
     def submit(self, name, spec):
