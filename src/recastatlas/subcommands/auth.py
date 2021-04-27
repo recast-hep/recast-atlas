@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import shutil
+import pkg_resources
 from ..backends import run_sync_packtivity
 from ..config import config
 
@@ -106,6 +107,7 @@ def setup(answer):
     )
 
 
+
 @auth.command()
 @click.option("--basedir", default=None)
 def write(basedir):
@@ -123,6 +125,25 @@ def write(basedir):
     click.secho(
         "export {}={}".format(envvar["auth_location"], os.path.abspath(basedir))
     )
+
+    shutil.copy(pkg_resources.resource_filename("recastatlas", "data/getkrb_reana.sh"),os.path.join(basedir,"getkrb_reana.sh"))
+    shutil.copy(pkg_resources.resource_filename("recastatlas", "data/expect_script.sh"),os.path.join(basedir,"expect_script.sh"))
+
+
+
+@auth.command()
+def reana_setup():
+    click.secho((
+        "docker run --rm -it "+
+        "-v $PACKTIVITY_AUTH_LOCATION:$PACKTIVITY_AUTH_LOCATION -w $PACKTIVITY_AUTH_LOCATION "+
+        "reanahub/reana-auth-krb5:1.0.1 ./expect_script.sh $RECAST_AUTH_USERNAME $RECAST_AUTH_PASSWORD;"
+    ))
+    click.secho((
+        "reana-client secrets-add --overwrite "+
+        "--env CERN_USER=$RECAST_AUTH_USERNAME --env CERN_KEYTAB=reana_keytab "+
+        "--env KRB_SETUP_SCRIPT=/etc/reana/secrets/getkrb_reana.sh "+
+        "--file $PACKTIVITY_AUTH_LOCATION/getkrb_reana.sh --file $PACKTIVITY_AUTH_LOCATION/reana_keytab"
+    ))
 
 
 @auth.command()
