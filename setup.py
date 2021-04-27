@@ -38,6 +38,8 @@ setup(
     ],
     'kubernetes': [
       'kubernetes==9.0.0'
+    ], 
+    'reana': [
     ]
   },
   entry_points = {

@@ -134,7 +134,7 @@ def write(basedir):
 @auth.command()
 def reana_setup():
     click.secho((
-        "docker run --rm -it "+
+        "docker run --rm "+
         "-v $PACKTIVITY_AUTH_LOCATION:$PACKTIVITY_AUTH_LOCATION -w $PACKTIVITY_AUTH_LOCATION "+
         "reanahub/reana-auth-krb5:1.0.1 ./expect_script.sh $RECAST_AUTH_USERNAME $RECAST_AUTH_PASSWORD;"
     ))
