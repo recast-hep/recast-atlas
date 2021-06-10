@@ -19,11 +19,12 @@ class Config(object):
                 "metadata": {
                     "short_description": "runs locally with natively installed tools"
                 },
-                "fromstring": "multiproc:auto",
+                "fromstring": os.environ.get("RECAST_LOCAL_BACKENDSTRING","multiproc:auto")
             },
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
-                "image": os.environ.get("RECAST_IMAGE", "recast/recastatlas:v0.1.4"),
+                "fromstring": os.environ.get("RECAST_DOCKER_BACKENDSTRING","multiproc:auto"),
+                "image": os.environ.get("RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.1.4"),
                 "cvmfs": {"location": "/cvmfs", "propagation": "rprivate"},
                 "reg": {
                     "user": os.environ.get("RECAST_REGISTRY_USERNAME"),
@@ -38,6 +39,11 @@ class Config(object):
                 "metadata": {"short_description": "runs on a Kubernetes cluster"},
                 "buildkit_addr": os.environ.get("RECAST_KUBERNETES_BUILDKIT_ADDR",'kube-pod://buildkitd'),
             },
+            "reana": {
+                "metadata": {"short_description": "runs on a REANA deployment"},
+                "access_token": os.environ.get('REANA_ACCESS_TOKEN',None),
+                "cvmfs_repos": os.environ.get('RECAST_REANA_CVMFS_REPOS',['atlas.cern.ch','atlas-condb.cern.ch'])
+            }
         }
 
     def catalogue_paths(self,include_default = True):

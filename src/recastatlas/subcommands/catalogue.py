@@ -104,7 +104,6 @@ def ls():
 @click.argument("name")
 def describe(name):
     data = config.catalogue[name]
-
     metadata = data.get("metadata", default_meta)
     toprint = """\
 
@@ -112,8 +111,9 @@ def describe(name):
 --------------------
 description  : {short:20}
 author       : {author}
+toplevel     : {toplevel}
 """.format(
-        author=metadata["author"], name=name, short=metadata["short_description"]
+        author=metadata.get("author",'N/A'), name=name, short=metadata.get("short_description","N/A"), toplevel = data['spec']['toplevel']
     )
     click.secho(toprint)
 

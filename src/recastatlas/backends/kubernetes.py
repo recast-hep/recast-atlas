@@ -41,3 +41,18 @@ class KubernetesBackend:
             return {"status": "FAILED"}
         return {"status": "UNKNOWN"}
 
+    def check_backend(self):
+        try:
+            from kubernetes import client as k8sclient
+            from kubernetes import config as k8sconfig
+
+            k8sconfig.load_kube_config()
+            _, rc, _ = k8sclient.ApiClient().call_api(
+                "/apis/yadage.github.io/v1/namespaces/default/workflows", "GET"
+            )
+            return rc == 200
+        except ImportError:
+            pass
+        except k8sclient.rest.ApiException:
+            pass
+        return False        

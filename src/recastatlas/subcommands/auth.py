@@ -24,7 +24,11 @@ def auth():
     pass
 
 
-@auth.command()
+@auth.command(help = "show current auth configuration")
+def show():
+    click.echo('Authdir: {}'.format(os.environ.get(envvar['auth_location'],'not set')))
+
+@auth.command(help = 'configure authentication')
 @click.option("-a", "--answer", multiple=True)
 def setup(answer):
     expt = "ATLAS"
@@ -108,10 +112,10 @@ def setup(answer):
 
 
 
-@auth.command()
+@auth.command(help = 'Prepare auth data on-disk for steps requiring them')
 @click.option("--basedir", default=None)
 def write(basedir):
-    basedir = basedir or os.getcwd()
+    basedir = basedir or os.path.join(os.environ.get('HOME',os.getcwd()),'.recast')
     if not os.path.exists(basedir):
         os.makedirs(basedir)
     krbfile = os.path.join(basedir, "getkrb.sh")
@@ -128,10 +132,9 @@ def write(basedir):
 
     shutil.copy(pkg_resources.resource_filename("recastatlas", "data/getkrb_reana.sh"),os.path.join(basedir,"getkrb_reana.sh"))
     shutil.copy(pkg_resources.resource_filename("recastatlas", "data/expect_script.sh"),os.path.join(basedir,"expect_script.sh"))
+    click.echo('Wrote Authentication Data to {} (Note! This includes passwords/tokens)'.format(basedir), err=True)
 
-
-
-@auth.command()
+@auth.command(help = 'Configure REANA with authentication information.')
 def reana_setup():
     click.secho((
         "docker run --rm "+
@@ -146,7 +149,7 @@ def reana_setup():
     ))
 
 
-@auth.command()
+@auth.command(help = 'Unset/Remove auth-relevant env vars/directories')
 def destroy():
     if sys.stdout.isatty():
         click.secho("Use eval $(recast auth destroy) to unset the variables", fg="red")
@@ -159,11 +162,10 @@ def destroy():
             shutil.rmtree(auth_loc)
 
 
-@auth.command()
+@auth.command(help = 'check access for private images')
 @click.argument("image", default="gitlab-registry.cern.ch/lheinric/atlasonlytestimages")
 @click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
 def check_access_image(image,backend):
-
     if envvar["registry_user"] not in os.environ:
         raise RuntimeError("run `eval $(recast auth setup)` first")
 
@@ -217,7 +219,7 @@ environment:
     click.secho("Access: {}".format("ok" if log_ok else "not ok"))
 
 
-@auth.command()
+@auth.command(help = 'check access to private data')
 @click.option("--image", default="lukasheinrich/xrootdclient:latest")
 @click.argument(
     "location",
@@ -295,7 +297,7 @@ environment:
     click.secho("Access: {}".format("ok" if access_ok else "not ok"))
 
 
-@auth.command()
+@auth.command(help = 'configure to use preset on-disk loaction of auth data')
 @click.argument("location")
 def use(location):
     click.secho(

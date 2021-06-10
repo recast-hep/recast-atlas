@@ -32,6 +32,7 @@ def make_spec(name, data, inputs):
 @click.option("--format-result/--raw", default=True)
 def run(name, inputdata, example, backend, tag, format_result):
     data = config.catalogue[name]
+            
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
     else:
@@ -47,7 +48,16 @@ def run(name, inputdata, example, backend, tag, format_result):
     instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
     spec = make_spec(instance_id, data, inputs)
 
-    run_sync(name, spec, backend=backend)
+    try:
+            run_sync(name, spec, backend=backend)
+    except:
+        log.exception("caught exception")
+        exc = click.exceptions.ClickException(
+            click.style("Workflow failed", fg="red")
+        )
+        exc.exit_code = 1
+        raise exc
+
 
     log.info("RECAST run finished.")
 
