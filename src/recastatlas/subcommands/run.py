@@ -32,6 +32,7 @@ def make_spec(name, data, inputs):
 @click.option("--format-result/--raw", default=True)
 def run(name, inputdata, example, backend, tag, format_result):
     data = config.catalogue[name]
+            
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
     else:

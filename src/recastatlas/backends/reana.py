@@ -10,6 +10,7 @@ import yadageschemas
 import json
 import contextlib
 import urllib3
+from ..config import config
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 @contextlib.contextmanager
@@ -23,8 +24,9 @@ def working_directory(path):
         
 class ReanaBackend:
     def __init__(self):
-        self.auth_token = os.getenv("REANA_ACCESS_TOKEN")
-
+        self.auth_token = config.backends['reana']['access_token']
+        self.cvmfs_repos = config.backends['reana']['cvmfs_repos']
+        assert self.auth_token
 
     def submit(self, name, spec):
         print(name)
@@ -47,14 +49,14 @@ class ReanaBackend:
                 'type': 'yadage',
                 'file': _wflowfile,
                 'resources': {
-                    'cvmfs': ['atlas.cern.ch','sft.cern.ch','atlas-condb.cern.ch']
+                    'cvmfs': self.cvmfs_repos
                 }
             }
         }
 
         from reana_commons.api_client import get_current_api_client
         client = get_current_api_client('reana-server')
-        d = client.api.create_workflow(reana_specification = reana_yaml, workflow_name=wflowname, access_token = os.getenv('REANA_ACCESS_TOKEN'))
+        d = client.api.create_workflow(reana_specification = reana_yaml, workflow_name=wflowname, access_token = self.auth_token)
         result = d.response().result    
         
         with open(_wflowfile,'w') as wflowfile:

@@ -41,6 +41,8 @@ class Config(object):
             },
             "reana": {
                 "metadata": {"short_description": "runs on a REANA deployment"},
+                "access_token": os.environ.get('REANA_ACCESS_TOKEN',None),
+                "cvmfs_repos": os.environ.get('RECAST_REANA_CVMFS_REPOS',['atlas.cern.ch','atlas-condb.cern.ch'])
             }
         }
 
