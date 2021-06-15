@@ -2,7 +2,21 @@ import os
 import yaml
 import pkg_resources
 import glob
+import yaml
+import logging
 
+log = logging.getLogger(__name__)
+
+def conf_form_env(var,default = None):
+    v = os.environ.get(var)
+    if v is not None:
+        try:
+            return yaml.safe_load(v)
+        except:
+            log.error(f'could not get config from env var {var} (value: {v})')
+            raise
+    return default
+    
 
 class Config(object):
     @property
@@ -19,30 +33,30 @@ class Config(object):
                 "metadata": {
                     "short_description": "runs locally with natively installed tools"
                 },
-                "fromstring": os.environ.get("RECAST_LOCAL_BACKENDSTRING","multiproc:auto")
+                "fromstring": conf_form_env("RECAST_LOCAL_BACKENDSTRING","multiproc:auto")
             },
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
-                "fromstring": os.environ.get("RECAST_DOCKER_BACKENDSTRING","multiproc:auto"),
-                "image": os.environ.get("RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.1.5"),
+                "fromstring": conf_form_env("RECAST_DOCKER_BACKENDSTRING","multiproc:auto"),
+                "image": conf_form_env("RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.1.5"),
                 "cvmfs": {"location": "/cvmfs", "propagation": "rprivate"},
                 "reg": {
-                    "user": os.environ.get("RECAST_REGISTRY_USERNAME"),
-                    "pass": os.environ.get("RECAST_REGISTRY_PASSWORD"),
-                    "host": os.environ.get("RECAST_REGISTRY_HOST"),
+                    "user": conf_form_env("RECAST_REGISTRY_USERNAME"),
+                    "pass": conf_form_env("RECAST_REGISTRY_PASSWORD"),
+                    "host": conf_form_env("RECAST_REGISTRY_HOST"),
                 },
-                "schema_load_token": os.environ.get("YADAGE_SCHEMA_LOAD_TOKEN"),
-                "init_token": os.environ.get("YADAGE_SCHEMA_LOAD_TOKEN"),
-                "auth_location": os.environ.get("PACKTIVITY_AUTH_LOCATION"),
+                "schema_load_token": conf_form_env("YADAGE_SCHEMA_LOAD_TOKEN"),
+                "init_token": conf_form_env("YADAGE_SCHEMA_LOAD_TOKEN"),
+                "auth_location": conf_form_env("PACKTIVITY_AUTH_LOCATION"),
             },
             "kubernetes": {
                 "metadata": {"short_description": "runs on a Kubernetes cluster"},
-                "buildkit_addr": os.environ.get("RECAST_KUBERNETES_BUILDKIT_ADDR",'kube-pod://buildkitd'),
+                "buildkit_addr": conf_form_env("RECAST_KUBERNETES_BUILDKIT_ADDR",'kube-pod://buildkitd'),
             },
             "reana": {
                 "metadata": {"short_description": "runs on a REANA deployment"},
-                "access_token": os.environ.get('REANA_ACCESS_TOKEN',None),
-                "cvmfs_repos": os.environ.get('RECAST_REANA_CVMFS_REPOS',['atlas.cern.ch','atlas-condb.cern.ch'])
+                "access_token": conf_form_env('REANA_ACCESS_TOKEN',None),
+                "cvmfs_repos": conf_form_env('RECAST_REANA_CVMFS_REPOS',['atlas.cern.ch','atlas-condb.cern.ch'])
             }
         }
 
@@ -75,7 +89,6 @@ class Config(object):
 
 
 config = Config()
-
 
 def validate_catalogue_entry(entry):
     for x in ['name','metadata','spec']:
