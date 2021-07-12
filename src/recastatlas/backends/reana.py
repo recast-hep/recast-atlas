@@ -5,13 +5,18 @@ from reana_client.api.client import (
     start_workflow,
     upload_to_server,
 )
+from reana_commons.api_client import get_current_api_client
 import os
 import yadageschemas
 import json
 import contextlib
 import urllib3
 from ..config import config
+from .. import exceptions
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+import logging
+log = logging.getLogger(__name__)
 
 @contextlib.contextmanager
 def working_directory(path):
@@ -26,12 +31,10 @@ class ReanaBackend:
     def __init__(self):
         self.auth_token = config.backends['reana']['access_token']
         self.cvmfs_repos = config.backends['reana']['cvmfs_repos']
-        assert self.auth_token
+        if not self.check_backend():
+            raise exceptions.BackendNotAvailableException('no REANA auth found')
 
     def submit(self, name, spec):
-        print(name)
-        
-
         wflowname = spec['dataarg']
         my_inputs = {
             "parameters": spec['initdata'],
@@ -54,7 +57,6 @@ class ReanaBackend:
             }
         }
 
-        from reana_commons.api_client import get_current_api_client
         client = get_current_api_client('reana-server')
         d = client.api.create_workflow(reana_specification = reana_yaml, workflow_name=wflowname, access_token = self.auth_token)
         result = d.response().result    
@@ -70,7 +72,7 @@ class ReanaBackend:
                 },
                 {}
             )
-            json.dump(wflowspec,wflowfile)
+            json.dump(wflowspec,wflowfile, indent = 4)
 
         abs_path_to_directories = [os.path.abspath(_wflowfile)]
         upload_to_server(wflowname, abs_path_to_directories, self.auth_token)
@@ -84,6 +86,7 @@ class ReanaBackend:
             abs_initdir = os.path.abspath(spec['dataopts']['initdir'])
             base_initdir = os.path.basename(spec['dataopts']['initdir'])
             with working_directory(os.path.dirname(abs_initdir)):
+                log.debug('uploading dir {abs_initdir}')
                 upload_to_server(wflowname, [abs_initdir], self.auth_token)
             operational_options['initdir'] = base_initdir
 
@@ -97,6 +100,7 @@ class ReanaBackend:
 
     def check_backend(self):
         try:
+            assert self.auth_token
             result = ping(self.auth_token)
             return not(result['error'])
         except:
