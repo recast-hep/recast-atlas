@@ -38,6 +38,7 @@ try:
 except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
+
 def get_shell_packtivity(name, spec, backend):
     workname = name
     shellcmd = "packtivity-util shell {spec} -t {toplevel}  -w {workname} {readdirs}".format(
