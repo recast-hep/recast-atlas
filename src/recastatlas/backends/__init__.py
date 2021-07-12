@@ -7,7 +7,7 @@ import base64
 import yaml
 import textwrap
 import shlex
-
+from .. import exceptions
 from ..config import config
 
 log = logging.getLogger(__name__)
@@ -16,26 +16,26 @@ BACKENDS = {}
 try:
     from .reana import ReanaBackend
     BACKENDS['reana'] = ReanaBackend()
-except ImportError:
+except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
 try:
     from .kubernetes import KubernetesBackend
     BACKENDS['kubernetes'] = KubernetesBackend()
-except ImportError:
+except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
 try:
     from .local import LocalBackend
     BACKENDS['local'] = LocalBackend()
-except ImportError:
+except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
 try:
     from .docker import DockerBackend
     from .docker import setup_docker
     BACKENDS['docker'] = DockerBackend()
-except ImportError:
+except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
 def get_shell_packtivity(name, spec, backend):
