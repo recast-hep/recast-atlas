@@ -49,5 +49,5 @@ jobs:
       run: |
         docker info
         recast --help
-        recast run testing/busyboxtest
+        recast run testing/busyboxtest --backend local
 
