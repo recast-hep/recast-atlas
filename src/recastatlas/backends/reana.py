@@ -1,5 +1,4 @@
 from reana_client.api.client import (
-    create_workflow_from_json,
     get_workflow_status,
     ping,
     start_workflow,

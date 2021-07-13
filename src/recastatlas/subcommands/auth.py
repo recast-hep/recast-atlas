@@ -113,9 +113,8 @@ def setup(answer):
 
 
 @auth.command(help = 'Prepare auth data on-disk for steps requiring them')
-@click.option("--basedir", default=None)
+@click.option("--basedir", default=os.path.join(os.environ.get('HOME',os.getcwd()),'.recast','auth'), show_default=True)
 def write(basedir):
-    basedir = basedir or os.path.join(os.environ.get('HOME',os.getcwd()),'.recast')
     if not os.path.exists(basedir):
         os.makedirs(basedir)
     krbfile = os.path.join(basedir, "getkrb.sh")

@@ -129,7 +129,10 @@ packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
             ),
         )
         command += ["sh", "-c", textwrap.dedent(script)]
-        subprocess.check_call(command)
+        try:
+            subprocess.check_call(command)
+        except subprocess.CalledProcessError:
+            raise FailedRunException
 
     def check_backend(self):
         try:

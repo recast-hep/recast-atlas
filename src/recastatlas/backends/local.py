@@ -4,6 +4,7 @@ from ..config import config
 from ..exceptions import FailedRunException
 import logging
 import subprocess
+import os
 
 log = logging.getLogger(__name__)
 

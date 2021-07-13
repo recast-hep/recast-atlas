@@ -1,4 +1,6 @@
 
+import json
+
 class KubernetesBackend:
     def submit(self, name, spec):
         workflow = {
