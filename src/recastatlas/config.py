@@ -2,7 +2,6 @@ import os
 import yaml
 import pkg_resources
 import glob
-import yaml
 import logging
 
 log = logging.getLogger(__name__)

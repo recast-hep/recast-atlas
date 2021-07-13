@@ -129,7 +129,7 @@ def status(infofile, backend):
 @click.option("--tunnel/--no-tunnel", default=False)
 @click.option("--format-result/--raw", default=True)
 def retrieve(infofile, name, instance, show_url, tunnel, format_result):
-    name, instance = get_name_instance(name, instance, infofile)
+    raise NotImplementedError
     backend = "kubernetes"
     if show_url:
         from kubernetes import client as k8client

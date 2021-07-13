@@ -1,14 +1,10 @@
-import click
 import json
 import logging
 import subprocess
 import os
-import base64
-import yaml
 import textwrap
 import shlex
 from .. import exceptions
-from ..config import config
 
 log = logging.getLogger(__name__)
 
