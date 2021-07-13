@@ -23,6 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        apt-get install -y graphviz libgraphviz-dev
         python -m pip install --upgrade pip setuptools wheel
         pip install -q --no-cache-dir -e .[develop,local]
         pip list
