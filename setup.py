@@ -40,6 +40,7 @@ setup(
       'kubernetes==9.0.0'
     ], 
     'reana': [
+      'reana-client==0.7.5'
     ]
   },
   entry_points = {

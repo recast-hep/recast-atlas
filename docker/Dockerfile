@@ -7,10 +7,7 @@ RUN  apk add py-pip automake autoconf libtool \
 WORKDIR /code
 COPY . /code
 RUN pip3 install lxml cryptography jq
-RUN pip3 install -e .[local,kubernetes]
-RUN python3 -m venv reanaenv && \
-    source reanaenv/bin/activate && pip install -U https://github.com/reanahub/reana-client/archive/refs/heads/maint-0.7.zip && \
-    pip3 install -e .
+RUN pip3 install -e .[local,kubernetes,reana]
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
 ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
 ENV PACKTIVITY_CVMFS_PROPAGATION rslave
