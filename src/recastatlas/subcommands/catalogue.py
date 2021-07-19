@@ -13,7 +13,7 @@ from ..testing import validate_entry
 
 
 log = logging.getLogger(__name__)
-default_meta = {"author": "unknown", "short_description": "no description"}
+default_meta = {"author": "unknown", "short_description": "no description", "tags": []}
 
 
 @click.group(help="The RECAST Analysis Catalogue")
@@ -87,8 +87,8 @@ def rm(path):
 
 @catalogue.command()
 def ls():
-    fmt = "{0:35}{1:60}{2:20}"
-    click.secho(fmt.format("NAME", "DESCRIPTION", "EXAMPLES"))
+    fmt = "{0:35}{1:60}{2:20}{3:20}"
+    click.secho(fmt.format("NAME", "DESCRIPTION", "EXAMPLES", "TAGS"))
 
     for k, v in sorted(config.catalogue.items(), key=lambda x: x[0]):
         click.secho(
@@ -96,6 +96,7 @@ def ls():
                 k,
                 v.get("metadata", default_meta)["short_description"],
                 ",".join(list(v.get("example_inputs", {}).keys())),
+                ",".join(v.get("metadata", default_meta).get('tags',[]))
             )
         )
 
