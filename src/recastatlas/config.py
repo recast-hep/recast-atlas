@@ -38,7 +38,7 @@ class Config(object):
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
                 "fromstring": conf_from_env("RECAST_DOCKER_BACKENDSTRING","multiproc:auto"),
-                "image": conf_from_env("RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.1.6"),
+                "image": conf_from_env("RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.1.7"),
                 "cvmfs": {"location": "/cvmfs", "propagation": "rprivate"},
                 "reg": {
                     "user": conf_from_env("RECAST_REGISTRY_USERNAME"),
