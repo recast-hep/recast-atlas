@@ -20,6 +20,7 @@ setup(
   include_package_data = True,
   install_requires = [
     'click',
+    'jsonschema',
     'pyyaml',
     'yadage-schemas==0.10.6',
   ],

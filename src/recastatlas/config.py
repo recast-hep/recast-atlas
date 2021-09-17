@@ -3,6 +3,7 @@ import yaml
 import pkg_resources
 import glob
 import logging
+import jsonschema
 
 log = logging.getLogger(__name__)
 
@@ -76,23 +77,42 @@ class Config(object):
         files = list(set(files))
         log.debug(files)
         for f in files:
-            d = yaml.safe_load(open(f))
-            if not validate_catalogue_entry(d):
-                continue
             log.debug(f'loading catalogue file {f}')
-            name = d.pop("name")
-            if not "toplevel" in d["spec"]:
-                d["spec"]["toplevel"] = os.path.realpath(
-                    os.path.join(os.path.dirname(f), "specs")
-                )
-            cfg[name] = d
+            entry = yaml.safe_load(open(f))
+            process_entry(cfg,f,entry)
         return cfg
-
 
 config = Config()
 
-def validate_catalogue_entry(entry):
-    for x in ['name','metadata','spec']:
-        if not x in entry:
-            return False
+def process_entry(cfg,fname,entry,tags = None):
+    if (entry is not None) and is_entry_file(entry):
+        name = entry.pop("name")
+        if not "toplevel" in entry["spec"]:
+            entry["spec"]["toplevel"] = os.path.realpath(
+                os.path.join(os.path.dirname(fname), "specs")
+            )
+            entry['metadata'].setdefault('tags',[]).extend(tags or [])
+        cfg[name] = entry
+    elif (entry is not None) and is_index_file(entry):
+        for index_f in entry['recast_catalogue_entries']:
+            index_f = os.path.join(os.path.dirname(fname),index_f)
+            log.debug(f'loading catalogue file {index_f}')
+            index_entry = yaml.safe_load(open(index_f))
+            process_entry(cfg,index_f,index_entry,entry['tags'])
+            
+def is_entry_file(entry):
+    schema = jsonschema.Draft7Validator({'required': ['name','metadata','spec']})    
+    try:
+        schema.validate(entry)
+    except jsonschema.exceptions.ValidationError:
+        return False
     return True
+
+def is_index_file(entry):
+    schema = jsonschema.Draft7Validator({'required': ['name','tags','recast_catalogue_entries']})    
+    try:
+        schema.validate(entry)
+    except jsonschema.exceptions.ValidationError:
+        return False
+    return True
+
