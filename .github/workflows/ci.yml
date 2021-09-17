@@ -27,27 +27,6 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         pip install -q --no-cache-dir -e .[develop,local]
         pip list
-    - name: Lint with Pyflakes
-      if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
-      run: |
-        pyflakes src
-    - name: Lint with Black
-      if: matrix.python-version == 3.7 && matrix.os == 'ubuntu-latest'
-      run: |
-        black src
     - name: Run unit tests
       run: |
         python -m pytest tests
-    - name: Docker Build
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        docker build -t recast/recastatlas:ci -f docker/Dockerfile $PWD
-    - name: Run
-      if: matrix.os == 'ubuntu-latest'
-      env:
-        RECAST_IMAGE: recast/recastatlas:ci
-      run: |
-        docker info
-        recast --help
-        recast run testing/busyboxtest --backend local
-
