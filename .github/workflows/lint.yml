@@ -27,9 +27,9 @@ jobs:
         python -m pip --quiet install --upgrade .[develop]
         python -m pip list
 
-    - name: Lint with Pyflakes
+    - name: Lint with flake8
       run: |
-        pyflakes src
+        python -m flake8 .
 
     - name: Lint with Black
       run: |
