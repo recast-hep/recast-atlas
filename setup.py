@@ -35,11 +35,13 @@ setup(
       'adage==0.10.1',
       'yadage-schemas==0.10.6',
       'packtivity==0.14.23',
-      'yadage[viz]==0.20.1',
+      'yadage==0.20.1',  # yadage[viz] breaks so install following manually
+      'pydot',  # from yadage[viz] extra
+      'pygraphviz'  # from yadage[viz] extra
     ],
     'kubernetes': [
       'kubernetes==9.0.0'
-    ], 
+    ],
     'reana': [
       'reana-client==0.7.5'
     ]
