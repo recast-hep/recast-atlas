@@ -57,7 +57,7 @@ def get_shell_packtivity(name, spec, backend):
         command, dockerconfig = setup_docker()
         script = """\
 mkdir -p ~/.docker
-echo '{dockerconfig}' > ~/.docker/config.json 
+echo '{dockerconfig}' > ~/.docker/config.json
 {command}
         """.format(
             dockerconfig=json.dumps(dockerconfig), command=shellcmd
