@@ -1,11 +1,17 @@
-name: CI/CD
+name: CI
 
 on:
   push:
+    branches:
+    - master
   pull_request:
+    branches:
+    - master
   # Run daily at 0:01 UTC
   schedule:
   - cron:  '1 0 * * *'
+  workflow_dispatch:
+
 
 jobs:
   test:
@@ -16,17 +22,25 @@ jobs:
         python-version: [3.6, 3.7, 3.8]
 
     steps:
-    - uses: actions/checkout@master
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+
+    - name: Install external dependencies
       run: |
+        sudo apt-get update -y
         sudo apt-get install -y graphviz libgraphviz-dev
+
+    - name: Install Python dependencies
+      run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install -q --no-cache-dir -e .[develop,local]
-        pip list
+        python -m pip --quiet install --no-cache-dir .[develop,local]
+        python -m pip list
+
     - name: Run unit tests
       run: |
         python -m pytest tests
