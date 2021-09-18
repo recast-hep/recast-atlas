@@ -27,7 +27,7 @@ setup(
   extras_require =  {
     'develop': {
       'pytest',
-      'pyflakes',
+      'flake8>=3.9.0',
       'black'
     },
     'local': [
