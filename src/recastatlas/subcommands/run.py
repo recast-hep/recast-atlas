@@ -62,7 +62,7 @@ def run(name, inputdata, example, backend, tag, format_result):
 
     log.info("RECAST run finished.")
 
-    if not "results" in data:
+    if "results" not in data:
         log.info(
             "No result file specified in config. Check out workdir for {} manually".format(
                 instance_id
@@ -166,7 +166,7 @@ def retrieve(infofile, name, instance, show_url, tunnel, format_result):
         )
         return
     data = config.catalogue[name]
-    if not "results" in data:
+    if "results" not in data:
         log.info(
             "No result file specified in config. Check out workdir for {} manually".format(
                 name

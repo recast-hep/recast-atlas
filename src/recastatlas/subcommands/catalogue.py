@@ -131,7 +131,7 @@ toplevel     : {toplevel}
 @click.argument("example")
 def example(name, example):
     data = config.catalogue[name]
-    if not example in data.get("example_inputs", {}):
+    if example not in data.get("example_inputs", {}):
         click.secho("example not found.")
         return
     click.secho(yaml.dump(data["example_inputs"][example], default_flow_style=False))

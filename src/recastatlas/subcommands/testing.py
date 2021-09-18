@@ -41,7 +41,7 @@ def run(name, testname, backend, tag):
     data = config.catalogue[name]
     testdict = {t.pop("name"): t for t in data["tests"]}
     for k, v in testdict.items():
-        if not "toplevel" in v:
+        if "toplevel" not in v:
             v["toplevel"] = data["spec"]["toplevel"]
 
     instance_id = "recast-test-{}".format(tag or str(uuid.uuid1()).split("-")[0])
@@ -67,7 +67,7 @@ def shell(name, testname, backend, tag):
     data = config.catalogue[name]
     testdict = {t.pop("name"): t for t in data["tests"]}
     for k, v in testdict.items():
-        if not "toplevel" in v:
+        if "toplevel" not in v:
             v["toplevel"] = data["spec"]["toplevel"]
 
     instance_id = "recast-testshell-{}".format(tag or str(uuid.uuid1()).split("-")[0])

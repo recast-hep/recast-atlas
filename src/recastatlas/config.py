@@ -106,7 +106,7 @@ config = Config()
 def process_entry(cfg, fname, entry, tags=None):
     if (entry is not None) and is_entry_file(entry):
         name = entry.pop("name")
-        if not "toplevel" in entry["spec"]:
+        if "toplevel" not in entry["spec"]:
             entry["spec"]["toplevel"] = os.path.realpath(
                 os.path.join(os.path.dirname(fname), "specs")
             )
