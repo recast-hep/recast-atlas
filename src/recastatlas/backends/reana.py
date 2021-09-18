@@ -1,3 +1,10 @@
+import contextlib
+import json
+import logging
+import os
+
+import urllib3
+import yadageschemas
 from reana_client.api.client import (
     get_workflow_status,
     ping,
@@ -5,17 +12,11 @@ from reana_client.api.client import (
     upload_to_server,
 )
 from reana_commons.api_client import get_current_api_client
-import os
-import yadageschemas
-import json
-import contextlib
-import urllib3
-from ..config import config
+
 from .. import exceptions
+from ..config import config
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-import logging
 
 log = logging.getLogger(__name__)
 
