@@ -1,6 +1,6 @@
 # RECAST for ATLAS
 
-[![Build Status](https://travis-ci.org/recast-hep/recast-atlas.svg?branch=master)](https://travis-ci.org/recast-hep/recast-atlas)
+[![CI](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml?query=branch%3Amaster)
 [![PyPI version](https://badge.fury.io/py/recast-atlas.svg)](https://badge.fury.io/py/recast-atlas)
 
 ATLAS tools to facilitate integration of ATLAS anlayses into RECAST
