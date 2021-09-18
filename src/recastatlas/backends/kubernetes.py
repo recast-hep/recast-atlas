@@ -1,5 +1,5 @@
-
 import json
+
 
 class KubernetesBackend:
     def submit(self, name, spec):
@@ -32,7 +32,7 @@ class KubernetesBackend:
         )
         try:
             status = json.loads(a.read())["status"]["workflow"]
-        except:
+        except Exception:  # TODO: Specify Exception type
             return {"status": "UNKNOWN"}
 
         if status.get("succeeded") == 1:
@@ -57,4 +57,4 @@ class KubernetesBackend:
             pass
         except k8sclient.rest.ApiException:
             pass
-        return False        
+        return False

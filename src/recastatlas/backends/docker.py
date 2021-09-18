@@ -10,6 +10,7 @@ import yaml
 
 log = logging.getLogger(__name__)
 
+
 def setup_docker():
     backend = "docker"
     cwd = os.getcwd()
@@ -88,18 +89,19 @@ def setup_docker():
             }
         }
     return command, dockerconfig
-    
+
+
 class DockerBackend:
-    def run_workflow(self,name,spec):
+    def run_workflow(self, name, spec):
         backend_config = config.backends['docker']["fromstring"]
 
-        spec["backend"] = spec.get('backend',backend_config)
+        spec["backend"] = spec.get('backend', backend_config)
         command, dockerconfig = setup_docker()
 
         script = """\
         mkdir -p ~/.docker
-        echo '{dockerconfig}' > ~/.docker/config.json 
-        cat << 'EOF' | yadage-run -f - 
+        echo '{dockerconfig}' > ~/.docker/config.json
+        cat << 'EOF' | yadage-run -f -
         {spec}
         EOF
         """.format(
@@ -107,8 +109,8 @@ class DockerBackend:
         )
         command += ["sh", "-c", textwrap.dedent(script)]
         subprocess.check_call(command)
-        
-    def run_packtivity(self,name,spec):
+
+    def run_packtivity(self, name, spec):
         workname = name
         command, dockerconfig = setup_docker()
         script = """\
@@ -116,7 +118,7 @@ mkdir -p ~/.docker
 cat << 'EOF' > /tmp/pars.yml
 {pars}
 EOF
-echo '{dockerconfig}' > ~/.docker/config.json 
+echo '{dockerconfig}' > ~/.docker/config.json
 packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
         """.format(
             spec=spec["spec"],
@@ -140,6 +142,6 @@ packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
                 ["docker", "info"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
             return rc == 0
-        except:
+        except Exception:  # TODO: Specify Exception type
             pass
         return False

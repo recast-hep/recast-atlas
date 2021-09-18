@@ -8,6 +8,7 @@ import os
 
 log = logging.getLogger(__name__)
 
+
 class LocalBackend:
     def run_workflow(self, name, spec):
         backend_config = config.backends['local']["fromstring"]
@@ -18,7 +19,7 @@ class LocalBackend:
 
         try:
             run_workflow(**spec)
-        except:
+        except Exception:  # TODO: Specify Exception type
             raise FailedRunException
 
     def run_packtivity(self, name, spec):
@@ -44,6 +45,6 @@ class LocalBackend:
                 ["docker", "info"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
             return rc == 0
-        except:
+        except Exception:  # TODO: Specify Exception type
             pass
         return False

@@ -27,18 +27,22 @@ def make_spec(name, data, inputs):
 @click.argument("name")
 @click.argument("inputdata", default="")
 @click.option("--example", default="default")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
+@click.option(
+    "--backend",
+    type=click.Choice(["local", "docker"]),
+    default=config.default_run_backend,
+)
 @click.option("--tag", default=None)
 @click.option("--format-result/--raw", default=True)
 def run(name, inputdata, example, backend, tag, format_result):
     data = config.catalogue[name]
-            
+
     if inputdata:
         inputs = yaml.safe_load(open(inputdata))
     else:
         try:
             inputs = data["example_inputs"][example]
-        except:
+        except Exception:  # TODO: Specify Exception type
             raise click.ClickException(
                 "Example '{}' not found. Choose from {}".format(
                     example, list(data.get("example_inputs", {}).keys())
@@ -49,19 +53,16 @@ def run(name, inputdata, example, backend, tag, format_result):
     spec = make_spec(instance_id, data, inputs)
 
     try:
-            run_sync(name, spec, backend=backend)
-    except:
+        run_sync(name, spec, backend=backend)
+    except Exception:  # TODO: Specify Exception type
         log.exception("caught exception")
-        exc = click.exceptions.ClickException(
-            click.style("Workflow failed", fg="red")
-        )
+        exc = click.exceptions.ClickException(click.style("Workflow failed", fg="red"))
         exc.exit_code = 1
         raise exc
 
-
     log.info("RECAST run finished.")
 
-    if not "results" in data:
+    if "results" not in data:
         log.info(
             "No result file specified in config. Check out workdir for {} manually".format(
                 instance_id
@@ -80,13 +81,14 @@ def run(name, inputdata, example, backend, tag, format_result):
             )
         )
 
+
 @click.command(help="Submit a RECAST Workflow asynchronously")
 @click.argument("name")
 @click.argument("inputdata", default="")
 @click.option("--example", default="default")
 @click.option("--infofile", default=None)
 @click.option("--tag", default=None)
-@click.option("--backend", type = click.Choice(['kubernetes','reana']))
+@click.option("--backend", type=click.Choice(['kubernetes', 'reana']))
 def submit(name, inputdata, example, infofile, tag, backend):
     analysis_id = name
     data = config.catalogue[analysis_id]
@@ -95,7 +97,7 @@ def submit(name, inputdata, example, infofile, tag, backend):
     else:
         try:
             inputs = data["example_inputs"][example]
-        except:
+        except Exception:  # TODO: Specify Exception type
             raise click.ClickException(
                 "Example '{}' not found. Choose from {}".format(
                     example, list(data.get("example_inputs", {}).keys())
@@ -110,16 +112,25 @@ def submit(name, inputdata, example, infofile, tag, backend):
     click.secho("{} submitted".format(str(instance_id)))
     if infofile:
         with open(infofile, "w") as info:
-            json.dump({"analysis_id": analysis_id, "instance_id": instance_id, 'submission': submission}, info)
+            json.dump(
+                {
+                    "analysis_id": analysis_id,
+                    "instance_id": instance_id,
+                    'submission': submission,
+                },
+                info,
+            )
+
 
 @click.command(help="Get the Status of a asynchronous submission")
 @click.option("--infofile", default=None)
-@click.option("--backend", type = click.Choice(['kubernetes','reana']))
+@click.option("--backend", type=click.Choice(['kubernetes', 'reana']))
 def status(infofile, backend):
     submission = json.load(open(infofile))
     instance = submission['instance_id']
     status = check_async(submission, backend=backend)
     click.secho("{}\t{}".format(instance, status["status"]))
+
 
 @click.command(help="Retrieve RECAST Results from asynchronous submissions")
 @click.option("--name", default=None)
@@ -155,7 +166,7 @@ def retrieve(infofile, name, instance, show_url, tunnel, format_result):
         )
         return
     data = config.catalogue[name]
-    if not "results" in data:
+    if "results" not in data:
         log.info(
             "No result file specified in config. Check out workdir for {} manually".format(
                 name

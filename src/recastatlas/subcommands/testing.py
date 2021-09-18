@@ -31,13 +31,17 @@ def ls(name):
 @testing.command(help="Run a test")
 @click.argument("name")
 @click.argument("testname")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default = config.default_run_backend)
+@click.option(
+    "--backend",
+    type=click.Choice(["local", "docker"]),
+    default=config.default_run_backend,
+)
 @click.option("--tag", default=None)
 def run(name, testname, backend, tag):
     data = config.catalogue[name]
     testdict = {t.pop("name"): t for t in data["tests"]}
     for k, v in testdict.items():
-        if not "toplevel" in v:
+        if "toplevel" not in v:
             v["toplevel"] = data["spec"]["toplevel"]
 
     instance_id = "recast-test-{}".format(tag or str(uuid.uuid1()).split("-")[0])
@@ -53,13 +57,17 @@ def run(name, testname, backend, tag):
 @testing.command(help="Run a test")
 @click.argument("name")
 @click.argument("testname")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
+@click.option(
+    "--backend",
+    type=click.Choice(["local", "docker"]),
+    default=config.default_run_backend,
+)
 @click.option("--tag", default=None)
 def shell(name, testname, backend, tag):
     data = config.catalogue[name]
     testdict = {t.pop("name"): t for t in data["tests"]}
     for k, v in testdict.items():
-        if not "toplevel" in v:
+        if "toplevel" not in v:
             v["toplevel"] = data["spec"]["toplevel"]
 
     instance_id = "recast-testshell-{}".format(tag or str(uuid.uuid1()).split("-")[0])

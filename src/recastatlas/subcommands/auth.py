@@ -24,11 +24,12 @@ def auth():
     pass
 
 
-@auth.command(help = "show current auth configuration")
+@auth.command(help="show current auth configuration")
 def show():
-    click.echo('Authdir: {}'.format(os.environ.get(envvar['auth_location'],'not set')))
+    click.echo('Authdir: {}'.format(os.environ.get(envvar['auth_location'], 'not set')))
 
-@auth.command(help = 'configure authentication')
+
+@auth.command(help='configure authentication')
 @click.option("-a", "--answer", multiple=True)
 def setup(answer):
     expt = "ATLAS"
@@ -111,9 +112,12 @@ def setup(answer):
     )
 
 
-
-@auth.command(help = 'Prepare auth data on-disk for steps requiring them')
-@click.option("--basedir", default=os.path.join(os.environ.get('HOME',os.getcwd()),'.recast','auth'), show_default=True)
+@auth.command(help='Prepare auth data on-disk for steps requiring them')
+@click.option(
+    "--basedir",
+    default=os.path.join(os.environ.get('HOME', os.getcwd()), '.recast', 'auth'),
+    show_default=True,
+)
 def write(basedir):
     if not os.path.exists(basedir):
         os.makedirs(basedir)
@@ -129,26 +133,42 @@ def write(basedir):
         "export {}={}".format(envvar["auth_location"], os.path.abspath(basedir))
     )
 
-    shutil.copy(pkg_resources.resource_filename("recastatlas", "data/getkrb_reana.sh"),os.path.join(basedir,"getkrb_reana.sh"))
-    shutil.copy(pkg_resources.resource_filename("recastatlas", "data/expect_script.sh"),os.path.join(basedir,"expect_script.sh"))
-    click.echo('Wrote Authentication Data to {} (Note! This includes passwords/tokens)'.format(basedir), err=True)
+    shutil.copy(
+        pkg_resources.resource_filename("recastatlas", "data/getkrb_reana.sh"),
+        os.path.join(basedir, "getkrb_reana.sh"),
+    )
+    shutil.copy(
+        pkg_resources.resource_filename("recastatlas", "data/expect_script.sh"),
+        os.path.join(basedir, "expect_script.sh"),
+    )
+    click.echo(
+        'Wrote Authentication Data to {} (Note! This includes passwords/tokens)'.format(
+            basedir
+        ),
+        err=True,
+    )
 
-@auth.command(help = 'Configure REANA with authentication information.')
+
+@auth.command(help='Configure REANA with authentication information.')
 def reana_setup():
-    click.secho((
-        "docker run --rm "+
-        "-v $PACKTIVITY_AUTH_LOCATION:$PACKTIVITY_AUTH_LOCATION -w $PACKTIVITY_AUTH_LOCATION "+
-        "reanahub/reana-auth-krb5:1.0.1 ./expect_script.sh $RECAST_AUTH_USERNAME $RECAST_AUTH_PASSWORD;"
-    ))
-    click.secho((
-        "reana-client secrets-add --overwrite "+
-        "--env CERN_USER=$RECAST_AUTH_USERNAME --env CERN_KEYTAB=reana_keytab "+
-        "--env KRB_SETUP_SCRIPT=/etc/reana/secrets/getkrb_reana.sh "+
-        "--file $PACKTIVITY_AUTH_LOCATION/getkrb_reana.sh --file $PACKTIVITY_AUTH_LOCATION/reana_keytab"
-    ))
+    click.secho(
+        (
+            "docker run --rm "
+            + "-v $PACKTIVITY_AUTH_LOCATION:$PACKTIVITY_AUTH_LOCATION -w $PACKTIVITY_AUTH_LOCATION "
+            + "reanahub/reana-auth-krb5:1.0.1 ./expect_script.sh $RECAST_AUTH_USERNAME $RECAST_AUTH_PASSWORD;"
+        )
+    )
+    click.secho(
+        (
+            "reana-client secrets-add --overwrite "
+            + "--env CERN_USER=$RECAST_AUTH_USERNAME --env CERN_KEYTAB=reana_keytab "
+            + "--env KRB_SETUP_SCRIPT=/etc/reana/secrets/getkrb_reana.sh "
+            + "--file $PACKTIVITY_AUTH_LOCATION/getkrb_reana.sh --file $PACKTIVITY_AUTH_LOCATION/reana_keytab"
+        )
+    )
 
 
-@auth.command(help = 'Unset/Remove auth-relevant env vars/directories')
+@auth.command(help='Unset/Remove auth-relevant env vars/directories')
 def destroy():
     if sys.stdout.isatty():
         click.secho("Use eval $(recast auth destroy) to unset the variables", fg="red")
@@ -161,10 +181,14 @@ def destroy():
             shutil.rmtree(auth_loc)
 
 
-@auth.command(help = 'check access for private images')
+@auth.command(help='check access for private images')
 @click.argument("image", default="gitlab-registry.cern.ch/lheinric/atlasonlytestimages")
-@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
-def check_access_image(image,backend):
+@click.option(
+    "--backend",
+    type=click.Choice(["local", "docker"]),
+    default=config.default_run_backend,
+)
+def check_access_image(image, backend):
     if envvar["registry_user"] not in os.environ:
         raise RuntimeError("run `eval $(recast auth setup)` first")
 
@@ -218,14 +242,18 @@ environment:
     click.secho("Access: {}".format("ok" if log_ok else "not ok"))
 
 
-@auth.command(help = 'check access to private data')
+@auth.command(help='check access to private data')
 @click.option("--image", default="lukasheinrich/xrootdclient:latest")
 @click.argument(
     "location",
     default="root://eosuser.cern.ch//eos/project/r/recast/atlas/testauth/testfile.txt",
 )
-@click.option("--backend", type=click.Choice(["local", "docker"]), default=config.default_run_backend)
-def check_access_xrootd(image, location,backend):
+@click.option(
+    "--backend",
+    type=click.Choice(["local", "docker"]),
+    default=config.default_run_backend,
+)
+def check_access_xrootd(image, location, backend):
 
     image = image.split(":", 1)
     if len(image) > 1:
@@ -296,7 +324,7 @@ environment:
     click.secho("Access: {}".format("ok" if access_ok else "not ok"))
 
 
-@auth.command(help = 'configure to use preset on-disk loaction of auth data')
+@auth.command(help='configure to use preset on-disk loaction of auth data')
 @click.argument("location")
 def use(location):
     click.secho(
