@@ -13,7 +13,7 @@ def conf_from_env(var, default=None):
     if v is not None:
         try:
             return yaml.safe_load(v)
-        except:
+        except Exception:  # TODO: Specify Exception type
             log.error(f'could not get config from env var {var} (value: {v})')
             raise
     return default

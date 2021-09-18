@@ -109,5 +109,5 @@ class ReanaBackend:
             assert self.auth_token
             result = ping(self.auth_token)
             return not (result['error'])
-        except:
+        except Exception:  # TODO: Specify Exception type
             return False

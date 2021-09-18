@@ -42,7 +42,7 @@ def run(name, inputdata, example, backend, tag, format_result):
     else:
         try:
             inputs = data["example_inputs"][example]
-        except:
+        except Exception:  # TODO: Specify Exception type
             raise click.ClickException(
                 "Example '{}' not found. Choose from {}".format(
                     example, list(data.get("example_inputs", {}).keys())
@@ -54,7 +54,7 @@ def run(name, inputdata, example, backend, tag, format_result):
 
     try:
         run_sync(name, spec, backend=backend)
-    except:
+    except Exception:  # TODO: Specify Exception type
         log.exception("caught exception")
         exc = click.exceptions.ClickException(click.style("Workflow failed", fg="red"))
         exc.exit_code = 1
@@ -97,7 +97,7 @@ def submit(name, inputdata, example, infofile, tag, backend):
     else:
         try:
             inputs = data["example_inputs"][example]
-        except:
+        except Exception:  # TODO: Specify Exception type
             raise click.ClickException(
                 "Example '{}' not found. Choose from {}".format(
                     example, list(data.get("example_inputs", {}).keys())

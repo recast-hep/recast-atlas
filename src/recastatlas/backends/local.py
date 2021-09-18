@@ -19,7 +19,7 @@ class LocalBackend:
 
         try:
             run_workflow(**spec)
-        except:
+        except Exception:  # TODO: Specify Exception type
             raise FailedRunException
 
     def run_packtivity(self, name, spec):
@@ -45,6 +45,6 @@ class LocalBackend:
                 ["docker", "info"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
             return rc == 0
-        except:
+        except Exception:  # TODO: Specify Exception type
             pass
         return False

@@ -24,7 +24,7 @@ def validate_entry(data):
             },
         )
         return True
-    except:
+    except Exception:  # TODO: Specify Exception type
         pass
     return False
 

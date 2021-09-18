@@ -32,7 +32,7 @@ class KubernetesBackend:
         )
         try:
             status = json.loads(a.read())["status"]["workflow"]
-        except:
+        except Exception:  # TODO: Specify Exception type
             return {"status": "UNKNOWN"}
 
         if status.get("succeeded") == 1:

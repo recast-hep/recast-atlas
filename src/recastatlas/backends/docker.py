@@ -100,8 +100,8 @@ class DockerBackend:
 
         script = """\
         mkdir -p ~/.docker
-        echo '{dockerconfig}' > ~/.docker/config.json 
-        cat << 'EOF' | yadage-run -f - 
+        echo '{dockerconfig}' > ~/.docker/config.json
+        cat << 'EOF' | yadage-run -f -
         {spec}
         EOF
         """.format(
@@ -118,7 +118,7 @@ mkdir -p ~/.docker
 cat << 'EOF' > /tmp/pars.yml
 {pars}
 EOF
-echo '{dockerconfig}' > ~/.docker/config.json 
+echo '{dockerconfig}' > ~/.docker/config.json
 packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
         """.format(
             spec=spec["spec"],
@@ -142,6 +142,6 @@ packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
                 ["docker", "info"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
             return rc == 0
-        except:
+        except Exception:  # TODO: Specify Exception type
             pass
         return False
