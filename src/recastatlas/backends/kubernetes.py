@@ -1,5 +1,5 @@
-
 import json
+
 
 class KubernetesBackend:
     def submit(self, name, spec):
@@ -57,4 +57,4 @@ class KubernetesBackend:
             pass
         except k8sclient.rest.ApiException:
             pass
-        return False        
+        return False

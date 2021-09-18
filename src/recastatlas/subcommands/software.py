@@ -4,7 +4,7 @@ import os
 from ..config import config
 
 
-@click.group(help = 'Build Container Images for RECAST')
+@click.group(help='Build Container Images for RECAST')
 def software():
     pass
 
@@ -12,10 +12,14 @@ def software():
 @software.command()
 @click.argument('name')
 @click.argument('path', default='.')
-@click.option('--backend', type=click.Choice(['docker', 'kubernetes']), default = config.default_build_backend)
+@click.option(
+    '--backend',
+    type=click.Choice(['docker', 'kubernetes']),
+    default=config.default_build_backend,
+)
 @click.option('--addr', default=config.backends['kubernetes']['buildkit_addr'])
 @click.option('--push/--no-push', default=False)
-def build(path, name, backend, addr,push):
+def build(path, name, backend, addr, push):
     image = 'gitlab-registry.cern.ch/recast-atlas/images/{}'.format(name)
     path = os.path.abspath(path)
     if backend == 'kubernetes':
@@ -32,7 +36,7 @@ def build(path, name, backend, addr,push):
                 '--local',
                 'dockerfile={}'.format(path),
                 '--output',
-                'type=image,name={},push={}'.format(image,'true' if push else 'false'),
+                'type=image,name={},push={}'.format(image, 'true' if push else 'false'),
             ]
         )
     elif backend == 'docker':

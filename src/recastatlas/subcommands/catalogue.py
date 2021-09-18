@@ -53,37 +53,41 @@ def create(name, path):
         )
     )
 
+
 @catalogue.command()
 def paths():
     paths = config.catalogue_paths()
-    out = '\n'.join(['* '+x for x in paths])
+    out = '\n'.join(['* ' + x for x in paths])
     click.secho('Paths considered by RECAST:\n--------------------------')
     click.secho(out)
+
 
 @catalogue.command()
 @click.argument("path")
 def add(path):
     path = os.path.realpath(path)
     if os.path.exists(path) and os.path.isdir(path):
-        paths = config.catalogue_paths(include_default = False)
+        paths = config.catalogue_paths(include_default=False)
         paths.append(path)
         paths = sorted(list(set(paths)))
         click.secho("export RECAST_ATLAS_CATALOGUE=" + ":".join(paths))
     else:
-        log.warning("path %s does not exist or is not a directory",path)
+        log.warning("path %s does not exist or is not a directory", path)
         raise click.Abort()
+
 
 @catalogue.command()
 @click.argument("path")
 def rm(path):
     path = os.path.realpath(path)
-    paths = config.catalogue_paths(include_default = False)
+    paths = config.catalogue_paths(include_default=False)
     filtered_paths = [p for p in paths if p != path]
     filtered_paths = sorted(list(set(filtered_paths)))
     if not filtered_paths:
         click.secho('unset RECAST_ATLAS_CATALOGUE')
     else:
         click.secho("export RECAST_ATLAS_CATALOGUE=" + ":".join(filtered_paths))
+
 
 @catalogue.command()
 def ls():
@@ -96,7 +100,7 @@ def ls():
                 k,
                 v.get("metadata", default_meta)["short_description"],
                 ",".join(list(v.get("example_inputs", {}).keys())),
-                ",".join(v.get("metadata", default_meta).get('tags',[]))
+                ",".join(v.get("metadata", default_meta).get('tags', [])),
             )
         )
 
@@ -114,7 +118,10 @@ description  : {short:20}
 author       : {author}
 toplevel     : {toplevel}
 """.format(
-        author=metadata.get("author",'N/A'), name=name, short=metadata.get("short_description","N/A"), toplevel = data['spec']['toplevel']
+        author=metadata.get("author", 'N/A'),
+        name=name,
+        short=metadata.get("short_description", "N/A"),
+        toplevel=data['spec']['toplevel'],
     )
     click.secho(toprint)
 

@@ -10,6 +10,7 @@ import yaml
 
 log = logging.getLogger(__name__)
 
+
 def setup_docker():
     backend = "docker"
     cwd = os.getcwd()
@@ -88,12 +89,13 @@ def setup_docker():
             }
         }
     return command, dockerconfig
-    
+
+
 class DockerBackend:
-    def run_workflow(self,name,spec):
+    def run_workflow(self, name, spec):
         backend_config = config.backends['docker']["fromstring"]
 
-        spec["backend"] = spec.get('backend',backend_config)
+        spec["backend"] = spec.get('backend', backend_config)
         command, dockerconfig = setup_docker()
 
         script = """\
@@ -107,8 +109,8 @@ class DockerBackend:
         )
         command += ["sh", "-c", textwrap.dedent(script)]
         subprocess.check_call(command)
-        
-    def run_packtivity(self,name,spec):
+
+    def run_packtivity(self, name, spec):
         workname = name
         command, dockerconfig = setup_docker()
         script = """\

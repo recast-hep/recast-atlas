@@ -12,10 +12,13 @@ import contextlib
 import urllib3
 from ..config import config
 from .. import exceptions
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import logging
+
 log = logging.getLogger(__name__)
+
 
 @contextlib.contextmanager
 def working_directory(path):
@@ -25,7 +28,8 @@ def working_directory(path):
         yield
     finally:
         os.chdir(prev_cwd)
-        
+
+
 class ReanaBackend:
     def __init__(self):
         self.auth_token = config.backends['reana']['access_token']
@@ -38,46 +42,44 @@ class ReanaBackend:
         my_inputs = {
             "parameters": spec['initdata'],
         }
-        
+
         _wflowfile = '_reana_wflow.json'
 
         ping(self.auth_token)
 
-        reana_yaml ={
-            'inputs': {
-                'parameters': my_inputs['parameters']
-            },
+        reana_yaml = {
+            'inputs': {'parameters': my_inputs['parameters']},
             'workflow': {
                 'type': 'yadage',
                 'file': _wflowfile,
-                'resources': {
-                    'cvmfs': self.cvmfs_repos
-                }
-            }
+                'resources': {'cvmfs': self.cvmfs_repos},
+            },
         }
 
         client = get_current_api_client('reana-server')
-        d = client.api.create_workflow(reana_specification = reana_yaml, workflow_name=wflowname, access_token = self.auth_token)
-        result = d.response().result    
-        
-        with open(_wflowfile,'w') as wflowfile:
+        d = client.api.create_workflow(
+            reana_specification=reana_yaml,
+            workflow_name=wflowname,
+            access_token=self.auth_token,
+        )
+        result = d.response().result
+
+        with open(_wflowfile, 'w') as wflowfile:
             wflowspec = yadageschemas.load(
                 spec['workflow'],
                 {
                     'toplevel': spec['toplevel'],
                     'load_as_ref': False,
                     'schema_name': 'yadage/workflow-schema',
-                    'schemadir': yadageschemas.schemadir
+                    'schemadir': yadageschemas.schemadir,
                 },
-                {}
+                {},
             )
-            json.dump(wflowspec,wflowfile, indent = 4)
+            json.dump(wflowspec, wflowfile, indent=4)
 
         abs_path_to_directories = [os.path.abspath(_wflowfile)]
         upload_to_server(wflowname, abs_path_to_directories, self.auth_token)
         os.remove(_wflowfile)
-
-
 
         operational_options = {}
 
@@ -89,18 +91,22 @@ class ReanaBackend:
                 upload_to_server(wflowname, [abs_initdir], self.auth_token)
             operational_options['initdir'] = base_initdir
 
-        start_workflow(wflowname, self.auth_token, {'operational_options': operational_options})
+        start_workflow(
+            wflowname, self.auth_token, {'operational_options': operational_options}
+        )
 
         return result
 
     def check_workflow(self, submission):
-        status_details = get_workflow_status(submission['submission']['workflow_id'], self.auth_token)
+        status_details = get_workflow_status(
+            submission['submission']['workflow_id'], self.auth_token
+        )
         return status_details
 
     def check_backend(self):
         try:
             assert self.auth_token
             result = ping(self.auth_token)
-            return not(result['error'])
+            return not (result['error'])
         except:
             return False

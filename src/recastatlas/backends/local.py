@@ -8,6 +8,7 @@ import os
 
 log = logging.getLogger(__name__)
 
+
 class LocalBackend:
     def run_workflow(self, name, spec):
         backend_config = config.backends['local']["fromstring"]
