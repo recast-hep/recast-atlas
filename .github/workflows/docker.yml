@@ -78,3 +78,9 @@ jobs:
 
       - name: List built images
         run: docker images
+
+      - name: Check recast CLI functional
+        run: >-
+          docker run --rm
+          recast/recastatlas:sha-${GITHUB_SHA::8}
+          sh -c 'recast --help'
