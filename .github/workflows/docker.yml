@@ -79,8 +79,8 @@ jobs:
       - name: List built images
         run: docker images
 
-      - name: Check basic run works
+      - name: Check recast CLI functional
         run: >-
           docker run --rm
           recast/recastatlas:sha-${GITHUB_SHA::8}
-          -c "recast --help; recast run testing/busyboxtest --backend local"
+          sh -c 'recast --help'
