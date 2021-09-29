@@ -2,26 +2,18 @@ name: Deploy
 
 on:
   create:
-    tags:        
+    tags:
       - .*
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@master
-    - name: Create Python Dist
-      run: |
-        python setup.py sdist
-      
-    - name: Upload to PyPI
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASS }}
-      run: |
-        python -m pip install twine
-        python -m twine upload dist/*
+
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Docker Build
       env:
@@ -35,4 +27,4 @@ jobs:
         DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
       run: |
         docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-        docker push recast/recastatlas:${GITHUB_REF:10}        
+        docker push recast/recastatlas:${GITHUB_REF:10}
