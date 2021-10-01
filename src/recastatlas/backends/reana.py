@@ -85,8 +85,8 @@ class ReanaBackend:
         operational_options = {}
 
         if 'dataopts' in spec and 'initdir' in spec['dataopts']:
-            abs_initdir = os.path.abspath(spec['dataopts']['initdir'])
-            base_initdir = os.path.basename(spec['dataopts']['initdir'])
+            abs_initdir = os.path.abspath(spec['dataopts']['initdir'].rstrip('/'))
+            base_initdir = os.path.basename(spec['dataopts']['initdir'].rstrip('/'))
             with working_directory(os.path.dirname(abs_initdir)):
                 log.debug('uploading dir {abs_initdir}')
                 upload_to_server(wflowname, [abs_initdir], self.auth_token)
