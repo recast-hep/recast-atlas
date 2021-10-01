@@ -2,8 +2,10 @@ name: publish distributions
 
 on:
   push:
-    # branches:
-    # - master
+    branches:
+    - master
+    tags:
+      - v*
   pull_request:
     branches:
     - master
@@ -52,14 +54,15 @@ jobs:
       run: python -m zipfile --list dist/recast_atlas-*.whl
 
     - name: Publish distribution 📦 to Test PyPI
-      # every PR will trigger a push event on master, so check the push event is actually coming from master
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'recast-hep/recast-atlas'
+      # publish to TestPyPI on tag events
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'recast-hep/recast-atlas'
       uses: pypa/gh-action-pypi-publish@v1.4.2
       with:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
 
     - name: Publish distribution 📦 to PyPI
+      # publish to PyPI on releases
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
       uses: pypa/gh-action-pypi-publish@v1.4.2
       with:
