@@ -9,7 +9,7 @@ ATLAS tools to facilitate integration of ATLAS anlayses into RECAST
 
 ### Install
 
-This package is installable via the standard Python package managment toolls. E.g.:
+This package is installable via the standard Python package management tools. E.g.:
 
 ```
 pip install recast-atlas
