@@ -19,7 +19,7 @@ $ bump2version <part>
 3. Push the commit and the tag to GitHub, triggering a distribution to be built and published to [TestPyPI](https://test.pypi.org/project/recast-atlas/).
 
 ```console
-$ git push --tags
+$ git push origin master --tags
 ```
 
 4. Got to [TestPyPI](https://test.pypi.org/project/recast-atlas/) to check that the release page looks okay. If you want to verify that the sdist and wheel are valid you can either download them manually or with
