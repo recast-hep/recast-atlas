@@ -3,9 +3,9 @@
 [![CI](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml?query=branch%3Amaster)
 [![PyPI version](https://badge.fury.io/py/recast-atlas.svg)](https://badge.fury.io/py/recast-atlas)
 
-ATLAS tools to facilitate integration of ATLAS anlayses into RECAST
+ATLAS tools to facilitate integration of ATLAS analyses into RECAST
 
-## Gettting Started
+## Getting Started
 
 ### Install
 
@@ -17,7 +17,7 @@ python -m pip install recast-atlas
 
 ### Running RECAST
 
-The `recast` tool aims to enable both local execution as well as asynchronous execution on  a [REANA](http://reana.io) cluster. Via the 
+The `recast` tool aims to enable both local execution as well as asynchronous execution on a [REANA](http://reana.io) cluster. Via the
 
 #### Locally:
 
