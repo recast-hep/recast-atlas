@@ -2,8 +2,8 @@ name: Docs
 
 on:
   push:
-    branches:
-    - master
+    # branches:
+    # - master
   pull_request:
   workflow_dispatch:
 
@@ -43,7 +43,7 @@ jobs:
         touch docs/_build/html/.nojekyll
 
     - name: Deploy docs to GitHub Pages
-      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+      # if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
