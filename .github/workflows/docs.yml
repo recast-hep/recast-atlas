@@ -27,13 +27,19 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
+    - name: Install external dependencies
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y \
+          graphviz \
+          libgraphviz-dev \
+          pandoc
+
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
         python -m pip --use-feature=in-tree-build install --upgrade .[docs,local,kubernetes]
         python -m pip list
-        sudo apt-get update
-        sudo apt-get -qq install pandoc
 
     - name: Test and build docs
       run: |
