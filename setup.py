@@ -2,6 +2,12 @@ from setuptools import setup
 
 extras_require = {
     'develop': {'pytest', 'flake8>=3.9.0', 'black'},
+    'docs': [
+        'sphinx>=4.0.0',
+        'sphinx-click>=3.0.1',
+        'furo>=2021.09.22',
+        'sphinx-copybutton>=0.3.2',
+    ],
     'local': [
         'pydotplus==2.0.2',
         'adage==0.10.1',
