@@ -1,0 +1,35 @@
+﻿recastatlas.backends
+====================
+
+.. automodule:: recastatlas.backends
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      check_async
+      check_backend
+      get_shell_packtivity
+      install_backend
+      run_async
+      run_sync
+      run_sync_packtivity
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

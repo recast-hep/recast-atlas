@@ -1,0 +1,29 @@
+﻿recastatlas.backends.local
+==========================
+
+.. automodule:: recastatlas.backends.local
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      LocalBackend
+   
+   
+
+   
+   
+   
+
+
+
