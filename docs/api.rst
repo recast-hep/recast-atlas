@@ -13,6 +13,20 @@ Top-Level
    backends
    data
 
+Backends
+--------
+
+.. currentmodule:: recastatlas.backends
+
+.. autosummary::
+   :toctree: _generated/
+   :nosignatures:
+
+   docker
+   kubernetes
+   local
+   reana
+
 Subcommands
 -----------
 
