@@ -1,5 +1,7 @@
 # RECAST for ATLAS
 
+[![docs](https://img.shields.io/badge/docs-master-blue.svg)](https://recast-hep.github.io/recast-atlas/)
+
 [![CI](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml?query=branch%3Amaster)
 [![PyPI version](https://badge.fury.io/py/recast-atlas.svg)](https://badge.fury.io/py/recast-atlas)
 
