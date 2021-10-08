@@ -92,6 +92,9 @@ def setup_docker():
 
 
 class DockerBackend:
+    """
+    Docker RECAST backend
+    """
     def run_workflow(self, name, spec):
         backend_config = config.backends['docker']["fromstring"]
 

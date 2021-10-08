@@ -10,6 +10,9 @@ log = logging.getLogger(__name__)
 
 
 class LocalBackend:
+    """
+    Local RECAST backend
+    """
     def run_workflow(self, name, spec):
         backend_config = config.backends['local']["fromstring"]
 

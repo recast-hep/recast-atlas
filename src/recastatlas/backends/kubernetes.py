@@ -2,6 +2,9 @@ import json
 
 
 class KubernetesBackend:
+    """
+    Kubernetes RECAST backend
+    """
     def submit(self, name, spec):
         workflow = {
             "apiVersion": "yadage.github.io/v1",

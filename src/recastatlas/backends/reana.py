@@ -32,6 +32,9 @@ def working_directory(path):
 
 
 class ReanaBackend:
+    """
+    REANA RECAST backend
+    """
     def __init__(self):
         self.auth_token = config.backends['reana']['access_token']
         self.cvmfs_repos = config.backends['reana']['cvmfs_repos']
