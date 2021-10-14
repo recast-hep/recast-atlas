@@ -6,7 +6,7 @@
 #              jq util-linux font-bitstream-type1 build-base graphviz-dev imagemagick graphviz gcc musl-dev python3-dev libffi-dev openssl-dev cargo libxml2-dev libxslt-dev
 FROM python:3.8-slim-bullseye as base
 
-RUN apt-get update -y && \
+RUN apt-get update -y \
     && apt-get install -y \
         automake \
         autoconf \
@@ -18,20 +18,17 @@ RUN apt-get update -y && \
         curl \
         gcc \
         ipset \
-        ipset-dev \
         iptables \
-        iptables-dev \
-        libnfnetlink \
+        libnfnetlink0 \
         libnfnetlink-dev \
-        libnl3 \
-        libnl3-dev \
+        libnl-3-200 \
+        libnl-3-dev \
         make \
-        openssl \
-        openssl-dev \
+        libssl-dev \
         jq \
         util-linux \
-        font-bitstream-type1 \
-        build-base \
+        ttf-bitstream-vera \
+        build-essential \
         graphviz-dev \
         imagemagick \
         graphviz \
@@ -48,11 +45,13 @@ RUN python -m pip --no-cache-dir install --upgrade pip 'setuptools<58.0.0' wheel
         lxml \
         cryptography \
         jq \
-    && python -m pip --no-cache-dir install .[local,kubernetes,reana]
+    && python -m pip --no-cache-dir install .[local,kubernetes,reana] \
+    && rm -rf /tmp/*
 
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
 ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
 ENV PACKTIVITY_CVMFS_PROPAGATION rslave
 
 WORKDIR /work
+CMD [ "/bin/bash" ]
 
