@@ -1,5 +1,7 @@
 FROM docker:20.10.5
-RUN apk add \
+
+RUN apk add --update && \
+    apk add --no-cache \
         build-base \
         gcc \
         make \
