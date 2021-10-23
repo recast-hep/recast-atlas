@@ -47,4 +47,5 @@ RUN python3 -m pip --no-cache-dir install --upgrade pip 'setuptools<58.0.0' whee
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
 ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
 ENV PACKTIVITY_CVMFS_PROPAGATION rslave
+
 WORKDIR /work
