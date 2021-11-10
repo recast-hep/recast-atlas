@@ -5,6 +5,7 @@ import os
 import textwrap
 import shlex
 from .. import exceptions
+from recastatlas.exceptions import BackendNotAvailableException
 
 log = logging.getLogger(__name__)
 
@@ -87,7 +88,10 @@ def check_async(name, backend):
 
 
 def check_backend(backend):
-    return BACKENDS[backend].check_backend()
+    try:
+        return BACKENDS[backend].check_backend()
+    except KeyError:
+        raise BackendNotAvailableException
 
 
 def install_backend(backend):
