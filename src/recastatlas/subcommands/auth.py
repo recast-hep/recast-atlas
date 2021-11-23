@@ -92,13 +92,13 @@ def setup(answer):
     token = answers["token"]
     registry = answers["registry"]
 
-    click.secho("export {}='{}'".format(envvar["auth_user"], username))
-    click.secho("export {}='{}'".format(envvar["auth_pass"], password))
-    click.secho("export {}='{}'".format(envvar["spec_load"], token))
-    click.secho("export {}='{}'".format(envvar["init_load"], token))
-    click.secho("export {}='{}'".format(envvar["registry_host"], registry))
-    click.secho("export {}='{}'".format(envvar["registry_user"], username))
-    click.secho("export {}='{}'".format(envvar["registry_pass"], token))
+    click.secho(f"export {envvar['auth_user']}='{username}'")
+    click.secho(f"export {envvar['auth_pass']}='{password}'")
+    click.secho(f"export {envvar['spec_load']}='{token}'")
+    click.secho(f"export {envvar['init_load']}='{token}'")
+    click.secho(f"export {envvar['registry_host']}='{registry}'")
+    click.secho(f"export {envvar['registry_user']}='{username}'")
+    click.secho(f"export {envvar['registry_pass']}='{token}'")
     click.secho(
         "docker login -u ${} -p ${} ${}".format(
             envvar["registry_user"], envvar["registry_pass"], envvar["registry_host"]
