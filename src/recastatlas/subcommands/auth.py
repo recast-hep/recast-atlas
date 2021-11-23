@@ -104,9 +104,8 @@ def setup(answer):
         + f"docker login --username \"${{{envvar['registry_user']}}}\" --password-stdin \"${{{envvar['registry_host']}}}\""
     )
     click.secho(
-        "You password is stored in the environment variables {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.".format(
-            ",".join(envvar.values())
-        ),
+        f"NOTE! Your password and private information are stored in the environmental variables:\n{','.join(envvar.values())}\n"
+        + "Run `eval $(recast auth destroy)` to unset these environmental variables or exit the shell.\n",
         err=True,
     )
 
