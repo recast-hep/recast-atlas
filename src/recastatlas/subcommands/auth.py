@@ -100,9 +100,8 @@ def setup(answer):
     click.secho(f"export {envvar['registry_user']}='{username}'")
     click.secho(f"export {envvar['registry_pass']}='{token}'")
     click.secho(
-        "docker login -u ${} -p ${} ${}".format(
-            envvar["registry_user"], envvar["registry_pass"], envvar["registry_host"]
-        )
+        f"printf \"${{{envvar['registry_pass']}}}\" | "
+        + f"docker login --username \"${{{envvar['registry_user']}}}\" --password-stdin \"${{{envvar['registry_host']}}}\""
     )
     click.secho(
         "You password is stored in the environment variables {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.".format(
