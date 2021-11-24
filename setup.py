@@ -14,7 +14,7 @@ extras_require = {
     'kubernetes': ['kubernetes==9.0.0'],
     'reana': [
         'setuptools<58.0.0',  # c.f. https://github.com/reanahub/reana-client/issues/558
-        'reana-client==0.7.5',
+        'reana-client>=0.8.0',
     ],
 }
 
