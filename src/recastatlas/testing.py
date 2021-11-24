@@ -30,7 +30,7 @@ def validate_entry(data):
 
 
 def run_test(name, testspec, backend):
-    log.info("running test {}".format(name))
+    log.info(f"running test {name}")
     try:
         run_sync_packtivity(name, testspec, backend=backend)
         return True
@@ -40,6 +40,6 @@ def run_test(name, testspec, backend):
 
 
 def get_shell(name, testspec, backend):
-    log.info("running test {}".format(name))
+    log.info(f"running test {name}")
     cmdline = get_shell_packtivity(name, testspec, backend=backend)
     return cmdline

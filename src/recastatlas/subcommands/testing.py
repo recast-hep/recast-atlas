@@ -49,9 +49,9 @@ def run(name, testname, backend, tag):
     spec = testdict[testname]
     success = run_test(instance_id, spec, backend=backend)
     if not success:
-        click.secho("test {} failed".format(testname), fg="red")
+        click.secho(f"test {testname} failed", fg="red")
         raise click.Abort()
-    click.secho("test {} succeeded".format(testname), fg="green")
+    click.secho(f"test {testname} succeeded", fg="green")
 
 
 @testing.command(help="Run a test")

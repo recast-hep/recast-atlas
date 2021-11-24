@@ -19,7 +19,7 @@ def conf_from_env(var, default=None):
     return default
 
 
-class Config(object):
+class Config:
     @property
     def default_run_backend(self):
         return os.environ.get('RECAST_DEFAULT_RUN_BACKEND', 'docker')
@@ -88,9 +88,7 @@ class Config(object):
     def catalogue(self):
         cfg = {}
         files = []
-        files += [
-            x for p in self.catalogue_paths() for x in glob.glob("{}/*.yml".format(p))
-        ]
+        files += [x for p in self.catalogue_paths() for x in glob.glob(f"{p}/*.yml")]
         files = list(set(files))
         log.debug(files)
         for f in files:

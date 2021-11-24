@@ -19,7 +19,7 @@ def get_file(filename, backend, load_yaml=False):
 
         k8sconfig.load_kube_config()
         r, _, _ = k8sclient.ApiClient().call_api(
-            "/api/v1/namespaces/default/services/fileaccess/proxy/{}".format(filename),
+            f"/api/v1/namespaces/default/services/fileaccess/proxy/{filename}",
             "GET",
             _preload_content=False,
         )

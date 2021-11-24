@@ -15,4 +15,3 @@ function recast_run(){
     analysis=${2}
     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $wrk:/work -e PACKTIVITY_WORKDIR_LOCATION=/work:$wrk recast/recast-atlas-preptool:latest recast run $analysis
 }
-

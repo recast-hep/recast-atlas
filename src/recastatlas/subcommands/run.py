@@ -109,7 +109,7 @@ def submit(name, inputdata, example, infofile, tag, backend):
 
     submission = run_async(instance_id, spec, backend=backend)
 
-    click.secho("{} submitted".format(str(instance_id)))
+    click.secho(f"{str(instance_id)} submitted")
     if infofile:
         with open(infofile, "w") as info:
             json.dump(
@@ -156,14 +156,12 @@ def retrieve(infofile, name, instance, show_url, tunnel, format_result):
         )
 
         if tunnel:
-            ssh_cmd = "ssh -fNL {}:{}:{} {}".format(port, host, port, tunnel_host)
+            ssh_cmd = f"ssh -fNL {port}:{host}:{port} {tunnel_host}"
             click.secho(ssh_cmd)
             host = "127.0.0.1"
         else:
             host = host + ".cern.ch"
-        click.secho(
-            "http://{host}:{port}/{name}".format(host=host, port=port, name=instance)
-        )
+        click.secho(f"http://{host}:{port}/{instance}")
         return
     data = config.catalogue[name]
     if "results" not in data:
