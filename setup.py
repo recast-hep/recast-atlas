@@ -12,10 +12,7 @@ extras_require = {
         'pygraphviz',  # from yadage[viz] extra
     ],
     'kubernetes': ['kubernetes==9.0.0'],
-    'reana': [
-        'setuptools<58.0.0',  # c.f. https://github.com/reanahub/reana-client/issues/558
-        'reana-client>=0.8.0',
-    ],
+    'reana': ['reana-client>=0.8.0'],
 }
 
 setup(extras_require=extras_require)

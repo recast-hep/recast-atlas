@@ -37,8 +37,7 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        # RE: setuptools c.f. https://github.com/reanahub/reana-client/issues/558
-        python -m pip install --upgrade pip "setuptools<58.0.0" wheel
+        python -m pip install --upgrade pip setuptools wheel
         python -m pip --quiet install --no-cache-dir .[develop,local,kubernetes,reana]
         python -m pip list
 
