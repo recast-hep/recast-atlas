@@ -48,7 +48,7 @@ def get_shell_packtivity(name, spec, backend):
             toplevel=spec["toplevel"],
             workname=workname,
             readdirs=" ".join(
-                ["-r {}".format(os.path.realpath(d)) for d in spec.get("data", [])]
+                [f"-r {os.path.realpath(d)}" for d in spec.get("data", [])]
             ),
         )
     )

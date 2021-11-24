@@ -1,1 +1,1 @@
-echo Kerberos Setup handled by REANA 
+echo Kerberos Setup handled by REANA

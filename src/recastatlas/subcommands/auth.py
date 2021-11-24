@@ -44,14 +44,14 @@ def setup(answer):
         (
             "username",
             {
-                "str": "Enter your username to authenticate as {}".format(expt),
+                "str": f"Enter your username to authenticate as {expt}",
                 "default": "none",
             },
         ),
         (
             "password",
             {
-                "str": "Enter your password (VO: {})".format(expt),
+                "str": f"Enter your password (VO: {expt})",
                 "hide": True,
                 "default": "none",
             },
@@ -152,19 +152,15 @@ def write(basedir):
 @auth.command(help='Configure REANA with authentication information.')
 def reana_setup():
     click.secho(
-        (
-            "docker run --rm "
-            + "-v $PACKTIVITY_AUTH_LOCATION:$PACKTIVITY_AUTH_LOCATION -w $PACKTIVITY_AUTH_LOCATION "
-            + "reanahub/reana-auth-krb5:1.0.1 ./expect_script.sh $RECAST_AUTH_USERNAME $RECAST_AUTH_PASSWORD;"
-        )
+        "docker run --rm "
+        + "-v $PACKTIVITY_AUTH_LOCATION:$PACKTIVITY_AUTH_LOCATION -w $PACKTIVITY_AUTH_LOCATION "
+        + "reanahub/reana-auth-krb5:1.0.1 ./expect_script.sh $RECAST_AUTH_USERNAME $RECAST_AUTH_PASSWORD;"
     )
     click.secho(
-        (
-            "reana-client secrets-add --overwrite "
-            + "--env CERN_USER=$RECAST_AUTH_USERNAME --env CERN_KEYTAB=reana_keytab "
-            + "--env KRB_SETUP_SCRIPT=/etc/reana/secrets/getkrb_reana.sh "
-            + "--file $PACKTIVITY_AUTH_LOCATION/getkrb_reana.sh --file $PACKTIVITY_AUTH_LOCATION/reana_keytab"
-        )
+        "reana-client secrets-add --overwrite "
+        + "--env CERN_USER=$RECAST_AUTH_USERNAME --env CERN_KEYTAB=reana_keytab "
+        + "--env KRB_SETUP_SCRIPT=/etc/reana/secrets/getkrb_reana.sh "
+        + "--file $PACKTIVITY_AUTH_LOCATION/getkrb_reana.sh --file $PACKTIVITY_AUTH_LOCATION/reana_keytab"
     )
 
 
@@ -174,7 +170,7 @@ def destroy():
         click.secho("Use eval $(recast auth destroy) to unset the variables", fg="red")
         raise click.Abort()
     for v in envvar.values():
-        click.secho("unset {}".format(v))
+        click.secho(f"unset {v}")
     auth_loc = os.environ.get(envvar["auth_location"])
     if os.path.exists(auth_loc) and os.path.isdir(auth_loc):
         if os.path.exists(os.path.join(auth_loc, "getkrb.sh")):
@@ -218,7 +214,7 @@ environment:
     open(testspec, "w").write(spec)
 
     testingdir = "recast-auth-testing-image"
-    click.secho("Running test job for accessing image {}:{}".format(image, tag))
+    click.secho(f"Running test job for accessing image {image}:{tag}")
     click.secho(
         "Note: if the image {}:{} is not yet available locally, it will be pulled".format(
             image, tag
@@ -234,7 +230,7 @@ environment:
         backend=backend,
     )
 
-    with open("{}/_packtivity/packtivity_syncbackend.run.log".format(testingdir)) as f:
+    with open(f"{testingdir}/_packtivity/packtivity_syncbackend.run.log") as f:
         logfile = f.read()
 
     log_ok = "hello world" in logfile
@@ -295,7 +291,7 @@ environment:
     open(testspec, "w").write(spec)
 
     testingdir = "recast-auth-testing"
-    click.secho("Running test job for accessing file {}".format(location))
+    click.secho(f"Running test job for accessing file {location}")
     click.secho(
         "Note: if the image {}:{} is not yet available locally, it will be pulled".format(
             image, tag
@@ -311,7 +307,7 @@ environment:
         backend=backend,
     )
 
-    with open("{}/_packtivity/packtivity_syncbackend.run.log".format(testingdir)) as f:
+    with open(f"{testingdir}/_packtivity/packtivity_syncbackend.run.log") as f:
         logfile = f.read()
 
     kerberos_ok = "krbtgt/CERN.CH@CERN.CH" in logfile
@@ -324,7 +320,7 @@ environment:
     click.secho("Access: {}".format("ok" if access_ok else "not ok"))
 
 
-@auth.command(help='configure to use preset on-disk loaction of auth data')
+@auth.command(help='configure to use preset on-disk location of auth data')
 @click.argument("location")
 def use(location):
     click.secho(

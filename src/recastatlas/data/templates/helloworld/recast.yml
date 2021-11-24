@@ -25,4 +25,3 @@ results:  []
 # - name: 'My Result'
 #   relpath: hello_world/hello_world.txt
 #   load_yaml: true
-  

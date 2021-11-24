@@ -31,7 +31,7 @@ def setup_docker():
         "--rm",
         "-i",
         "-v",
-        "{}:{}".format(cwd, cwd),
+        f"{cwd}:{cwd}",
         "-w",
         cwd,
         "-v",
@@ -127,7 +127,7 @@ packtivity-run {spec} -t {toplevel} /tmp/pars.yml -w {workname} {readdirs}
             toplevel=spec["toplevel"],
             pars=yaml.safe_dump(spec["parameters"], default_flow_style=False),
             readdirs=" ".join(
-                ["-r {}".format(os.path.realpath(d)) for d in spec.get("data", [])]
+                [f"-r {os.path.realpath(d)}" for d in spec.get("data", [])]
             ),
         )
         command += ["sh", "-c", textwrap.dedent(script)]

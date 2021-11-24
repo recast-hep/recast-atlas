@@ -26,7 +26,7 @@ class KubernetesBackend:
 
         k8sconfig.load_kube_config()
         a, rc, d = k8sclient.ApiClient().call_api(
-            "/apis/yadage.github.io/v1/namespaces/default/workflows/{}".format(name),
+            f"/apis/yadage.github.io/v1/namespaces/default/workflows/{name}",
             "GET",
             _preload_content=False,
         )

@@ -20,7 +20,7 @@ def software():
 @click.option('--addr', default=config.backends['kubernetes']['buildkit_addr'])
 @click.option('--push/--no-push', default=False)
 def build(path, name, backend, addr, push):
-    image = 'gitlab-registry.cern.ch/recast-atlas/images/{}'.format(name)
+    image = f'gitlab-registry.cern.ch/recast-atlas/images/{name}'
     path = os.path.abspath(path)
     if backend == 'kubernetes':
         subprocess.check_call(
@@ -32,9 +32,9 @@ def build(path, name, backend, addr, push):
                 '--frontend',
                 'dockerfile.v0',
                 '--local',
-                'context={}'.format(path),
+                f'context={path}',
                 '--local',
-                'dockerfile={}'.format(path),
+                f'dockerfile={path}',
                 '--output',
                 'type=image,name={},push={}'.format(image, 'true' if push else 'false'),
             ]
