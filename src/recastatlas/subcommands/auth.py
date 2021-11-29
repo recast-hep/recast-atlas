@@ -92,22 +92,20 @@ def setup(answer):
     token = answers["token"]
     registry = answers["registry"]
 
-    click.secho("export {}='{}'".format(envvar["auth_user"], username))
-    click.secho("export {}='{}'".format(envvar["auth_pass"], password))
-    click.secho("export {}='{}'".format(envvar["spec_load"], token))
-    click.secho("export {}='{}'".format(envvar["init_load"], token))
-    click.secho("export {}='{}'".format(envvar["registry_host"], registry))
-    click.secho("export {}='{}'".format(envvar["registry_user"], username))
-    click.secho("export {}='{}'".format(envvar["registry_pass"], token))
+    click.secho(f"export {envvar['auth_user']}='{username}'")
+    click.secho(f"export {envvar['auth_pass']}='{password}'")
+    click.secho(f"export {envvar['spec_load']}='{token}'")
+    click.secho(f"export {envvar['init_load']}='{token}'")
+    click.secho(f"export {envvar['registry_host']}='{registry}'")
+    click.secho(f"export {envvar['registry_user']}='{username}'")
+    click.secho(f"export {envvar['registry_pass']}='{token}'")
     click.secho(
-        "docker login -u ${} -p ${} ${}".format(
-            envvar["registry_user"], envvar["registry_pass"], envvar["registry_host"]
-        )
+        f"printf \"${{{envvar['registry_pass']}}}\" | "
+        + f"docker login --username \"${{{envvar['registry_user']}}}\" --password-stdin \"${{{envvar['registry_host']}}}\""
     )
     click.secho(
-        "You password is stored in the environment variables {}. Run `eval $(recast auth destroy)` to clear your password or exit the shell.".format(
-            ",".join(envvar.values())
-        ),
+        f"NOTE! Your password and private information are stored in the environmental variables:\n{','.join(envvar.values())}\n"
+        + "Run `eval $(recast auth destroy)` to unset these environmental variables or exit the shell.\n",
         err=True,
     )
 
