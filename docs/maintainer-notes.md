@@ -32,7 +32,7 @@ This will trigger a distribution to be built and published to [TestPyPI][TestPyP
 1. Verify that you're on the project default branch and are synced with GitHub
 
 ```console
-$ git checkout master && git pull
+$ git checkout main && git pull
 ```
 
 2. Use `bump2version` to bump the version and create a commit and tag
@@ -44,7 +44,7 @@ $ bump2version <part>
 3. Push the commit and the tag to GitHub, triggering a distribution to be built and published to [TestPyPI][TestPyPI].
 
 ```console
-$ git push origin master --follow-tags
+$ git push origin main --follow-tags
 ```
 
 ### Make a GitHub release from the tag
