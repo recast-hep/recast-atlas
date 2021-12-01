@@ -39,6 +39,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools wheel
         python -m pip --quiet install .[develop,local,kubernetes,reana]
+        python -m pip uninstall -y adage
         python -m pip install --upgrade git+https://github.com/yadage/adage.git
 
     - name: List installed dependencies
