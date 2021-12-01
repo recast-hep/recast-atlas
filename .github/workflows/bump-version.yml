@@ -39,4 +39,4 @@ jobs:
       run: bump2version ${{ github.event.inputs.part }}
 
     - name: Push latest version
-      run: git push origin master --follow-tags
+      run: git push origin main --follow-tags
