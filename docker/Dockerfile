@@ -39,8 +39,7 @@ RUN apk add --update && \
 WORKDIR /code
 COPY . /code
 
-# c.f. https://github.com/reanahub/reana-client/issues/558
-RUN python3 -m pip --no-cache-dir install --upgrade pip 'setuptools<58.0.0' wheel && \
+RUN python3 -m pip --no-cache-dir install --upgrade pip setuptools wheel && \
     python3 -m pip --no-cache-dir install \
         lxml \
         cryptography \
