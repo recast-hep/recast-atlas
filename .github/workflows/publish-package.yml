@@ -25,10 +25,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up Python 3.9
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: "3.9"
+        python-version: "3.10"
 
     - name: Install build, check-manifest, and twine
       run: |
@@ -42,7 +42,7 @@ jobs:
 
     - name: Build a sdist and a wheel
       run: |
-        python -m build --outdir dist/ .
+        python -m build .
 
     - name: Verify the distribution
       run: twine check dist/*
