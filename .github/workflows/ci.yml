@@ -38,8 +38,11 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip --quiet install --no-cache-dir .[develop,local,kubernetes,reana]
-        python -m pip list
+        python -m pip --quiet install .[develop,local,kubernetes,reana]
+        python -m pip install --upgrade git+https://github.com/yadage/adage.git
+
+    - name: List installed dependencies
+      run: python -m pip list
 
     - name: Run unit tests
       run: |
