@@ -32,12 +32,10 @@ recast run examples/rome --backend local
 recast run examples/rome --backend reana
 ```
 
+#### On [LXPLUS8](https://clouddocs.web.cern.ch/clients/lxplus.html)
 
-
-(On LXPLUS)
-
-```
-ssh http://lxplus-cloud.cern.ch
+```console
+ssh lxplus8.cern.ch
 source ~recast/public/setup.sh
 recast catalogue ls
 recast run examples/rome
