@@ -71,3 +71,17 @@ to perform local tests.
 
 5. Enter any release notes and click "Publish release".
    * This then kicks of the publication CD workflow that will use the PyPI API key to publish.
+
+## Deployment to [LXPLUS8](https://clouddocs.web.cern.ch/clients/lxplus.html)
+
+When a new release of `recast-atlas` is out the maintainers should open a PR to produce a new deployment `requirements.txt` at `deploy/recast-atlas-x.y.z-requirements.txt`.
+This should be done by unpinning everything, installing the requirements into a Python virtual environment, and then using `python -m pip freeze` to determine the versions that things should be pinned at for deployment.
+The resulting `requirements.txt` file should be uploaded to LXPLUS8 under `~recast/deploy/`.
+
+Following that, the deployment script should get updated to the new version release
+
+```console
+sed -i 's/<previous-version>/<new-version>/g' deploy/deploy_lxplus8.sh
+```
+
+and then uploaded to LXPLUS8 under `~recast/deploy/`.
