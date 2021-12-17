@@ -78,10 +78,8 @@ When a new release of `recast-atlas` is out the maintainers should open a PR to 
 This should be done by unpinning everything, installing the requirements into a Python virtual environment, and then using `python -m pip freeze` to determine the versions that things should be pinned at for deployment.
 The resulting `requirements.txt` file should be uploaded to LXPLUS8 under `~recast/deploy/`.
 
-Following that, the deployment script should get updated to the new version release
+Following that, the deployment script on LXPLUS (located under `~recast/deploy/`) should get rerun with the new version tag (`x.y.z`) as input
 
-```console
-sed -i 's/<previous-version>/<new-version>/g' deploy/deploy_lxplus8.sh
 ```
-
-and then uploaded to LXPLUS8 under `~recast/deploy/`.
+bash deploy_lxplus8.sh x.y.z
+```
