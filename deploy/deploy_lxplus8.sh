@@ -51,7 +51,18 @@ if [[ "${RECAST_ATLAS_VERSION}" == "0.1.8" ]]; then
 else
     python -m pip install --upgrade pip setuptools wheel
 fi
-python -m pip install --requirement ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}"-requirements.txt
+
+# Install the environment from a "lockfile" (just called a requirements.txt by
+# pip-tools) generated with pip-tools compile. If the lockfile is missing, make
+# compile one with pip-tools.
+if [ ! -f ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock ]; then
+    python -m pip install pip-tools
+    python -m piptools compile \
+        --generate-hashes \
+        --output-file ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock \
+        ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}"-requirements.txt
+fi
+python -m pip install --requirement ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock
 
 # Use heredoc syntax to generate public environment setup script
 cat << EOF > ~recast/public/setup_"${RECAST_ATLAS_VERSION}".sh
