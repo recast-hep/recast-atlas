@@ -42,8 +42,8 @@ if [[ "${RECAST_ATLAS_VERSION}" == "0.0.0" ]]; then
 fi
 
 # Setup Python virtual environment and install recast-atlas and requirements
-python3 -m venv "~recast/public/recast-atlas-${RECAST_ATLAS_VERSION}"
-. "~recast/public/recast-atlas-${RECAST_ATLAS_VERSION}/bin/activate"
+python3 -m venv ~recast/public/recast-atlas-"${RECAST_ATLAS_VERSION}"
+. ~recast/public/recast-atlas-"${RECAST_ATLAS_VERSION}"/bin/activate
 
 if [[ "${RECAST_ATLAS_VERSION}" == "0.1.8" ]]; then
     # c.f. https://github.com/reanahub/reana-client/issues/558
@@ -51,10 +51,10 @@ if [[ "${RECAST_ATLAS_VERSION}" == "0.1.8" ]]; then
 else
     python -m pip install --upgrade pip setuptools wheel
 fi
-python -m pip install --requirement "~recast/deploy/recast-atlas-${RECAST_ATLAS_VERSION}-requirements.txt"
+python -m pip install --requirement ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}"-requirements.txt
 
 # Use heredoc syntax to generate public environment setup script
-cat << EOF > "~recast/public/setup_${RECAST_ATLAS_VERSION}.sh"
+cat << EOF > ~recast/public/setup_"${RECAST_ATLAS_VERSION}".sh
 #!/bin/bash
 
 export RECAST_DEFAULT_RUN_BACKEND=local
@@ -75,4 +75,4 @@ export PATH="\${PATH}:~recast/public/bin"
 EOF
 
 # Link public setup script to this version
-ln --symbolic --force "~recast/public/setup_${RECAST_ATLAS_VERSION}.sh" ~recast/public/setup.sh
+ln --symbolic --force ~recast/public/setup_"${RECAST_ATLAS_VERSION}".sh ~recast/public/setup.sh
