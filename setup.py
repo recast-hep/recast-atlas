@@ -4,8 +4,8 @@ extras_require = {
     'develop': {'pytest', 'flake8>=3.9.0', 'black'},
     'local': [
         'pydotplus==2.0.2',
-        'adage==0.10.1',
-        'yadage-schemas==0.10.6',
+        'adage>=0.10.1',
+        'yadage-schemas>=0.10.6',
         'packtivity>=0.14.23',
         'yadage==0.20.1',  # yadage[viz] breaks so install following manually
         'pydot',  # from yadage[viz] extra
