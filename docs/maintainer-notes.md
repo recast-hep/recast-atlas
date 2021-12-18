@@ -71,3 +71,27 @@ to perform local tests.
 
 5. Enter any release notes and click "Publish release".
    * This then kicks of the publication CD workflow that will use the PyPI API key to publish.
+
+## Deployment to [LXPLUS8](https://clouddocs.web.cern.ch/clients/lxplus.html)
+
+When a new release of `recast-atlas` is out the maintainers should open a PR to produce a new deployment `requirements.txt` at `deploy/recast-atlas-x.y.z-requirements.txt`.
+This should be done by unpinning everything, installing the requirements into a Python virtual environment, and then using `python -m pip freeze` to determine the versions that things should be pinned at for deployment.
+This only will specify the core requirements.
+
+To properly specify a full deployment environment a lock file is created with [`pip-tools`](https://github.com/jazzband/pip-tools/).
+Once the `deploy/recast-atlas-x.y.z-requirements.txt` exists, use `pip-tools` to compile a deployment environment lock file which defines the environment down to the hash level
+
+```console
+python -m piptools compile \
+    --generate-hashes \
+    --output-file deploy/recast-atlas-x.y.z.lock \
+    deploy/recast-atlas-x.y.z-requirements.txt
+```
+
+The resulting `requirements.txt` file and `.lock` file should be uploaded to LXPLUS8 under `~recast/deploy/`.
+
+Following that, the deployment script on LXPLUS (located under `~recast/deploy/`) should get rerun with the new version tag (`x.y.z`) as input
+
+```
+bash deploy_lxplus8.sh x.y.z
+```

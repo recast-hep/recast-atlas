@@ -1,0 +1,14 @@
+recast-atlas==0.1.8
+# local
+adage==0.10.1
+packtivity==0.14.23
+yadage==0.20.1
+yadage-schemas==0.10.6
+# local viz
+pydotplus==2.0.2
+# kubernetes
+kubernetes==9.0.0
+# reana
+# note: Needs 'setuptools<58.0.0'
+reana-client==0.7.5
+reana-commons==0.7.5
