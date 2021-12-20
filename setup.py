@@ -7,7 +7,7 @@ extras_require = {
         'adage>=0.10.1',
         'yadage-schemas>=0.10.6',
         'packtivity>=0.14.23',
-        'yadage==0.20.1',  # yadage[viz] breaks so install following manually
+        'yadage>=0.20.1',  # yadage[viz] breaks so install following manually
         'pydot',  # from yadage[viz] extra
         'pygraphviz',  # from yadage[viz] extra
     ],
