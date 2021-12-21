@@ -43,19 +43,25 @@ Commands:
 
 ### Running RECAST
 
-The `recast` tool aims to enable both local execution as well as asynchronous execution on a [REANA](http://reana.io) cluster. Via the
+`recast-atlas` aims to enable both local execution as well as asynchronous execution on a [REANA](http://reana.io) cluster.
 
-#### Locally:
+#### Local backend
+
+Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
 
 ```
 recast run examples/rome --backend local
 ```
 
-#### ...and on REANA
+#### REANA cluster backend
+
+Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
 
 ```
 recast run examples/rome --backend reana
 ```
+
+[ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
 
 #### On [LXPLUS8](https://clouddocs.web.cern.ch/clients/lxplus.html)
 
