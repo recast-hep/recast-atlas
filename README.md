@@ -1,6 +1,6 @@
 # RECAST for ATLAS
 
-[![DOI](https://zenodo.org/badge/142000927.svg)](https://zenodo.org/badge/latestdoi/142000927)
+[![DOI](https://zenodo.org/badge/142000927.svg)](https://doi.org/10.5281/zenodo.5854896)
 
 [![CI](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/recast-hep/recast-atlas/actions/workflows/ci.yml?query=branch%3Amain)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/recast-hep/recast-atlas/main.svg)](https://results.pre-commit.ci/latest/github/recast-hep/recast-atlas/main)
