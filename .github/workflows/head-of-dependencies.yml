@@ -32,8 +32,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        # python -m pip --quiet install --upgrade --pre .[develop,local,kubernetes,reana]
-        python -m pip install --upgrade --pre .[develop,local,kubernetes,reana]
+        python -m pip --quiet install --upgrade .[develop,local,kubernetes,reana]
+        python -m pip install --upgrade --pre .[local]
 
     - name: List installed dependencies
       run: python -m pip list
