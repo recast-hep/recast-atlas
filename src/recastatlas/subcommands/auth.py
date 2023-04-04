@@ -248,7 +248,6 @@ environment:
     default=config.default_run_backend,
 )
 def check_access_xrootd(image, location, backend):
-
     image = image.split(":", 1)
     if len(image) > 1:
         image, tag = image
