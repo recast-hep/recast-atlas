@@ -6,7 +6,7 @@ metadata:
   short_description: Simple, lightweight Functionality Test
 
 spec:
-  toplevel: 'github:yadage/yadage-workflows:testing/busybox-flow'
+  toplevel: 'github:yadage/yadage-workflows@main:testing/busybox-flow'
   workflow: rootflow.yml
 
 example_inputs:

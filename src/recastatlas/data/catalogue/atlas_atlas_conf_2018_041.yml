@@ -4,7 +4,7 @@ metadata:
   short_description: ATLAS MBJ
 
 spec:
-  toplevel: gitlab-cern:recast-atlas/susy/ATLAS-CONF-2018-041:specs
+  toplevel: gitlab-cern:recast-atlas/susy/ATLAS-CONF-2018-041@master:specs
   workflow: workflow.yml
 
 example_inputs:

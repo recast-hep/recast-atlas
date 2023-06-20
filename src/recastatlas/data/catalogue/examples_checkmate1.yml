@@ -5,7 +5,7 @@ metadata:
   short_description: CheckMate Tutorial Example (Herwig + CM1)
 
 spec:
-  toplevel: github:lukasheinrich/yadage-workflows:phenochain/checkmate_workflow
+  toplevel: github:lukasheinrich/yadage-workflows@master:phenochain/checkmate_workflow
   workflow: checkmate_lxplus.yml
 
 example_inputs:
