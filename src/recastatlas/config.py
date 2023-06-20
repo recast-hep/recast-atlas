@@ -44,7 +44,7 @@ class Config:
                     "RECAST_DOCKER_BACKENDSTRING", "multiproc:auto"
                 ),
                 "image": conf_from_env(
-                    "RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.1.9"
+                    "RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.2.0"
                 ),
                 "cvmfs": {"location": "/cvmfs", "propagation": "rprivate"},
                 "reg": {
