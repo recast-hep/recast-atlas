@@ -38,7 +38,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip --quiet install .[develop,local,kubernetes,reana]
+        python -m pip install '.[develop,local,kubernetes,reana]'
 
     - name: List installed dependencies
       run: python -m pip list
