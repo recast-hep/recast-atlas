@@ -10,7 +10,7 @@ extras_require = {
         'pydot',  # from yadage[viz] extra
         'pygraphviz',  # from yadage[viz] extra
     ],
-    'kubernetes': ['kubernetes==9.0.0'],
+    'kubernetes': ['kubernetes>=9.0.0'],
     'reana': ['reana-client>=0.8.0'],
 }
 
