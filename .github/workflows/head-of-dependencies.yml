@@ -31,7 +31,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip --quiet install --upgrade .[develop,local,kubernetes,reana]
+        python -m pip --quiet install --upgrade .[develop,local,reana]
         python -m pip install --upgrade --pre .[local]
 
     - name: List installed dependencies
@@ -65,7 +65,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,kubernetes,reana]
+        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,reana]
         python -m pip uninstall --yes adage
         python -m pip install --upgrade git+https://github.com/yadage/adage.git
 
@@ -100,7 +100,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,kubernetes,reana]
+        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,reana]
         python -m pip uninstall --yes packtivity
         python -m pip install --upgrade git+https://github.com/yadage/packtivity.git
 
@@ -135,7 +135,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,kubernetes,reana]
+        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,reana]
         python -m pip uninstall --yes yadage
         python -m pip install --upgrade git+https://github.com/yadage/yadage.git
 
