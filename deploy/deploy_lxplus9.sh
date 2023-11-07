@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Example usage:
-# $ bash deploy_lxplus9.sh 0.1.9
+# $ bash deploy_lxplus9.sh 0.3.0
 # or to get the latest recast-atlas release by default:
 # $ bash deploy_lxplus9.sh
 
@@ -41,7 +41,10 @@ if [ ! -f ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock ]; then
         --output-file ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock \
         ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}"-requirements.txt
 fi
-python -m pip install --requirement ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock
+python -m pip install \
+    --no-deps \
+    --require-hashes \
+    --requirement ~recast/deploy/recast-atlas-"${RECAST_ATLAS_VERSION}".lock
 
 # Use heredoc syntax to generate public environment setup script
 cat << EOF > ~recast/public/setup_"${RECAST_ATLAS_VERSION}".sh
