@@ -22,23 +22,23 @@ repos:
     - id: trailing-whitespace
 
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.8.0
+    rev: v3.14.0
     hooks:
     - id: pyupgrade
       args: ["--py36-plus"]
 
 -   repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.9.1
     hooks:
     - id: black-jupyter
 
 -   repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+    rev: 6.1.0
     hooks:
     - id: flake8
 
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.2.5
+    rev: v2.2.6
     hooks:
     - id: codespell
       files: ^.*\.(py|md|rst)$
