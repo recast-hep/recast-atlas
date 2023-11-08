@@ -52,7 +52,7 @@ Commands:
 Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
 
 ```
-python -m pip install 'recast-atlas[local]'
+python -m pip install --upgrade 'recast-atlas[local]'
 ```
 
 ```
@@ -64,7 +64,7 @@ recast run examples/rome --backend local
 Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
 
 ```
-python -m pip install 'recast-atlas[reana]'
+python -m pip install --upgrade 'recast-atlas[reana]'
 ```
 
 ```
