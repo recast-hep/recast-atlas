@@ -52,12 +52,20 @@ Commands:
 Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
 
 ```
+python -m pip install 'recast-atlas[local]'
+```
+
+```
 recast run examples/rome --backend local
 ```
 
 #### REANA cluster backend
 
 Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
+
+```
+python -m pip install 'recast-atlas[reana]'
+```
 
 ```
 recast run examples/rome --backend reana
