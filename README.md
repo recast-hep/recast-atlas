@@ -65,10 +65,10 @@ recast run examples/rome --backend reana
 
 [ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
 
-#### On [LXPLUS8](https://clouddocs.web.cern.ch/clients/lxplus.html)
+#### On [LXPLUS9](https://clouddocs.web.cern.ch/clients/lxplus.html)
 
 ```console
-ssh lxplus8.cern.ch
+ssh lxplus9.cern.ch
 source ~recast/public/setup.sh
 recast catalogue ls
 recast run examples/rome
