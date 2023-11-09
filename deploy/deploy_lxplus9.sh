@@ -52,7 +52,7 @@ cat << EOF > ~recast/public/setup_"${RECAST_ATLAS_VERSION}".sh
 
 export RECAST_DEFAULT_RUN_BACKEND=local
 export RECAST_DEFAULT_BUILD_BACKEND=kubernetes
-export PACKTIVITY_CONTAINER_RUNTIME=apptainer
+export PACKTIVITY_CONTAINER_RUNTIME=singularity
 export APPTAINER_CACHEDIR="/tmp/\${USER}/apptainer"
 export SINGULARITY_CACHEDIR="\${APPTAINER_CACHEDIR}"
 mkdir -p "\${APPTAINER_CACHEDIR}"
