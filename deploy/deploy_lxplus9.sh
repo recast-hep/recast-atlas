@@ -52,7 +52,7 @@ cat << EOF > ~recast/public/setup_"${RECAST_ATLAS_VERSION}".sh
 
 export RECAST_DEFAULT_RUN_BACKEND=local
 export RECAST_DEFAULT_BUILD_BACKEND=kubernetes
-export PACKTIVITY_CONTAINER_RUNTIME=singularity
+export PACKTIVITY_CONTAINER_RUNTIME=apptainer
 export APPTAINER_CACHEDIR="/tmp/\${USER}/apptainer"
 export SINGULARITY_CACHEDIR="\${APPTAINER_CACHEDIR}"
 mkdir -p "\${APPTAINER_CACHEDIR}"
@@ -68,7 +68,7 @@ export KUBECONFIG=/eos/project/r/recast/atlas/cluster/clusterconfig
 export PATH="\${PATH}:~recast/public/bin"
 
 echo -e "\n# It is recommended to login to any private container registry now."
-echo -e "# Example:\n# apptainer remote login --username \"\${USER}\" docker://gitlab-registry.cern.ch"
+echo -e "# Example:\n# apptainer remote login --username \"\$"{USER}"\" docker://gitlab-registry.cern.ch"
 EOF
 
 # Link public setup script to this version
