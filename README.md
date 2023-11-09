@@ -49,7 +49,7 @@ Commands:
 
 #### Local backend
 
-Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
+Run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
 
 ```
 python -m pip install --upgrade 'recast-atlas[local]'
@@ -61,14 +61,14 @@ recast run examples/rome --backend local
 
 #### REANA cluster backend
 
-Running the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
+Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
 
 ```
 python -m pip install --upgrade 'recast-atlas[reana]'
 ```
 
 ```
-recast run examples/rome --backend reana
+recast submit examples/rome --backend reana
 ```
 
 [ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
