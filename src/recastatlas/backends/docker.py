@@ -38,6 +38,11 @@ def setup_docker():
         "/var/run/docker.sock:/var/run/docker.sock",
     ]
 
+    # Set from DOCKER_DEFAULT_PLATFORM environment variable if it exists
+    if "platform" in config.backends[backend]:
+        if _platform := config.backends[backend]["platform"]:
+            command += ["--platform", _platform]
+
     if "cvmfs" in config.backends[backend]:
         command += [
             "-e",
