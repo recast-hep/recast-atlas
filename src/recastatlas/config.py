@@ -46,6 +46,7 @@ class Config:
                 "image": conf_from_env(
                     "RECAST_DOCKER_IMAGE", "recast/recastatlas:v0.3.0"
                 ),
+                "platform": conf_from_env("DOCKER_DEFAULT_PLATFORM"),
                 "cvmfs": {"location": "/cvmfs", "propagation": "rprivate"},
                 "reg": {
                     "user": conf_from_env("RECAST_REGISTRY_USERNAME"),
