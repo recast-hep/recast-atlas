@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    labels:
+      - "github-actions"
+      - "dependencies"
+    reviewers:
+      - "matthewfeickert"
+
+  # Ignore all pip dependencies to avoid PRs to update deploy/recast-atlas-*-requirements.txt
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
