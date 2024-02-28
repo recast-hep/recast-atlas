@@ -22,12 +22,12 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
 
@@ -55,7 +55,7 @@ jobs:
       run: python -m zipfile --list dist/recast_atlas-*.whl
 
     - name: Upload distribution artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist-artifact
         path: dist
@@ -75,7 +75,7 @@ jobs:
 
     steps:
     - name: Download distribution artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: dist-artifact
         path: dist
@@ -86,13 +86,13 @@ jobs:
     - name: Publish distribution 📦 to Test PyPI
       # publish to TestPyPI on tag events
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'recast-hep/recast-atlas'
-      uses: pypa/gh-action-pypi-publish@v1.8.6
+      uses: pypa/gh-action-pypi-publish@v1.8.11
       with:
         repository-url: https://test.pypi.org/legacy/
         print-hash: true
 
     - name: Publish distribution 📦 to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
-      uses: pypa/gh-action-pypi-publish@v1.8.6
+      uses: pypa/gh-action-pypi-publish@v1.8.11
       with:
         print-hash: true

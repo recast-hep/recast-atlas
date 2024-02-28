@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -47,22 +47,22 @@ jobs:
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       # Use login as access tokens are now part of paid 'pro' Docker Hub plan
       - name: Login to DockerHub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASS }}
 
       - name: Test build
         id: docker_build_test
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: docker/Dockerfile
@@ -90,7 +90,7 @@ jobs:
         # every PR will trigger a push event on main, so check the push event is actually coming from main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'recast-hep/recast-atlas'
         id: docker_build_latest
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: docker/Dockerfile
@@ -104,7 +104,7 @@ jobs:
       - name: Build and publish to registry with release tag
         if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
         id: docker_build_release
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: docker/Dockerfile
