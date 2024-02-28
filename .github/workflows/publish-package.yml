@@ -86,13 +86,13 @@ jobs:
     - name: Publish distribution 📦 to Test PyPI
       # publish to TestPyPI on tag events
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'recast-hep/recast-atlas'
-      uses: pypa/gh-action-pypi-publish@v1.8.11
+      uses: pypa/gh-action-pypi-publish@v1.8.12
       with:
         repository-url: https://test.pypi.org/legacy/
         print-hash: true
 
     - name: Publish distribution 📦 to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
-      uses: pypa/gh-action-pypi-publish@v1.8.11
+      uses: pypa/gh-action-pypi-publish@v1.8.12
       with:
         print-hash: true
