@@ -48,7 +48,8 @@ RUN python3 -m venv /usr/local/venv && \
         lxml \
         cryptography \
         jq && \
-    uv --no-cache pip install --system '.[local,kubernetes,reana]'
+    uv --no-cache pip install --system '.[local,kubernetes,reana]' && \
+    recast --help
 
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
 ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
