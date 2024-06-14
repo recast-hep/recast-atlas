@@ -101,8 +101,9 @@ reana-client download --output-directory output
 # reana-client download --workflow "<use the created tag>" --output-directory output
 ```
 
+Clean up the environment of personal information in environmental variables
+
 ```
-# Clean up the environment of personal information in environmental variables
 eval $(recast auth destroy)
 ```
 
