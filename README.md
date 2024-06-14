@@ -56,7 +56,7 @@ python -m pip install --upgrade 'recast-atlas[local]' coolname
 ```
 
 ```
-PACKTIVITY_DOCKER_CMD_MOD="-u root" recast run examples/rome --backend local --tag "$(coolname 2)"
+PACKTIVITY_DOCKER_CMD_MOD="-u root" recast run examples/rome --backend local --tag "local-$(coolname 2)"
 ```
 
 #### REANA cluster backend
@@ -64,11 +64,11 @@ PACKTIVITY_DOCKER_CMD_MOD="-u root" recast run examples/rome --backend local --t
 Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
 
 ```
-python -m pip install --upgrade 'recast-atlas[reana]'
+python -m pip install --upgrade 'recast-atlas[reana]' coolname
 ```
 
 ```
-recast submit examples/rome --backend reana
+recast submit examples/rome --backend reana --tag "reana-$(coolname 2)"
 ```
 
 [ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
