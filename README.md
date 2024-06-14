@@ -67,6 +67,7 @@ Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS
 python -m pip install --upgrade 'recast-atlas[reana]' coolname
 ```
 
+Authenticate to use the REANA cluster
 ```
 # Set these variables to your personal secret values
 export RECAST_AUTH_USERNAME="<your RECAST auth username>"
@@ -81,7 +82,23 @@ export REANA_ACCESS_TOKEN="<your RECAST access token>"
 ```
 
 ```
-recast submit examples/rome --backend reana --tag "reana-$(coolname 2)"
+reana_tag="reana-$(coolname 2)"
+recast submit examples/rome --backend reana --tag "${reana_tag}"
+export REANA_WORKON="recast-${reana_tag}"  # REANA_WORKON is a helper variable that sets workflow automatically
+```
+
+Check on the state of the REANA workflow
+
+```
+reana-client status
+# reana-client status --workflow "<use the created tag>"  # if REANA_WORKON not set
+```
+
+Download the results after the workflow succeeds
+
+```
+reana-client download --output-directory output
+# reana-client download --workflow "<use the created tag>" --output-directory output
 ```
 
 ```
