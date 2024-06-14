@@ -33,9 +33,10 @@ jobs:
 
     - name: Install build, check-manifest, and twine
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install build check-manifest twine
-        python -m pip list
+        python -m pip install uv
+        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system build check-manifest twine
+        uv pip list --system
 
     - name: Check MANIFEST
       run: |
