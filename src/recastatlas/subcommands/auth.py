@@ -1,9 +1,17 @@
-import click
-import sys
 import os
 import re
 import shutil
-import pkg_resources
+import sys
+
+try:
+    from importlib.resources import files
+except ImportError:
+    # Support Python 3.8 as importlib.resources added in Python 3.9
+    # https://docs.python.org/3/library/importlib.resources.html#importlib.resources.files
+    from importlib_resources import files
+
+import click
+
 from ..backends import run_sync_packtivity
 from ..config import config
 
@@ -132,11 +140,11 @@ def write(basedir):
     )
 
     shutil.copy(
-        pkg_resources.resource_filename("recastatlas", "data/getkrb_reana.sh"),
+        files("recastatlas") / "data/getkrb_reana.sh",
         os.path.join(basedir, "getkrb_reana.sh"),
     )
     shutil.copy(
-        pkg_resources.resource_filename("recastatlas", "data/expect_script.sh"),
+        files("recastatlas") / "data/expect_script.sh",
         os.path.join(basedir, "expect_script.sh"),
     )
     click.echo(
