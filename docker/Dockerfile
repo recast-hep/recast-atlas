@@ -42,7 +42,7 @@ COPY . /code
 # FIXME: Use a virtual environment
 RUN python3 -m pip --no-cache-dir install --upgrade uv && \
     uv --no-cache pip install --system --upgrade pip setuptools wheel && \
-    uv --no-cache pip install --system \
+    python3 -m pip --no-cache-dir install \
         lxml \
         cryptography \
         jq && \
