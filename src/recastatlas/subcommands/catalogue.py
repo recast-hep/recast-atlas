@@ -3,7 +3,13 @@ import logging
 import os
 import string
 from distutils.dir_util import copy_tree
-from importlib.resources import files
+
+try:
+    from importlib.resources import files
+except ImportError:
+    # Support Python 3.8 as importlib.resources added in Python 3.9
+    # https://docs.python.org/3/library/importlib.resources.html#importlib.resources.files
+    from importlib_resources import files
 
 import click
 import yaml
