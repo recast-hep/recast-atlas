@@ -68,7 +68,25 @@ python -m pip install --upgrade 'recast-atlas[reana]' coolname
 ```
 
 ```
+# Set these variables to your personal secret values
+export RECAST_AUTH_USERNAME="<your RECAST auth username>"
+export RECAST_AUTH_PASSWORD="<your RECAST auth password>"
+export RECAST_AUTH_TOKEN="<your RECAST auth token>"
+
+eval "$(recast auth setup -a ${RECAST_AUTH_USERNAME} -a ${RECAST_AUTH_PASSWORD} -a ${RECAST_AUTH_TOKEN} -a default)"
+eval "$(recast auth write --basedir authdir)"
+
+export REANA_SERVER_URL=https://reana.cern.ch
+export REANA_ACCESS_TOKEN="<your RECAST access token>"
+```
+
+```
 recast submit examples/rome --backend reana --tag "reana-$(coolname 2)"
+```
+
+```
+# Clean up the environment of personal information in environmental variables
+eval $(recast auth destroy)
 ```
 
 [ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
