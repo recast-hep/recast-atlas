@@ -39,8 +39,10 @@ RUN apk add --update && \
 WORKDIR /code
 COPY . /code
 
-# FIXME: Use a virtual environment
-RUN python3 -m pip --no-cache-dir install --upgrade uv && \
+ENV PATH=/usr/local/venv/bin:"${PATH}"
+RUN python3 -m venv /usr/local/venv && \
+    . /usr/local/venv/bin/activate && \
+    python -m pip --no-cache-dir install --upgrade uv && \
     uv --no-cache pip install --system --upgrade pip setuptools wheel && \
     uv --no-cache pip install --system \
         lxml \
