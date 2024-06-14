@@ -43,12 +43,12 @@ ENV PATH=/usr/local/venv/bin:"${PATH}"
 RUN python3 -m venv /usr/local/venv && \
     . /usr/local/venv/bin/activate && \
     python -m pip --no-cache-dir install --upgrade uv && \
-    uv --no-cache pip install --system --upgrade pip setuptools wheel && \
-    uv --no-cache pip install --system \
+    uv --no-cache pip install --upgrade pip setuptools wheel && \
+    uv --no-cache pip install \
         lxml \
         cryptography \
         jq && \
-    uv --no-cache pip install --system '.[local,kubernetes,reana]' && \
+    uv --no-cache pip install '.[local,kubernetes,reana]' && \
     recast --help
 
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
