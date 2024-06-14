@@ -52,11 +52,11 @@ Commands:
 Run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
 
 ```
-python -m pip install --upgrade 'recast-atlas[local]'
+python -m pip install --upgrade 'recast-atlas[local]' coolname
 ```
 
 ```
-recast run examples/rome --backend local
+PACKTIVITY_DOCKER_CMD_MOD="-u root" recast run examples/rome --backend local --tag "$(coolname 2)"
 ```
 
 #### REANA cluster backend
