@@ -1,16 +1,15 @@
+import getpass
+import logging
+import os
+import string
+from distutils.dir_util import copy_tree
+from importlib.resources import files
+
 import click
 import yaml
-import os
-from distutils.dir_util import copy_tree
-import string
-import logging
-
-import pkg_resources
-import getpass
 
 from ..config import config
 from ..testing import validate_entry
-
 
 log = logging.getLogger(__name__)
 default_meta = {"author": "unknown", "short_description": "no description", "tags": []}
@@ -37,9 +36,8 @@ def check(name):
 @click.argument("name")
 @click.argument("path")
 def create(name, path):
-    template_path = pkg_resources.resource_filename(
-        "recastatlas", "data/templates/helloworld"
-    )
+
+    template_path = files("recastatlas") / "data/templates/helloworld"
     copy_tree(template_path, path)
     recast_file = os.path.join(path, "recast.yml")
     data = string.Template(open(recast_file).read()).safe_substitute(

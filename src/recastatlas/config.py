@@ -1,9 +1,10 @@
-import os
-import yaml
-import pkg_resources
 import glob
 import logging
+import os
+from importlib.resources import files
+
 import jsonschema
+import yaml
 
 log = logging.getLogger(__name__)
 
@@ -73,11 +74,7 @@ class Config:
         }
 
     def catalogue_paths(self, include_default=True):
-        paths = (
-            [pkg_resources.resource_filename("recastatlas", "data/catalogue")]
-            if include_default
-            else []
-        )
+        paths = [files("recastatlas") / "data/catalogue"] if include_default else []
         configpath = os.environ.get("RECAST_ATLAS_CATALOGUE")
 
         if configpath:

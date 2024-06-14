@@ -1,9 +1,11 @@
-import click
-import sys
 import os
 import re
 import shutil
-import pkg_resources
+import sys
+from importlib.resources import files
+
+import click
+
 from ..backends import run_sync_packtivity
 from ..config import config
 
@@ -132,11 +134,11 @@ def write(basedir):
     )
 
     shutil.copy(
-        pkg_resources.resource_filename("recastatlas", "data/getkrb_reana.sh"),
+        files("recastatlas") / "data/getkrb_reana.sh",
         os.path.join(basedir, "getkrb_reana.sh"),
     )
     shutil.copy(
-        pkg_resources.resource_filename("recastatlas", "data/expect_script.sh"),
+        files("recastatlas") / "data/expect_script.sh",
         os.path.join(basedir, "expect_script.sh"),
     )
     click.echo(
