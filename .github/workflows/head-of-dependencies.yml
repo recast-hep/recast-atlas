@@ -30,12 +30,13 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip --quiet install --upgrade .[develop,local,reana]
-        python -m pip install --upgrade --pre .[local]
+        python -m pip install uv
+        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade '.[develop,local,reana]'
+        uv pip install --system --upgrade --pre '.[local]'
 
     - name: List installed dependencies
-      run: python -m pip list
+      run: uv pip list --system
 
     - name: Run unit tests
       run: |
@@ -64,13 +65,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,reana]
-        python -m pip uninstall --yes adage
-        python -m pip install --upgrade git+https://github.com/yadage/adage.git
+        python -m pip install uv
+        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade '.[develop,local,reana]'
+        uv pip uninstall --system adage
+        uv pip install --system --upgrade git+https://github.com/yadage/adage.git
 
     - name: List installed dependencies
-      run: python -m pip list
+      run: uv pip list --system
 
     - name: Run unit tests
       run: |
@@ -99,13 +101,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,reana]
-        python -m pip uninstall --yes packtivity
-        python -m pip install --upgrade git+https://github.com/yadage/packtivity.git
+        python -m pip install uv
+        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade '.[develop,local,reana]'
+        uv pip uninstall --system packtivity
+        uv pip install --system --upgrade git+https://github.com/yadage/packtivity.git
 
     - name: List installed dependencies
-      run: python -m pip list
+      run: uv pip list --system
 
     - name: Run unit tests
       run: |
@@ -134,13 +137,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip --no-cache-dir --quiet install --upgrade .[develop,local,reana]
-        python -m pip uninstall --yes yadage
-        python -m pip install --upgrade git+https://github.com/yadage/yadage.git
+        python -m pip install uv
+        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade '.[develop,local,reana]'
+        uv pip uninstall --system yadage
+        uv pip install --system --upgrade git+https://github.com/yadage/yadage.git
 
     - name: List installed dependencies
-      run: python -m pip list
+      run: uv pip list --system
 
     - name: Run unit tests
       run: |
