@@ -39,12 +39,14 @@ RUN apk add --update && \
 WORKDIR /code
 COPY . /code
 
-RUN python3 -m pip --no-cache-dir install --upgrade pip setuptools wheel && \
-    python3 -m pip --no-cache-dir install \
+# FIXME: Use a virtual environment
+RUN python3 -m pip --no-cache-dir install --upgrade uv && \
+    uv --no-cache pip install --system --upgrade pip setuptools wheel && \
+    uv --no-cache pip install --system \
         lxml \
         cryptography \
         jq && \
-    python3 -m pip --no-cache-dir install .[local,kubernetes,reana]
+    uv --no-cache pip install --system '.[local,kubernetes,reana]'
 
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"
 ENV PACKTIVITY_CVMFS_LOCATION /shared-mounts/cvmfs
