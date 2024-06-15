@@ -49,26 +49,76 @@ Commands:
 
 #### Local backend
 
-Run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
+**Example**: Run the [example][recast-examples-rome] from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend.
+
+Install `recast-atlas` with the `local` extra
 
 ```
-python -m pip install --upgrade 'recast-atlas[local]'
+python -m pip install --upgrade 'recast-atlas[local]' coolname
 ```
 
+Submit the RECAST workflow to run locally
+
 ```
-recast run examples/rome --backend local
+PACKTIVITY_DOCKER_CMD_MOD="-u root" recast run examples/rome --backend local --tag "local-$(coolname 2)"
 ```
+
+The `local` backend orchestrates the workflow graph locally, but note that the different workflow steps still run in Linux containers.
 
 #### REANA cluster backend
 
-Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
+**Example**: Asynchronously run the [example][recast-examples-rome] from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend.
+
+Install `recast-atlas` with the `reana` extra
 
 ```
-python -m pip install --upgrade 'recast-atlas[reana]'
+python -m pip install --upgrade 'recast-atlas[reana]' coolname
 ```
 
+Authenticate to use the REANA cluster (remember to clean up later with `eval $(recast auth destroy)`)
+
 ```
-recast submit examples/rome --backend reana
+# Set these variables to your personal secret values
+export RECAST_AUTH_USERNAME="<your RECAST auth username>"
+export RECAST_AUTH_PASSWORD="<your RECAST auth password>"
+export RECAST_AUTH_TOKEN="<your RECAST auth token>"
+
+eval "$(recast auth setup -a ${RECAST_AUTH_USERNAME} -a ${RECAST_AUTH_PASSWORD} -a ${RECAST_AUTH_TOKEN} -a default)"
+eval "$(recast auth write --basedir authdir)"
+
+export REANA_SERVER_URL=https://reana.cern.ch
+export REANA_ACCESS_TOKEN="<your RECAST access token>"
+```
+
+Submit the RECAST workflow to the REANA cluster
+
+```
+reana_tag="reana-$(coolname 2)"
+recast submit examples/rome --backend reana --tag "${reana_tag}"
+# REANA_WORKON sets the workflow automatically
+export REANA_WORKON="recast-${reana_tag}"
+```
+
+Monitor the state of the workflow on REANA
+
+```
+reana-client status
+# or if REANA_WORKON not set
+# reana-client status --workflow "<the created tag>"
+```
+
+The `examples/rome` example doesn't have any result files, but if it did, you can download the results after the workflow succeeds
+
+```
+reana-client download --output-directory output
+# or if REANA_WORKON not set
+# reana-client download --workflow "<the created tag>" --output-directory output
+```
+
+Clean up the environment of personal information in environmental variables
+
+```
+eval $(recast auth destroy)
 ```
 
 [ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
@@ -81,3 +131,5 @@ source ~recast/public/setup.sh
 recast catalogue ls
 recast run examples/rome
 ```
+
+[recast-examples-rome]: https://github.com/recast-hep/recast-atlas/blob/de61902bc6a66104965cced12471a8f195075bb3/src/recastatlas/data/catalogue/examples_rome.yml
