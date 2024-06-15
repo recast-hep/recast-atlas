@@ -69,7 +69,7 @@ python -m pip install --upgrade 'recast-atlas[reana]' coolname
 
 Authenticate to use the REANA cluster (remember to clean up later with `eval $(recast auth destroy)`)
 
-```console
+```
 # Set these variables to your personal secret values
 export RECAST_AUTH_USERNAME="<your RECAST auth username>"
 export RECAST_AUTH_PASSWORD="<your RECAST auth password>"
@@ -84,7 +84,7 @@ export REANA_ACCESS_TOKEN="<your RECAST access token>"
 
 Submit your RECAST workflow to the REANA cluster
 
-```console
+```
 reana_tag="reana-$(coolname 2)"
 recast submit examples/rome --backend reana --tag "${reana_tag}"
 # REANA_WORKON sets the workflow automatically
@@ -93,7 +93,7 @@ export REANA_WORKON="recast-${reana_tag}"
 
 Monitor the state of the workflow on REANA
 
-```console
+```
 reana-client status
 # or if REANA_WORKON not set
 # reana-client status --workflow "<the created tag>"
@@ -101,7 +101,7 @@ reana-client status
 
 The `examples/rome` example doesn't have any result files, but if it did you can download the results after the workflow succeeds
 
-```console
+```
 reana-client download --output-directory output
 # or if REANA_WORKON not set
 # reana-client download --workflow "<the created tag>" --output-directory output
@@ -109,7 +109,7 @@ reana-client download --output-directory output
 
 Clean up the environment of personal information in environmental variables
 
-```console
+```
 eval $(recast auth destroy)
 ```
 
