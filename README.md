@@ -49,7 +49,7 @@ Commands:
 
 #### Local backend
 
-**Example**: Run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend.
+**Example**: Run the [example][recast-examples-rome] from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend.
 
 Install `recast-atlas` with the `local` extra
 
@@ -67,7 +67,7 @@ The `local` backend orchestrates the workflow graph locally, but note that the d
 
 #### REANA cluster backend
 
-**Example**: Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend.
+**Example**: Asynchronously run the [example][recast-examples-rome] from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend.
 
 Install `recast-atlas` with the `reana` extra
 
@@ -131,3 +131,5 @@ source ~recast/public/setup.sh
 recast catalogue ls
 recast run examples/rome
 ```
+
+[recast-examples-rome]: https://github.com/recast-hep/recast-atlas/blob/de61902bc6a66104965cced12471a8f195075bb3/src/recastatlas/data/catalogue/examples_rome.yml
