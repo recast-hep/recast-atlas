@@ -49,19 +49,27 @@ Commands:
 
 #### Local backend
 
-Run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend:
+**Example**: Run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend.
+
+Install `recast-atlas` with the `local` extra
 
 ```
 python -m pip install --upgrade 'recast-atlas[local]' coolname
 ```
 
+Submit the RECAST workflow to run locally
+
 ```
 PACKTIVITY_DOCKER_CMD_MOD="-u root" recast run examples/rome --backend local --tag "local-$(coolname 2)"
 ```
 
+The `local` backend orchestrates the workflow graph locally, but note that the different workflow steps still run in Linux containers.
+
 #### REANA cluster backend
 
-Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend:
+**Example**: Asynchronously run the example from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `reana` backend.
+
+Install `recast-atlas` with the `reana` extra
 
 ```
 python -m pip install --upgrade 'recast-atlas[reana]' coolname
@@ -82,7 +90,7 @@ export REANA_SERVER_URL=https://reana.cern.ch
 export REANA_ACCESS_TOKEN="<your RECAST access token>"
 ```
 
-Submit your RECAST workflow to the REANA cluster
+Submit the RECAST workflow to the REANA cluster
 
 ```
 reana_tag="reana-$(coolname 2)"
@@ -99,7 +107,7 @@ reana-client status
 # reana-client status --workflow "<the created tag>"
 ```
 
-The `examples/rome` example doesn't have any result files, but if it did you can download the results after the workflow succeeds
+The `examples/rome` example doesn't have any result files, but if it did, you can download the results after the workflow succeeds
 
 ```
 reana-client download --output-directory output
