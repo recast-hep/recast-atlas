@@ -36,14 +36,15 @@ RUN apk add --update && \
         font-bitstream-type1 \
         ttf-freefont
 
-WORKDIR /code
 COPY . /code
 
+# Set PATH to pickup virtual environment by default
 ENV PATH=/usr/local/venv/bin:"${PATH}"
 RUN python3 -m venv /usr/local/venv && \
     . /usr/local/venv/bin/activate && \
+    cd /code && \
     python -m pip --no-cache-dir install --upgrade uv && \
-    uv --no-cache pip install --upgrade pip setuptools wheel && \
+    uv --no-cache pip install --upgrade pip wheel && \
     uv --no-cache pip install \
         lxml \
         cryptography \
