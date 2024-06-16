@@ -4,3 +4,6 @@ htmlcov
 dist
 .coverage.*
 docs/_build
+
+# version file
+src/recastatlas/_version.py
