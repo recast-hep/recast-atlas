@@ -31,7 +31,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install uv
-        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade pip wheel
         uv pip install --system --upgrade '.[develop,local,reana]'
         uv pip install --system --upgrade --pre '.[local]'
 
@@ -66,7 +66,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install uv
-        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade pip wheel
         uv pip install --system --upgrade '.[develop,local,reana]'
         uv pip uninstall --system adage
         uv pip install --system --upgrade git+https://github.com/yadage/adage.git
@@ -102,7 +102,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install uv
-        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade pip wheel
         uv pip install --system --upgrade '.[develop,local,reana]'
         uv pip uninstall --system packtivity
         uv pip install --system --upgrade git+https://github.com/yadage/packtivity.git
@@ -138,7 +138,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install uv
-        uv pip install --system --upgrade pip setuptools wheel
+        uv pip install --system --upgrade pip wheel
         uv pip install --system --upgrade '.[develop,local,reana]'
         uv pip uninstall --system yadage
         uv pip install --system --upgrade git+https://github.com/yadage/yadage.git
