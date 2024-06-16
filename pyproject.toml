@@ -1,3 +1,106 @@
+[build-system]
+requires = [
+    "hatchling>=1.13.0",
+    "hatch-vcs>=0.3.0",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "recast_atlas"
+dynamic = ["version"]
+description = "RECAST for ATLAS at the LHC"
+readme = "README.md"
+license = { text = "Apache-2.0" }  # SPDX short identifier
+requires-python = ">=3.8"
+authors = [
+    { name = "Lukas Heinrich", email = "lukas.heinrich@cern.ch" },
+    { name = "Matthew Feickert", email = "matthew.feickert@cern.ch" },
+]
+maintainers = [ { name = "Matthew Feickert", email = "matthew.feickert@cern.ch" } ]
+keywords = [
+    "physics",
+    "RECAST",
+    "ATLAS",
+    "reinterpretation",
+    "analysis reuse",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+# TODO: Empirically evaluate lower bounds
+dependencies = [
+    "click>=7.0",  # for console scripts
+    "jsonschema>=3.0.0",
+    "pyyaml>=5.1",  # for parsing CLI options
+    "yadage-schemas>=0.10.7",  # c.f. https://github.com/yadage/yadage-schemas/issues/35
+    "importlib-resources>=5.10; python_version < '3.9'",  # for accessing package filepaths
+]
+
+[project.scripts]
+recast = "recastatlas.cli:recastatlas"
+
+[project.urls]
+Documentation = "https://github.com/recast-hep/recast-atlas"
+Homepage = "https://github.com/recast-hep/recast-atlas"
+"Issue Tracker" = "https://github.com/recast-hep/recast-atlas/issues"
+"Releases" = "https://github.com/recast-hep/recast-atlas/releases"
+"Source Code" = "https://github.com/recast-hep/recast-atlas"
+
+[project.optional-dependencies]
+local = [
+    "pydotplus==2.0.2",
+    "adage>=0.10.1",
+    "packtivity>=0.14.23",
+    "yadage>=0.20.1",  # yadage[viz] breaks so install following manually
+    "pydot",  # from yadage[viz] extra
+    "pygraphviz"  # from yadage[viz] extra
+]
+kubernetes = ["kubernetes==9.0.0"]
+reana = ["reana-client>=0.8.0"]
+all = ["recast-atlas[local,kubernetes,reana]"]
+
+# Developer extras
+develop = [
+    "pytest>=7.0.0",
+    "flake8>=3.9.0",
+    "black",
+    "pre-commit",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+local_scheme = "no-local-version"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/recastatlas/_version.py"
+
+[tool.hatch.build.targets.sdist]
+# hatchling always includes:
+# pyproject.toml, .gitignore, any README, any LICENSE, AUTHORS
+only-include = [
+    "/src",
+    "/tests",
+    "/CITATION.cff"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/recastatlas"]
+
 [tool.black]
 line-length = 88
 skip-string-normalization = true
@@ -9,18 +112,3 @@ exclude = '''
   | build
 )/
 '''
-
-[tool.check-manifest]
-ignore = [
-    'docs*',
-    'validation*',
-    'examples*',
-    'tests*',
-    'docker*',
-    'binder*',
-    '.*',
-    'pyproject.toml',
-    'pytest.ini',
-    'CODE_OF_CONDUCT.md',
-    'CONTRIBUTING.md',
-]
