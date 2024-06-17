@@ -3,8 +3,8 @@ from __future__ import annotations
 import getpass
 import logging
 import os
+import shutil
 import string
-from distutils.dir_util import copy_tree
 
 try:
     from importlib.resources import files
@@ -45,7 +45,7 @@ def check(name):
 @click.argument("path")
 def create(name, path):
     template_path = files("recastatlas") / "data/templates/helloworld"
-    copy_tree(template_path, path)
+    shutil.copytree(template_path, path)
     recast_file = os.path.join(path, "recast.yml")
     data = string.Template(open(recast_file).read()).safe_substitute(
         name=name, author=getpass.getuser()
