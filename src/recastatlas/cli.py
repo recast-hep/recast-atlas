@@ -1,13 +1,16 @@
-import click
+from __future__ import annotations
+
 import logging
 
-from .subcommands.run import run, submit, retrieve, status
-from .subcommands.catalogue import catalogue
+import click
+
 from .subcommands.auth import auth
 from .subcommands.backends import backends
-from .subcommands.testing import testing
+from .subcommands.catalogue import catalogue
 from .subcommands.ci import ci
+from .subcommands.run import retrieve, run, status, submit
 from .subcommands.software import software
+from .subcommands.testing import testing
 
 LOGFORMAT = "%(asctime)s | %(name)20.20s | %(levelname)6s | %(message)s"
 

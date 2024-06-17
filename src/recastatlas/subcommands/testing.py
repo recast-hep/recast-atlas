@@ -1,7 +1,11 @@
-import click
+from __future__ import annotations
+
 import uuid
+
+import click
+
 from ..config import config
-from ..testing import run_test, get_shell
+from ..testing import get_shell, run_test
 
 
 @click.group(help="Run a test")

@@ -1,11 +1,14 @@
-import click
-import logging
-import yaml
-import uuid
-import json
+from __future__ import annotations
 
+import json
+import logging
+import uuid
+
+import click
+import yaml
+
+from ..backends import check_async, run_async, run_sync
 from ..config import config
-from ..backends import run_sync, run_async, check_async
 from ..resultsextraction import extract_results
 
 log = logging.getLogger(__name__)
@@ -64,9 +67,7 @@ def run(name, inputdata, example, backend, tag, format_result):
 
     if "results" not in data:
         log.info(
-            "No result file specified in config. Check out workdir for {} manually".format(
-                instance_id
-            )
+            f"No result file specified in config. Check out workdir for {instance_id} manually"
         )
         return
 
@@ -76,9 +77,7 @@ def run(name, inputdata, example, backend, tag, format_result):
     else:
         formatted_result = yaml.safe_dump(result, default_flow_style=False)
         click.secho(
-            "\nRECAST result {} {}:\n--------------\n{}".format(
-                name, instance_id, formatted_result
-            )
+            f"\nRECAST result {name} {instance_id}:\n--------------\n{formatted_result}"
         )
 
 
@@ -88,7 +87,7 @@ def run(name, inputdata, example, backend, tag, format_result):
 @click.option("--example", default="default")
 @click.option("--infofile", default=None)
 @click.option("--tag", default=None)
-@click.option("--backend", type=click.Choice(['kubernetes', 'reana']))
+@click.option("--backend", type=click.Choice(["kubernetes", "reana"]))
 def submit(name, inputdata, example, infofile, tag, backend):
     analysis_id = name
     data = config.catalogue[analysis_id]
@@ -109,14 +108,14 @@ def submit(name, inputdata, example, infofile, tag, backend):
 
     submission = run_async(instance_id, spec, backend=backend)
 
-    click.secho(f"{str(instance_id)} submitted")
+    click.secho(f"{instance_id!s} submitted")
     if infofile:
         with open(infofile, "w") as info:
             json.dump(
                 {
                     "analysis_id": analysis_id,
                     "instance_id": instance_id,
-                    'submission': submission,
+                    "submission": submission,
                 },
                 info,
             )
@@ -124,10 +123,10 @@ def submit(name, inputdata, example, infofile, tag, backend):
 
 @click.command(help="Get the Status of a asynchronous submission")
 @click.option("--infofile", default=None)
-@click.option("--backend", type=click.Choice(['kubernetes', 'reana']))
+@click.option("--backend", type=click.Choice(["kubernetes", "reana"]))
 def status(infofile, backend):
     submission = json.load(open(infofile))
-    instance = submission['instance_id']
+    instance = submission["instance_id"]
     status = check_async(submission, backend=backend)
     click.secho("{}\t{}".format(instance, status["status"]))
 
@@ -166,9 +165,7 @@ def retrieve(infofile, name, instance, show_url, tunnel, format_result):
     data = config.catalogue[name]
     if "results" not in data:
         log.info(
-            "No result file specified in config. Check out workdir for {} manually".format(
-                name
-            )
+            f"No result file specified in config. Check out workdir for {name} manually"
         )
         return
     result = extract_results(data["results"], instance, backend=backend)
@@ -177,7 +174,5 @@ def retrieve(infofile, name, instance, show_url, tunnel, format_result):
     else:
         formatted_result = yaml.safe_dump(result, default_flow_style=False)
         click.secho(
-            "\nRECAST result {} {}:\n--------------\n{}".format(
-                name, instance, formatted_result
-            )
+            f"\nRECAST result {name} {instance}:\n--------------\n{formatted_result}"
         )

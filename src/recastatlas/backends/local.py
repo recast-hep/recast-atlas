@@ -1,17 +1,21 @@
-from yadage.utils import setupbackend_fromstring
+from __future__ import annotations
+
+import logging
+import os
+import subprocess
+
 from yadage.steering_api import run_workflow
+from yadage.utils import setupbackend_fromstring
+
 from ..config import config
 from ..exceptions import FailedRunException
-import logging
-import subprocess
-import os
 
 log = logging.getLogger(__name__)
 
 
 class LocalBackend:
     def run_workflow(self, name, spec):
-        backend_config = config.backends['local']["fromstring"]
+        backend_config = config.backends["local"]["fromstring"]
 
         spec["backend"] = setupbackend_fromstring(
             backend_config, spec.pop("backendopts", {})

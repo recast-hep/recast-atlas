@@ -1,12 +1,16 @@
-from ..config import config
-from ..exceptions import FailedRunException
-import logging
-import os
+from __future__ import annotations
+
 import base64
 import json
-import textwrap
+import logging
+import os
 import subprocess
+import textwrap
+
 import yaml
+
+from ..config import config
+from ..exceptions import FailedRunException
 
 log = logging.getLogger(__name__)
 
@@ -17,11 +21,11 @@ def setup_docker():
     image = config.backends[backend]["image"]
 
     special_envs = [
-        'PACKTIVITY_CVMFS_LOCATION',
-        'PACKTIVITY_CVMFS_PROPAGATION',
-        'PACKTIVITY_AUTH_LOCATION',
-        'YADAGE_SCHEMA_LOAD_TOKEN',
-        'YADAGE_INIT_TOKEN',
+        "PACKTIVITY_CVMFS_LOCATION",
+        "PACKTIVITY_CVMFS_PROPAGATION",
+        "PACKTIVITY_AUTH_LOCATION",
+        "YADAGE_SCHEMA_LOAD_TOKEN",
+        "YADAGE_INIT_TOKEN",
     ]
     assert special_envs
 
@@ -98,20 +102,18 @@ def setup_docker():
 
 class DockerBackend:
     def run_workflow(self, name, spec):
-        backend_config = config.backends['docker']["fromstring"]
+        backend_config = config.backends["docker"]["fromstring"]
 
-        spec["backend"] = spec.get('backend', backend_config)
+        spec["backend"] = spec.get("backend", backend_config)
         command, dockerconfig = setup_docker()
 
-        script = """\
+        script = f"""\
         mkdir -p ~/.docker
-        echo '{dockerconfig}' > ~/.docker/config.json
+        echo '{json.dumps(dockerconfig)}' > ~/.docker/config.json
         cat << 'EOF' | yadage-run -f -
-        {spec}
+        {json.dumps(spec)}
         EOF
-        """.format(
-            spec=json.dumps(spec), dockerconfig=json.dumps(dockerconfig)
-        )
+        """
         command += ["sh", "-c", textwrap.dedent(script)]
         subprocess.check_call(command)
 

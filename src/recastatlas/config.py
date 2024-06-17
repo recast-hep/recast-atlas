@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import glob
 import logging
 import os
@@ -21,7 +23,7 @@ def conf_from_env(var, default=None):
         try:
             return yaml.safe_load(v)
         except Exception:  # TODO: Specify Exception type
-            log.error(f'could not get config from env var {var} (value: {v})')
+            log.error(f"could not get config from env var {var} (value: {v})")
             raise
     return default
 
@@ -29,10 +31,10 @@ def conf_from_env(var, default=None):
 class Config:
     @property
     def default_run_backend(self):
-        return os.environ.get('RECAST_DEFAULT_RUN_BACKEND', 'docker')
+        return os.environ.get("RECAST_DEFAULT_RUN_BACKEND", "docker")
 
     def default_build_backend(self):
-        return os.environ.get('RECAST_DEFAULT_BUILD_BACKEND', 'docker')
+        return os.environ.get("RECAST_DEFAULT_BUILD_BACKEND", "docker")
 
     @property
     def backends(self):
@@ -67,14 +69,14 @@ class Config:
             "kubernetes": {
                 "metadata": {"short_description": "runs on a Kubernetes cluster"},
                 "buildkit_addr": conf_from_env(
-                    "RECAST_KUBERNETES_BUILDKIT_ADDR", 'kube-pod://buildkitd'
+                    "RECAST_KUBERNETES_BUILDKIT_ADDR", "kube-pod://buildkitd"
                 ),
             },
             "reana": {
                 "metadata": {"short_description": "runs on a REANA deployment"},
-                "access_token": conf_from_env('REANA_ACCESS_TOKEN', None),
+                "access_token": conf_from_env("REANA_ACCESS_TOKEN", None),
                 "cvmfs_repos": conf_from_env(
-                    'RECAST_REANA_CVMFS_REPOS', ['atlas.cern.ch', 'atlas-condb.cern.ch']
+                    "RECAST_REANA_CVMFS_REPOS", ["atlas.cern.ch", "atlas-condb.cern.ch"]
                 ),
             },
         }
@@ -96,7 +98,7 @@ class Config:
         files = list(set(files))
         log.debug(files)
         for f in files:
-            log.debug(f'loading catalogue file {f}')
+            log.debug(f"loading catalogue file {f}")
             entry = yaml.safe_load(open(f))
             process_entry(cfg, f, entry)
         return cfg
@@ -112,18 +114,18 @@ def process_entry(cfg, fname, entry, tags=None):
             entry["spec"]["toplevel"] = os.path.realpath(
                 os.path.join(os.path.dirname(fname), "specs")
             )
-            entry['metadata'].setdefault('tags', []).extend(tags or [])
+            entry["metadata"].setdefault("tags", []).extend(tags or [])
         cfg[name] = entry
     elif (entry is not None) and is_index_file(entry):
-        for index_f in entry['recast_catalogue_entries']:
+        for index_f in entry["recast_catalogue_entries"]:
             index_f = os.path.join(os.path.dirname(fname), index_f)
-            log.debug(f'loading catalogue file {index_f}')
+            log.debug(f"loading catalogue file {index_f}")
             index_entry = yaml.safe_load(open(index_f))
-            process_entry(cfg, index_f, index_entry, entry['tags'])
+            process_entry(cfg, index_f, index_entry, entry["tags"])
 
 
 def is_entry_file(entry):
-    schema = jsonschema.Draft7Validator({'required': ['name', 'metadata', 'spec']})
+    schema = jsonschema.Draft7Validator({"required": ["name", "metadata", "spec"]})
     try:
         schema.validate(entry)
     except jsonschema.exceptions.ValidationError:
@@ -133,7 +135,7 @@ def is_entry_file(entry):
 
 def is_index_file(entry):
     schema = jsonschema.Draft7Validator(
-        {'required': ['name', 'tags', 'recast_catalogue_entries']}
+        {"required": ["name", "tags", "recast_catalogue_entries"]}
     )
     try:
         schema.validate(entry)

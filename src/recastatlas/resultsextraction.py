@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import os
+
 import yaml
 
 
@@ -14,8 +17,8 @@ def get_file(filename, backend, load_yaml=False):
             return yaml.safe_load(contents)
         return contents
     elif backend == "kubernetes":
-        from kubernetes import config as k8sconfig
         from kubernetes import client as k8sclient
+        from kubernetes import config as k8sconfig
 
         k8sconfig.load_kube_config()
         r, _, _ = k8sclient.ApiClient().call_api(
