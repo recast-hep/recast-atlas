@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import click
-from ..config import config
-from ..backends import check_backend
+
 from recastatlas.exceptions import BackendNotAvailableException
+
+from ..backends import check_backend
+from ..config import config
 
 
 @click.group(help="The RECAST computational backends.")

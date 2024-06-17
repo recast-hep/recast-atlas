@@ -1,8 +1,12 @@
-from click.testing import CliRunner
-from recastatlas.cli import recastatlas
-from recastatlas.subcommands.run import run
-from recastatlas.subcommands.catalogue import catalogue
+from __future__ import annotations
+
 import os
+
+from click.testing import CliRunner
+
+from recastatlas.cli import recastatlas
+from recastatlas.subcommands.catalogue import catalogue
+from recastatlas.subcommands.run import run
 
 
 def test_cli():

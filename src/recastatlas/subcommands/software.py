@@ -1,6 +1,10 @@
-import click
-import subprocess
+from __future__ import annotations
+
 import os
+import subprocess
+
+import click
+
 from ..config import config
 
 

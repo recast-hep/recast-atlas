@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import getpass
 import logging
 import os
@@ -51,9 +53,7 @@ def create(name, path):
     with open(recast_file, "w") as f:
         f.write(data)
     click.secho(
-        "New skeleton created at {path}\nRun $(recast catalogue add {path}) to add to the catlogue".format(
-            path=path
-        )
+        f"New skeleton created at {path}\nRun $(recast catalogue add {path}) to add to the catlogue"
     )
 
 

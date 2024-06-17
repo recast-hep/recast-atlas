@@ -1,10 +1,14 @@
-from yadage.utils import setupbackend_fromstring
+from __future__ import annotations
+
+import logging
+import os
+import subprocess
+
 from yadage.steering_api import run_workflow
+from yadage.utils import setupbackend_fromstring
+
 from ..config import config
 from ..exceptions import FailedRunException
-import logging
-import subprocess
-import os
 
 log = logging.getLogger(__name__)
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import re
 import shutil
@@ -148,9 +150,7 @@ def write(basedir):
         os.path.join(basedir, "expect_script.sh"),
     )
     click.echo(
-        "Wrote Authentication Data to {} (Note! This includes passwords/tokens)".format(
-            basedir
-        ),
+        f"Wrote Authentication Data to {basedir} (Note! This includes passwords/tokens)",
         err=True,
     )
 
@@ -201,7 +201,7 @@ def check_access_image(image, backend):
         image = image[0]
         tag = "latest"
 
-    spec = """
+    spec = f"""
 process:
     process_type: 'interpolated-script-cmd'
     script: 'echo hello world'
@@ -212,7 +212,7 @@ environment:
     environment_type: 'docker-encapsulated'
     image: {image}
     imagetag: {tag}
-    """.format(image=image, tag=tag)
+    """
 
     testspec = "testimage.yml"
     open(testspec, "w").write(spec)
@@ -220,9 +220,7 @@ environment:
     testingdir = "recast-auth-testing-image"
     click.secho(f"Running test job for accessing image {image}:{tag}")
     click.secho(
-        "Note: if the image {}:{} is not yet available locally, it will be pulled".format(
-            image, tag
-        )
+        f"Note: if the image {image}:{tag} is not yet available locally, it will be pulled"
     )
     click.secho("-" * 20)
     if os.path.exists(testingdir):
@@ -270,7 +268,7 @@ def check_access_xrootd(image, location, backend):
     server = re.search("root://.*.cern.ch/", location).group(0)
     path = location.replace(server, "")
 
-    spec = """
+    spec = f"""
 process:
     process_type: 'interpolated-script-cmd'
     script: |
@@ -286,7 +284,7 @@ environment:
     imagetag: {tag}
     resources:
     - GRIDProxy
-    """.format(image=image, tag=tag, server=server, path=path)
+    """
 
     testspec = "testauth.yml"
     open(testspec, "w").write(spec)
@@ -294,9 +292,7 @@ environment:
     testingdir = "recast-auth-testing"
     click.secho(f"Running test job for accessing file {location}")
     click.secho(
-        "Note: if the image {}:{} is not yet available locally, it will be pulled".format(
-            image, tag
-        )
+        f"Note: if the image {image}:{tag} is not yet available locally, it will be pulled"
     )
     click.secho("-" * 20)
     if os.path.exists(testingdir):

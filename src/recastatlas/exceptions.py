@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class FailedRunException(Exception):
     """
     raised when an a run has not succeeded

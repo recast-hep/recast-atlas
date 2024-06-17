@@ -1,7 +1,11 @@
-import yadageschemas
+from __future__ import annotations
+
 import logging
 import subprocess
-from .backends import run_sync_packtivity, get_shell_packtivity
+
+import yadageschemas
+
+from .backends import get_shell_packtivity, run_sync_packtivity
 
 log = logging.getLogger(__name__)
 
