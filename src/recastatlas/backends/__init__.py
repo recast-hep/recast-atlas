@@ -13,21 +13,21 @@ BACKENDS = {}
 try:
     from .reana import ReanaBackend
 
-    BACKENDS['reana'] = ReanaBackend()
+    BACKENDS["reana"] = ReanaBackend()
 except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
 try:
     from .kubernetes import KubernetesBackend
 
-    BACKENDS['kubernetes'] = KubernetesBackend()
+    BACKENDS["kubernetes"] = KubernetesBackend()
 except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
 try:
     from .local import LocalBackend
 
-    BACKENDS['local'] = LocalBackend()
+    BACKENDS["local"] = LocalBackend()
 except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
@@ -35,7 +35,7 @@ try:
     from .docker import DockerBackend
     from .docker import setup_docker
 
-    BACKENDS['docker'] = DockerBackend()
+    BACKENDS["docker"] = DockerBackend()
 except (ImportError, exceptions.BackendNotAvailableException):
     pass
 
@@ -60,9 +60,7 @@ def get_shell_packtivity(name, spec, backend):
 mkdir -p ~/.docker
 echo '{dockerconfig}' > ~/.docker/config.json
 {command}
-        """.format(
-            dockerconfig=json.dumps(dockerconfig), command=shellcmd
-        )
+        """.format(dockerconfig=json.dumps(dockerconfig), command=shellcmd)
         command += ["sh", "-c", textwrap.dedent(script)]
         return subprocess.check_output(command).decode("ascii")
 

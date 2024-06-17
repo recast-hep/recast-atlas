@@ -42,7 +42,6 @@ def check(name):
 @click.argument("name")
 @click.argument("path")
 def create(name, path):
-
     template_path = files("recastatlas") / "data/templates/helloworld"
     copy_tree(template_path, path)
     recast_file = os.path.join(path, "recast.yml")
@@ -61,8 +60,8 @@ def create(name, path):
 @catalogue.command()
 def paths():
     paths = config.catalogue_paths()
-    out = '\n'.join(['* ' + x for x in paths])
-    click.secho('Paths considered by RECAST:\n--------------------------')
+    out = "\n".join(["* " + x for x in paths])
+    click.secho("Paths considered by RECAST:\n--------------------------")
     click.secho(out)
 
 
@@ -88,7 +87,7 @@ def rm(path):
     filtered_paths = [p for p in paths if p != path]
     filtered_paths = sorted(list(set(filtered_paths)))
     if not filtered_paths:
-        click.secho('unset RECAST_ATLAS_CATALOGUE')
+        click.secho("unset RECAST_ATLAS_CATALOGUE")
     else:
         click.secho("export RECAST_ATLAS_CATALOGUE=" + ":".join(filtered_paths))
 
@@ -104,7 +103,7 @@ def ls():
                 k,
                 v.get("metadata", default_meta)["short_description"],
                 ",".join(list(v.get("example_inputs", {}).keys())),
-                ",".join(v.get("metadata", default_meta).get('tags', [])),
+                ",".join(v.get("metadata", default_meta).get("tags", [])),
             )
         )
 
@@ -122,10 +121,10 @@ description  : {short:20}
 author       : {author}
 toplevel     : {toplevel}
 """.format(
-        author=metadata.get("author", 'N/A'),
+        author=metadata.get("author", "N/A"),
         name=name,
         short=metadata.get("short_description", "N/A"),
-        toplevel=data['spec']['toplevel'],
+        toplevel=data["spec"]["toplevel"],
     )
     click.secho(toprint)
 

@@ -15,14 +15,14 @@ def test_run_hello_world(tmpdir):
     with tmpdir.as_cwd():
         runner = CliRunner()
         test = runner.invoke(
-            run, ['testing/busyboxtest', '--backend', 'local', '--tag', 'hello']
+            run, ["testing/busyboxtest", "--backend", "local", "--tag", "hello"]
         )
         assert test.exit_code == 0
-        assert os.path.exists('recast-hello')
-        assert os.path.exists('recast-hello/world/world.txt')
+        assert os.path.exists("recast-hello")
+        assert os.path.exists("recast-hello/world/world.txt")
 
 
 def test_run_catalogue():
     runner = CliRunner()
-    test = runner.invoke(catalogue, ['ls'])
+    test = runner.invoke(catalogue, ["ls"])
     assert test.exit_code == 0

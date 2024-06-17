@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 class LocalBackend:
     def run_workflow(self, name, spec):
-        backend_config = config.backends['local']["fromstring"]
+        backend_config = config.backends["local"]["fromstring"]
 
         spec["backend"] = setupbackend_fromstring(
             backend_config, spec.pop("backendopts", {})

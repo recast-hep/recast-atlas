@@ -88,7 +88,7 @@ def run(name, inputdata, example, backend, tag, format_result):
 @click.option("--example", default="default")
 @click.option("--infofile", default=None)
 @click.option("--tag", default=None)
-@click.option("--backend", type=click.Choice(['kubernetes', 'reana']))
+@click.option("--backend", type=click.Choice(["kubernetes", "reana"]))
 def submit(name, inputdata, example, infofile, tag, backend):
     analysis_id = name
     data = config.catalogue[analysis_id]
@@ -116,7 +116,7 @@ def submit(name, inputdata, example, infofile, tag, backend):
                 {
                     "analysis_id": analysis_id,
                     "instance_id": instance_id,
-                    'submission': submission,
+                    "submission": submission,
                 },
                 info,
             )
@@ -124,10 +124,10 @@ def submit(name, inputdata, example, infofile, tag, backend):
 
 @click.command(help="Get the Status of a asynchronous submission")
 @click.option("--infofile", default=None)
-@click.option("--backend", type=click.Choice(['kubernetes', 'reana']))
+@click.option("--backend", type=click.Choice(["kubernetes", "reana"]))
 def status(infofile, backend):
     submission = json.load(open(infofile))
-    instance = submission['instance_id']
+    instance = submission["instance_id"]
     status = check_async(submission, backend=backend)
     click.secho("{}\t{}".format(instance, status["status"]))
 

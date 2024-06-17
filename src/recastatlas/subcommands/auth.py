@@ -34,10 +34,10 @@ def auth():
 
 @auth.command(help="show current auth configuration")
 def show():
-    click.echo('Authdir: {}'.format(os.environ.get(envvar['auth_location'], 'not set')))
+    click.echo("Authdir: {}".format(os.environ.get(envvar["auth_location"], "not set")))
 
 
-@auth.command(help='configure authentication')
+@auth.command(help="configure authentication")
 @click.option("-a", "--answer", multiple=True)
 def setup(answer):
     expt = "ATLAS"
@@ -118,10 +118,10 @@ def setup(answer):
     )
 
 
-@auth.command(help='Prepare auth data on-disk for steps requiring them')
+@auth.command(help="Prepare auth data on-disk for steps requiring them")
 @click.option(
     "--basedir",
-    default=os.path.join(os.environ.get('HOME', os.getcwd()), '.recast', 'auth'),
+    default=os.path.join(os.environ.get("HOME", os.getcwd()), ".recast", "auth"),
     show_default=True,
 )
 def write(basedir):
@@ -148,14 +148,14 @@ def write(basedir):
         os.path.join(basedir, "expect_script.sh"),
     )
     click.echo(
-        'Wrote Authentication Data to {} (Note! This includes passwords/tokens)'.format(
+        "Wrote Authentication Data to {} (Note! This includes passwords/tokens)".format(
             basedir
         ),
         err=True,
     )
 
 
-@auth.command(help='Configure REANA with authentication information.')
+@auth.command(help="Configure REANA with authentication information.")
 def reana_setup():
     click.secho(
         "docker run --rm "
@@ -170,7 +170,7 @@ def reana_setup():
     )
 
 
-@auth.command(help='Unset/Remove auth-relevant env vars/directories')
+@auth.command(help="Unset/Remove auth-relevant env vars/directories")
 def destroy():
     if sys.stdout.isatty():
         click.secho("Use eval $(recast auth destroy) to unset the variables", fg="red")
@@ -183,7 +183,7 @@ def destroy():
             shutil.rmtree(auth_loc)
 
 
-@auth.command(help='check access for private images')
+@auth.command(help="check access for private images")
 @click.argument("image", default="gitlab-registry.cern.ch/lheinric/atlasonlytestimages")
 @click.option(
     "--backend",
@@ -212,9 +212,7 @@ environment:
     environment_type: 'docker-encapsulated'
     image: {image}
     imagetag: {tag}
-    """.format(
-        image=image, tag=tag
-    )
+    """.format(image=image, tag=tag)
 
     testspec = "testimage.yml"
     open(testspec, "w").write(spec)
@@ -244,7 +242,7 @@ environment:
     click.secho("Access: {}".format("ok" if log_ok else "not ok"))
 
 
-@auth.command(help='check access to private data')
+@auth.command(help="check access to private data")
 @click.option("--image", default="lukasheinrich/xrootdclient:latest")
 @click.argument(
     "location",
@@ -288,9 +286,7 @@ environment:
     imagetag: {tag}
     resources:
     - GRIDProxy
-    """.format(
-        image=image, tag=tag, server=server, path=path
-    )
+    """.format(image=image, tag=tag, server=server, path=path)
 
     testspec = "testauth.yml"
     open(testspec, "w").write(spec)
@@ -325,7 +321,7 @@ environment:
     click.secho("Access: {}".format("ok" if access_ok else "not ok"))
 
 
-@auth.command(help='configure to use preset on-disk location of auth data')
+@auth.command(help="configure to use preset on-disk location of auth data")
 @click.argument("location")
 def use(location):
     click.secho(
