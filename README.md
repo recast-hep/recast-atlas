@@ -49,6 +49,22 @@ Commands:
 
 `recast-atlas` aims to enable both local execution as well as asynchronous execution on a [REANA](http://reana.io) cluster.
 
+#### Docker backend
+
+**Example**: Run the [example][recast-examples-rome] from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the (default) `docker` backend.
+
+Install `recast-atlas` from PyPI
+
+```
+python -m pip install --upgrade recast-atlas coolname
+```
+
+Submit the RECAST workflow, orchestrated in a `recast/recastatlas` Docker container
+
+```
+recast run examples/rome --backend docker --tag "docker-$(coolname 2)"
+```
+
 #### Local backend
 
 **Example**: Run the [example][recast-examples-rome] from the [ATLAS Exotics Rome Workshop 2018][ATLAS Exotics Workshop 2018] using the `local` backend.
