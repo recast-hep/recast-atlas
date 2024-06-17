@@ -45,7 +45,7 @@ def check(name):
 @click.argument("path")
 def create(name, path):
     template_path = files("recastatlas") / "data/templates/helloworld"
-    shutil.copytree(template_path, path)
+    shutil.copytree(template_path, path, dirs_exist_ok=True)
     recast_file = os.path.join(path, "recast.yml")
     data = string.Template(open(recast_file).read()).safe_substitute(
         name=name, author=getpass.getuser()
