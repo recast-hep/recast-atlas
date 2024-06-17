@@ -99,15 +99,3 @@ only-include = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/recastatlas"]
-
-[tool.black]
-line-length = 88
-skip-string-normalization = true
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | .eggs
-  | build
-)/
-'''
