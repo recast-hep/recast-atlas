@@ -125,12 +125,12 @@ reana-client status
 # reana-client status --workflow "<the created tag>"
 ```
 
-The `examples/rome` example doesn't have any result files, but if it did, you can download the results after the workflow succeeds
+Download the results after the workflow succeeds
 
 ```
-reana-client download --output-directory output
+reana-client download statanalysis --output-directory output
 # or if REANA_WORKON not set
-# reana-client download --workflow "<the created tag>" --output-directory output
+# reana-client download statanalysis --workflow "<the created tag>" --output-directory output
 ```
 
 Clean up the environment of personal information in environmental variables
