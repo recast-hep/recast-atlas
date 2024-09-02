@@ -100,9 +100,11 @@ jobs:
       with:
         repository-url: https://test.pypi.org/legacy/
         print-hash: true
+        attestations: true
 
     - name: Publish distribution 📦 to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
       uses: pypa/gh-action-pypi-publish@v1.10.0
       with:
         print-hash: true
+        attestations: true
