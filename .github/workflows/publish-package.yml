@@ -60,7 +60,7 @@ jobs:
     - name: Generate artifact attestation for sdist and wheel
       # If publishing to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
-      uses: actions/attest-build-provenance@6149ea5740be74af77f260b9db67e633f6b0a9a1 # v1.4.2
+      uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c # v1.4.3
       with:
         subject-path: "dist/recast_atlas-*"
 
@@ -96,7 +96,7 @@ jobs:
     - name: Publish distribution 📦 to Test PyPI
       # publish to TestPyPI on tag events
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'recast-hep/recast-atlas'
-      uses: pypa/gh-action-pypi-publish@v1.10.0
+      uses: pypa/gh-action-pypi-publish@v1.10.1
       with:
         repository-url: https://test.pypi.org/legacy/
         print-hash: true
@@ -104,7 +104,7 @@ jobs:
 
     - name: Publish distribution 📦 to PyPI
       if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'recast-hep/recast-atlas'
-      uses: pypa/gh-action-pypi-publish@v1.10.0
+      uses: pypa/gh-action-pypi-publish@v1.10.1
       with:
         print-hash: true
         attestations: true
