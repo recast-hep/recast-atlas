@@ -11,6 +11,15 @@ log = logging.getLogger(__name__)
 
 
 def validate_entry(data):
+    workflow_type = data["spec"].get("workflow_type", "yadage")
+    if workflow_type == "snakemake":
+        from .engines.snakemake import validate_workflow
+
+        return validate_workflow(data)
+    if workflow_type != "yadage":
+        log.warning("unknown workflow_type %s", workflow_type)
+        return False
+
     toplevel = data["spec"]["toplevel"]
     workflow = data["spec"]["workflow"]
     try:

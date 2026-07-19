@@ -70,7 +70,8 @@ local = [
 ]
 kubernetes = ["kubernetes==9.0.0"]
 reana = ["reana-client>=0.8.0"]
-all = ["recast-atlas[local,kubernetes,reana]"]
+snakemake = ["snakemake>=8.0; python_version >= '3.11'"]
+all = ["recast-atlas[local,kubernetes,reana,snakemake]"]
 
 # Developer extras
 develop = [

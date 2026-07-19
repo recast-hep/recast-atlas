@@ -4,6 +4,12 @@
 from the community to improve the user experience.
 
 
+## Development install
+
+```
+python -m pip install -e '.[develop,local,snakemake]'
+```
+
 ## Running unit tests
 
 We use `pytest` as a unit testing framework

@@ -1,0 +1,12 @@
+rule all:
+    input:
+        "results/result.yml"
+
+
+rule greet:
+    output:
+        "results/result.yml"
+    params:
+        name=config.get("name", "world")
+    shell:
+        "mkdir -p results && echo 'greeting: Hello {params.name}' > {output}"

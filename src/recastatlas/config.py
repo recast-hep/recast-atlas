@@ -46,6 +46,10 @@ class Config:
                 "fromstring": conf_from_env(
                     "RECAST_LOCAL_BACKENDSTRING", "multiproc:auto"
                 ),
+                "snakemake": {
+                    "cores": conf_from_env("RECAST_SNAKEMAKE_CORES", "all"),
+                    "sdm": conf_from_env("RECAST_SNAKEMAKE_SDM"),
+                },
             },
             "docker": {
                 "metadata": {"short_description": "runs with containerized tools"},
