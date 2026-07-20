@@ -102,9 +102,11 @@ def setup_docker():
 
 class DockerBackend:
     def run_workflow(self, name, spec):
-        if spec.pop("workflow_type", "yadage") != "yadage":
-            msg = "snakemake workflows are not supported on the docker backend yet"
-            raise FailedRunException(msg)
+        if spec.pop("workflow_type", "yadage") == "snakemake":
+            from ..engines.snakemake import run_workflow_docker
+
+            run_workflow_docker(name, spec)
+            return
 
         backend_config = config.backends["docker"]["fromstring"]
 

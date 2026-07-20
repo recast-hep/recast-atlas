@@ -84,7 +84,7 @@ jobs:
         run: >-
           docker run --rm
           recast/recastatlas:sha-${GITHUB_SHA::10}
-          sh -c 'recast --help'
+          sh -c 'recast --help && snakemake --version && apptainer version'
 
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main

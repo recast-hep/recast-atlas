@@ -27,11 +27,13 @@ def parse_remote_toplevel(toplevel):
     return f"https://github.com/{repo}.git", ref or None, subpath
 
 
-def resolve_toplevel(toplevel, workdir):
+def resolve_toplevel(toplevel, workdir, materialize=False):
     """Return the directory containing the workflow sources.
 
     Local toplevels are used in place; 'github:' toplevels are cloned into
-    the instance workdir so the run stays self-contained.
+    the instance workdir so the run stays self-contained. With materialize,
+    local toplevels are also copied into the workdir so that the sources
+    are visible when only the workdir is mounted into a container.
     """
     if toplevel.startswith("github:"):
         url, ref, subpath = parse_remote_toplevel(toplevel)
@@ -51,19 +53,25 @@ def resolve_toplevel(toplevel, workdir):
     if toplevel.startswith("gitlab-cern:"):
         msg = "gitlab-cern toplevels are not yet supported for snakemake workflows"
         raise FailedRunException(msg)
-    return os.path.realpath(toplevel)
+    srcdir = os.path.realpath(toplevel)
+    if materialize:
+        checkout = os.path.join(workdir, CHECKOUT_DIRNAME)
+        if not os.path.exists(checkout):
+            shutil.copytree(srcdir, checkout)
+        return checkout
+    return srcdir
 
 
-def build_command(snakefile, workdir, configfile):
-    exe = shutil.which("snakemake")
-    if exe is None:
-        msg = (
-            "snakemake executable not found."
-            " Install it with: python -m pip install 'recast-atlas[snakemake]'"
-        )
-        raise BackendNotAvailableException(msg)
+def _sdm_list():
+    sdm = config.backends["local"]["snakemake"]["sdm"]
+    if not sdm or sdm == "none":
+        return []
+    return [sdm] if isinstance(sdm, str) else list(sdm)
+
+
+def build_snakemake_argv(snakefile, workdir, configfile, exe):
     snake_cfg = config.backends["local"]["snakemake"]
-    cmd = [
+    argv = [
         exe,
         "--snakefile",
         snakefile,
@@ -74,16 +82,41 @@ def build_command(snakefile, workdir, configfile):
         "--cores",
         str(snake_cfg["cores"]),
     ]
-    sdm = snake_cfg["sdm"]
-    if sdm and sdm != "none":
-        cmd += [
-            "--software-deployment-method",
-            *([sdm] if isinstance(sdm, str) else list(sdm)),
-        ]
+    sdm = _sdm_list()
+    if sdm:
+        argv += ["--software-deployment-method", *sdm]
+    return argv
+
+
+def build_command(snakefile, workdir, configfile):
+    exe = shutil.which("snakemake")
+    if exe is None:
+        msg = (
+            "snakemake executable not found."
+            " Install it with: python -m pip install 'recast-atlas[snakemake]'"
+        )
+        raise BackendNotAvailableException(msg)
+    return build_snakemake_argv(snakefile, workdir, configfile, exe)
+
+
+def build_docker_command(snakefile, workdir, configfile):
+    cwd = os.getcwd()
+    docker_cfg = config.backends["docker"]
+    cmd = ["docker", "run", "--rm", "-i", "-v", f"{cwd}:{cwd}", "-w", cwd]
+    if docker_cfg.get("platform"):
+        cmd += ["--platform", docker_cfg["platform"]]
+    # apptainer needs elevated privileges when run inside a docker container
+    if any(s in ("apptainer", "singularity") for s in _sdm_list()):
+        cmd += ["--privileged"]
+    # persist pulled per-rule images in the instance workdir across runs
+    cmd += ["-e", "APPTAINER_CACHEDIR={}".format(os.path.join(workdir, ".apptainer"))]
+    cmd += [docker_cfg["image"]]
+    cmd += build_snakemake_argv(snakefile, workdir, configfile, exe="snakemake")
     return cmd
 
 
-def run_workflow_local(name, spec):
+def prepare_run(spec, materialize=False):
+    """Set up the instance workdir and return (workdir, snakefile, configfile)."""
     workdir = os.path.realpath(spec["dataarg"])
     os.makedirs(workdir, exist_ok=True)
 
@@ -91,20 +124,33 @@ def run_workflow_local(name, spec):
     if initdir:
         shutil.copytree(os.path.realpath(initdir), workdir, dirs_exist_ok=True)
 
-    srcdir = resolve_toplevel(spec["toplevel"], workdir)
+    srcdir = resolve_toplevel(spec["toplevel"], workdir, materialize=materialize)
     snakefile = os.path.join(srcdir, spec["workflow"])
 
     configfile = os.path.join(workdir, CONFIGFILE_NAME)
     with open(configfile, "w") as f:
         yaml.safe_dump(spec.get("initdata") or {}, f)
 
-    cmd = build_command(snakefile, workdir, configfile)
+    return workdir, snakefile, configfile
+
+
+def _run_or_raise(cmd):
     log.info("running snakemake: %s", " ".join(cmd))
     try:
         subprocess.run(cmd, check=True)
     except (subprocess.CalledProcessError, OSError):
         log.exception("snakemake run failed")
         raise FailedRunException
+
+
+def run_workflow_local(name, spec):
+    workdir, snakefile, configfile = prepare_run(spec)
+    _run_or_raise(build_command(snakefile, workdir, configfile))
+
+
+def run_workflow_docker(name, spec):
+    workdir, snakefile, configfile = prepare_run(spec, materialize=True)
+    _run_or_raise(build_docker_command(snakefile, workdir, configfile))
 
 
 def validate_workflow(data):

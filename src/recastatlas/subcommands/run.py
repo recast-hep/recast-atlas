@@ -53,14 +53,6 @@ def run(name, inputdata, example, backend, tag, format_result):
                 )
             )
 
-    if (
-        data["spec"].get("workflow_type", "yadage") == "snakemake"
-        and backend != "local"
-    ):
-        raise click.ClickException(
-            "snakemake workflows currently only support --backend local"
-        )
-
     instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
     spec = make_spec(instance_id, data, inputs)
 
@@ -114,7 +106,7 @@ def submit(name, inputdata, example, infofile, tag, backend):
 
     if data["spec"].get("workflow_type", "yadage") == "snakemake":
         raise click.ClickException(
-            "snakemake workflows currently only support --backend local"
+            "snakemake workflows currently only support the local and docker backends"
         )
 
     instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
