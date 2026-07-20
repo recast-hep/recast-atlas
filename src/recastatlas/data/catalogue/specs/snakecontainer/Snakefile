@@ -1,0 +1,14 @@
+rule all:
+    input:
+        "results/result.yml"
+
+
+rule containergreet:
+    output:
+        "results/result.yml"
+    container:
+        "docker://bash:5.2"
+    params:
+        name=config.get("name", "world")
+    shell:
+        "mkdir -p results && echo \"greeting: Hello {params.name} from $(uname -a | cut -d' ' -f1)\" > {output}"

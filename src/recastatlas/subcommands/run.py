@@ -22,6 +22,7 @@ def make_spec(name, data, inputs):
         "workflow": data["spec"]["workflow"],
         "toplevel": data["spec"]["toplevel"],
         "visualize": True,
+        "workflow_type": data["spec"].get("workflow_type", "yadage"),
     }
     return spec
 
@@ -102,6 +103,11 @@ def submit(name, inputdata, example, infofile, tag, backend):
                     example, list(data.get("example_inputs", {}).keys())
                 )
             )
+
+    if data["spec"].get("workflow_type", "yadage") == "snakemake":
+        raise click.ClickException(
+            "snakemake workflows currently only support the local and docker backends"
+        )
 
     instance_id = "recast-{}".format(tag or str(uuid.uuid1()).split("-")[0])
     spec = make_spec(instance_id, data, inputs)

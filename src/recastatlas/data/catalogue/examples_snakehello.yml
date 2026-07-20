@@ -1,0 +1,20 @@
+name: examples/snakehello
+
+metadata:
+  author: recast-atlas developers
+  input requirements: ''
+  short_description: Hello World example using a Snakemake workflow
+
+spec:
+  workflow_type: snakemake
+  workflow: snakehello/Snakefile
+
+example_inputs:
+  default:
+    initdata:
+      name: RECAST
+
+results:
+- name: greeting
+  relpath: results/result.yml
+  load_yaml: true

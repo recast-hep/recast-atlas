@@ -141,6 +141,52 @@ eval $(recast auth destroy)
 
 [ATLAS Exotics Workshop 2018]: https://indico.cern.ch/event/710748/contributions/2982534/subcontributions/254796
 
+### Snakemake workflows
+
+In addition to the default [yadage](https://github.com/yadage/yadage) engine, catalogue entries can declare a
+[Snakemake](https://snakemake.github.io/) workflow by setting `workflow_type: snakemake` in their `spec`:
+
+```yaml
+spec:
+  workflow_type: snakemake
+  workflow: snakehello/Snakefile
+```
+
+Install `recast-atlas` with the `snakemake` extra (requires Python >= 3.11)
+
+```
+python -m pip install --upgrade 'recast-atlas[snakemake]'
+```
+
+and run with the `local` backend
+
+```
+recast run examples/snakehello --backend local
+```
+
+The Snakemake workflow runs in the instance working directory (`recast-<tag>`) and receives the
+`initdata` of the catalogue entry as its Snakemake `config`. Per-rule software environments
+(`container:`, `conda:` directives) are handled by Snakemake itself and can be enabled by setting
+
+- `RECAST_SNAKEMAKE_SDM`: forwarded to `--software-deployment-method` (e.g. `conda`, `apptainer`, or a list)
+- `RECAST_SNAKEMAKE_CORES`: forwarded to `--cores` (default: `all`)
+
+Alternatively the `docker` backend runs the whole Snakemake orchestration inside the
+`recast/recastatlas` image (which ships `snakemake` and `apptainer`)
+
+```
+recast run examples/snakehello --backend docker
+```
+
+This is particularly useful on macOS: apptainer is Linux-only, so per-rule `container:`
+directives cannot run with the `local` backend there — but with the `docker` backend they
+execute via apptainer *inside* the Linux container (`recast` adds `--privileged` to the
+`docker run` automatically when `RECAST_SNAKEMAKE_SDM` includes `apptainer`):
+
+```
+RECAST_SNAKEMAKE_SDM=apptainer recast run testing/snakecontainertest --backend docker
+```
+
 #### On [LXPLUS9](https://clouddocs.web.cern.ch/clients/lxplus.html)
 
 ```console
