@@ -45,7 +45,7 @@ dependencies = [
     "click>=7.0",  # for console scripts
     "jsonschema>=3.0.0",
     "pyyaml>=5.1",  # for parsing CLI options
-    "yadage-schemas>=0.10.7",  # c.f. https://github.com/yadage/yadage-schemas/issues/35
+    "yadage-schemas>=0.11.1",  # >=0.11 caps jsonschema<=4.9.1, needed for stage-dependency desugaring
     "importlib-resources>=5.10; python_version < '3.9'",  # for accessing package filepaths
 ]
 
