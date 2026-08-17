@@ -12,7 +12,7 @@ from recastatlas.subcommands.run import run
 def test_cli():
     runner = CliRunner()
     test = runner.invoke(recastatlas)
-    assert test.exit_code == 0
+    assert "Usage:" in test.output
 
 
 def test_run_hello_world(tmpdir):
