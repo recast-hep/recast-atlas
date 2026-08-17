@@ -4,7 +4,6 @@ import os
 import re
 import shutil
 import sys
-
 from importlib.resources import files
 
 import click

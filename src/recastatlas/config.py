@@ -3,7 +3,6 @@ from __future__ import annotations
 import glob
 import logging
 import os
-
 from importlib.resources import files
 
 import jsonschema

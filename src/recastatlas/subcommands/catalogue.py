@@ -5,7 +5,6 @@ import logging
 import os
 import shutil
 import string
-
 from importlib.resources import files
 
 import click
