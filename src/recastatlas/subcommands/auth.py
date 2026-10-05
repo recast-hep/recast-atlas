@@ -110,8 +110,8 @@ def setup(answer):
     click.secho(f"export {envvar['registry_user']}='{username}'")
     click.secho(f"export {envvar['registry_pass']}='{token}'")
     click.secho(
-        f"printf \"${{{envvar['registry_pass']}}}\" | "
-        + f"docker login --username \"${{{envvar['registry_user']}}}\" --password-stdin \"${{{envvar['registry_host']}}}\""
+        f'printf "${{{envvar["registry_pass"]}}}" | '
+        + f'docker login --username "${{{envvar["registry_user"]}}}" --password-stdin "${{{envvar["registry_host"]}}}"'
     )
     click.secho(
         f"NOTE! Your password and private information are stored in the environmental variables:\n{','.join(envvar.values())}\n"
