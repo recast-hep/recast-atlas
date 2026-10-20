@@ -26,7 +26,7 @@ jobs:
     - name: Install external dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y graphviz libgraphviz-dev
+        sudo apt-get install -y graphviz libgraphviz-dev imagemagick
 
     - name: Install dependencies
       run: |
@@ -62,7 +62,7 @@ jobs:
     - name: Install external dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y graphviz libgraphviz-dev
+        sudo apt-get install -y graphviz libgraphviz-dev imagemagick
 
     - name: Install dependencies
       run: |
@@ -99,7 +99,7 @@ jobs:
     - name: Install external dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y graphviz libgraphviz-dev
+        sudo apt-get install -y graphviz libgraphviz-dev imagemagick
 
     - name: Install dependencies
       run: |
@@ -136,7 +136,7 @@ jobs:
     - name: Install external dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y graphviz libgraphviz-dev
+        sudo apt-get install -y graphviz libgraphviz-dev imagemagick
 
     - name: Install dependencies
       run: |

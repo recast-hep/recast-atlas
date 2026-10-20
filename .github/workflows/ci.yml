@@ -33,7 +33,7 @@ jobs:
     - name: Install external dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y graphviz libgraphviz-dev
+        sudo apt-get install -y graphviz libgraphviz-dev imagemagick
 
     - name: Install Python dependencies
       # c.f. https://github.com/astral-sh/uv/issues/4333 for why snakemake lower bound
