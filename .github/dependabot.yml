@@ -14,6 +14,7 @@ updates:
       - "dependencies"
     reviewers:
       - "matthewfeickert"
+      - "recast-hep/maintainers"
 
   # Ignore all pip dependencies to avoid PRs to update deploy/recast-atlas-*-requirements.txt
   - package-ecosystem: "pip"
