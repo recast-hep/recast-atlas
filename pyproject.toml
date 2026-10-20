@@ -61,8 +61,8 @@ Homepage = "https://github.com/recast-hep/recast-atlas"
 local = [
     "pydotplus==2.0.2",
     "adage>=0.10.1",
-    "packtivity>=0.14.23",
-    "yadage>=0.20.1",  # yadage[viz] breaks so install following manually
+    "packtivity>=0.17.1",
+    "yadage>=0.21.2",  # yadage[viz] breaks so install following manually
     "pydot",  # from yadage[viz] extra
     "pygraphviz"  # from yadage[viz] extra
 ]
