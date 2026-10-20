@@ -40,6 +40,7 @@ RUN apk add --update && \
 COPY . /code
 
 # Set PATH to pickup virtual environment by default
+# TODO: Re-add the reana extra once it is restored in pyproject.toml
 ENV PATH=/usr/local/venv/bin:"${PATH}"
 RUN python3 -m venv /usr/local/venv && \
     . /usr/local/venv/bin/activate && \
@@ -50,7 +51,7 @@ RUN python3 -m venv /usr/local/venv && \
         lxml \
         cryptography \
         jq && \
-    uv --no-cache pip install '.[local,kubernetes,reana]' && \
+    uv --no-cache pip install '.[local,kubernetes]' && \
     recast --help
 
 ENV PACKTIVITY_DOCKER_CMD_MOD "-u root"

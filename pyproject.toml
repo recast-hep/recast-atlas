@@ -67,8 +67,11 @@ local = [
     "pygraphviz"  # from yadage[viz] extra
 ]
 kubernetes = ["kubernetes==9.0.0"]
-reana = ["reana-client>=0.8.0"]
-all = ["recast-atlas[local,kubernetes,reana]"]
+# TODO: Re-add the reana extra (and to "all") once reana-commons supports
+# yadage>=0.21 and yadage-schemas>=0.11. reana-commons[yadage] currently pins
+# yadage~=0.20.1 and yadage-schemas~=0.10.6, which conflicts with the above.
+# reana = ["reana-client>=0.8.0"]
+all = ["recast-atlas[local,kubernetes]"]
 
 # Developer extras
 develop = [
